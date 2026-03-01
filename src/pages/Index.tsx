@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Phone, CheckCircle2 } from "lucide-react";
 import heroBg from "@/assets/hero-bg.png";
 
 const ValueProp = ({ icon, title, description }: { icon: string; title: string; description: string }) => (
@@ -15,6 +16,16 @@ const ValueProp = ({ icon, title, description }: { icon: string; title: string; 
 const Index = () => {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [phone, setPhone] = useState("");
+  const [smsAgreed, setSmsAgreed] = useState(false);
+  const [smsSubmitted, setSmsSubmitted] = useState(false);
+
+  const handleSmsSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (phone.trim() && smsAgreed) {
+      setSmsSubmitted(true);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,6 +117,59 @@ const Index = () => {
               title="Built for brokerages"
               description="Team-level visibility, agent accountability, and pipeline health — all in one place. Designed for how real estate teams actually work."
             />
+          </div>
+        </section>
+
+        {/* SMS Opt-in */}
+        <section className="sms-section">
+          <div className="sms-inner">
+            <div className="sms-text">
+              <span className="sms-eyebrow">Early Access</span>
+              <h2 className="sms-heading">Be the first to know when we launch.</h2>
+              <p className="sms-sub">Get launch updates and priority access directly to your phone.</p>
+            </div>
+
+            {!smsSubmitted ? (
+              <form onSubmit={handleSmsSubmit} className="sms-form">
+                <div className="sms-input-wrap">
+                  <Phone size={15} className="sms-input-icon" />
+                  <input
+                    type="tel"
+                    required
+                    placeholder="(555) 000-0000"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="sms-input"
+                  />
+                </div>
+
+                <label className="sms-checkbox-label">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={smsAgreed}
+                    onChange={(e) => setSmsAgreed(e.target.checked)}
+                    className="sms-checkbox"
+                  />
+                  <span>
+                    I agree to receive SMS notifications from ShowingOps. Message and data rates may apply.{" "}
+                    Reply STOP to unsubscribe.
+                  </span>
+                </label>
+
+                <button type="submit" className="waitlist-btn sms-btn">
+                  Get Early Access
+                </button>
+              </form>
+            ) : (
+              <div className="sms-success">
+                <CheckCircle2 size={20} />
+                <div>
+                  <p className="sms-success-title">You're in!</p>
+                  <p className="sms-success-sub">We'll text you as soon as ShowingOps launches.</p>
+                </div>
+              </div>
+            )}
           </div>
         </section>
       </main>
