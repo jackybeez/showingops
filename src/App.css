@@ -322,6 +322,149 @@
   gap: 1.5rem;
 }
 
+/* SMS opt-in section */
+.sms-section {
+  background: hsl(var(--card));
+  border-top: 1px solid hsl(var(--border));
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+.sms-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.sms-eyebrow {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: hsl(var(--primary));
+  margin-bottom: 0.75rem;
+}
+
+.sms-heading {
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: hsl(var(--foreground));
+  margin-bottom: 0.75rem;
+}
+
+.sms-sub {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: hsl(var(--muted-foreground));
+  font-weight: 300;
+}
+
+.sms-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sms-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.sms-input-icon {
+  position: absolute;
+  left: 0.875rem;
+  color: hsl(var(--muted-foreground));
+  pointer-events: none;
+}
+
+.sms-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border));
+  background: hsl(var(--surface));
+  color: hsl(var(--foreground));
+  font-size: 0.9rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.sms-input::placeholder {
+  color: hsl(var(--muted-foreground));
+}
+
+.sms-input:focus {
+  border-color: hsl(var(--primary) / 0.6);
+  box-shadow: 0 0 0 3px hsl(var(--primary) / 0.1);
+}
+
+.sms-checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: hsl(var(--muted-foreground));
+  cursor: pointer;
+}
+
+.sms-checkbox {
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  accent-color: hsl(var(--primary));
+  cursor: pointer;
+}
+
+.sms-btn {
+  align-self: flex-start;
+}
+
+.sms-success {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius);
+  background: hsl(var(--primary) / 0.08);
+  border: 1px solid hsl(var(--primary) / 0.25);
+  color: hsl(var(--primary));
+}
+
+.sms-success-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: hsl(var(--primary));
+  margin: 0 0 0.2rem;
+}
+
+.sms-success-sub {
+  font-size: 0.82rem;
+  color: hsl(var(--muted-foreground));
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .sms-inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 3rem 1.5rem;
+  }
+
+  .sms-btn {
+    align-self: stretch;
+    text-align: center;
+  }
+}
+
 /* Legal pages */
 .legal-main {
   flex: 1;
