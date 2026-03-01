@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.png";
 
 const ValueProp = ({ icon, title, description }: { icon: string; title: string; description: string }) => (
@@ -112,9 +113,11 @@ const Index = () => {
       {/* Footer */}
       <footer className="footer">
         <p>© {new Date().getFullYear()} ShowingOps. All rights reserved.</p>
-        <a href="mailto:hello@showingops.com" className="footer-email">
-          hello@showingops.com
-        </a>
+        <div className="footer-links">
+          <Link to="/privacy" className="footer-email">Privacy Policy</Link>
+          <Link to="/terms" className="footer-email">Terms &amp; Conditions</Link>
+          <a href="mailto:hello@showingops.com" className="footer-email">hello@showingops.com</a>
+        </div>
       </footer>
     </div>
   );
