@@ -300,9 +300,24 @@
   border-top: 1px solid hsl(var(--border));
   padding: 1.5rem 2rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  gap: 0.5rem;
   font-size: 0.8rem;
+  color: hsl(var(--muted-foreground));
+  text-align: center;
+}
+
+.footer-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem 1.5rem;
+}
+
+.footer-address {
+  font-style: normal;
   color: hsl(var(--muted-foreground));
 }
 
@@ -318,8 +333,39 @@
 
 .footer-links {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 1.5rem;
+  justify-content: center;
+  gap: 0.5rem 1.5rem;
+}
+
+/* Nav actions */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.nav-sms-link {
+  font-size: 0.82rem;
+  color: hsl(var(--primary));
+  text-decoration: none;
+  border: 1px solid hsl(var(--primary) / 0.4);
+  padding: 0.3rem 0.75rem;
+  border-radius: 99px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-sms-link:hover {
+  background: hsl(var(--primary) / 0.1);
+}
+
+/* Waitlist consent note */
+.waitlist-consent {
+  font-size: 0.75rem;
+  color: hsl(var(--muted-foreground));
+  margin-top: 0.5rem;
+  line-height: 1.5;
 }
 
 /* SMS opt-in section */

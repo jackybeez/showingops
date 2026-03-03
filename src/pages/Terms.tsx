@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Footer from "@/components/Footer";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="legal-section">
@@ -12,14 +13,14 @@ const Terms = () => (
     <header className="nav">
       <div className="nav-inner">
         <Link to="/" className="logo" style={{ textDecoration: "none" }}>ShowingOps</Link>
-        <a href="mailto:hello@showingops.com" className="nav-contact">hello@showingops.com</a>
+        <a href="mailto:showingops@gmail.com" className="nav-contact">showingops@gmail.com</a>
       </div>
     </header>
 
     <main className="legal-main">
       <div className="legal-container">
         <div className="legal-header">
-          <p className="legal-updated">Last updated: March 1, 2026</p>
+          <p className="legal-updated">Last updated: March 3, 2026</p>
           <h1 className="legal-title">Terms &amp; Conditions</h1>
           <p className="legal-intro">
             Please read these Terms &amp; Conditions carefully before using ShowingOps or joining our waitlist.
@@ -39,7 +40,7 @@ const Terms = () => (
           <p>
             By submitting your email via our waitlist form, you consent to receive product updates,
             launch announcements, and related communications from ShowingOps. You may unsubscribe at
-            any time by contacting <a href="mailto:hello@showingops.com" className="legal-link">hello@showingops.com</a>.
+            any time by contacting <a href="mailto:showingops@gmail.com" className="legal-link">showingops@gmail.com</a>.
           </p>
           <p>
             Joining the waitlist does not guarantee access to the ShowingOps platform. Early access
@@ -47,7 +48,16 @@ const Terms = () => (
           </p>
         </Section>
 
-        <Section title="3. Acceptable Use">
+        <Section title="3. SMS Communications">
+          <p>
+            By providing your phone number and checking the SMS consent checkbox, you agree to receive
+            text messages from ShowingOps including launch updates and product announcements.
+            Message and data rates may apply. To opt out at any time, reply <strong>STOP</strong> to any
+            text message from ShowingOps. SMS consent is not required as a condition of any purchase or service.
+          </p>
+        </Section>
+
+        <Section title="4. Acceptable Use">
           <p>You agree not to:</p>
           <ul>
             <li>Use ShowingOps to violate any applicable laws or regulations.</li>
@@ -57,7 +67,7 @@ const Terms = () => (
           </ul>
         </Section>
 
-        <Section title="4. Intellectual Property">
+        <Section title="5. Intellectual Property">
           <p>
             All content, branding, software, and materials associated with ShowingOps are the exclusive
             property of ShowingOps and its licensors. Nothing in these terms grants you any rights to use
@@ -65,7 +75,7 @@ const Terms = () => (
           </p>
         </Section>
 
-        <Section title="5. Disclaimer of Warranties">
+        <Section title="6. Disclaimer of Warranties">
           <p>
             ShowingOps is provided on an "as is" and "as available" basis during the pre-launch phase.
             We make no warranties, express or implied, regarding the reliability, accuracy, or fitness for a
@@ -74,7 +84,7 @@ const Terms = () => (
           </p>
         </Section>
 
-        <Section title="6. Limitation of Liability">
+        <Section title="7. Limitation of Liability">
           <p>
             To the fullest extent permitted by law, ShowingOps and its officers, directors, and employees
             shall not be liable for any indirect, incidental, special, or consequential damages arising from
@@ -82,21 +92,21 @@ const Terms = () => (
           </p>
         </Section>
 
-        <Section title="7. Indemnification">
+        <Section title="8. Indemnification">
           <p>
             You agree to indemnify and hold ShowingOps harmless from any claims, losses, or damages
             (including legal fees) arising from your violation of these Terms or your misuse of our services.
           </p>
         </Section>
 
-        <Section title="8. Governing Law">
+        <Section title="9. Governing Law">
           <p>
-            These Terms are governed by the laws of the State of Delaware, United States, without regard to
-            conflict of law principles. Any disputes shall be resolved exclusively in the courts of Delaware.
+            These Terms are governed by the laws of the State of Colorado, United States, without regard to
+            conflict of law principles. Any disputes shall be resolved exclusively in the courts of Colorado.
           </p>
         </Section>
 
-        <Section title="9. Changes to These Terms">
+        <Section title="10. Changes to These Terms">
           <p>
             We reserve the right to update these Terms at any time. Continued use of ShowingOps after
             changes are posted constitutes acceptance of the revised terms. The "Last updated" date at
@@ -104,23 +114,22 @@ const Terms = () => (
           </p>
         </Section>
 
-        <Section title="10. Contact">
+        <Section title="11. Contact">
           <p>
             Questions about these Terms? Reach us at{" "}
-            <a href="mailto:hello@showingops.com" className="legal-link">hello@showingops.com</a>.
+            <a href="mailto:showingops@gmail.com" className="legal-link">showingops@gmail.com</a> or write to us at:
           </p>
+          <address style={{ fontStyle: "normal", marginTop: "0.5rem" }}>
+            ShowingOps<br />
+            4150 Jason St<br />
+            Denver, CO 80211<br />
+            Phone: +1 (970) 309-5645
+          </address>
         </Section>
       </div>
     </main>
 
-    <footer className="footer">
-      <p>© {new Date().getFullYear()} ShowingOps. All rights reserved.</p>
-      <div className="footer-links">
-        <Link to="/privacy" className="footer-email">Privacy Policy</Link>
-        <Link to="/terms" className="footer-email">Terms &amp; Conditions</Link>
-        <a href="mailto:hello@showingops.com" className="footer-email">hello@showingops.com</a>
-      </div>
-    </footer>
+    <Footer />
   </div>
 );
 

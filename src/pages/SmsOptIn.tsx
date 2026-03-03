@@ -1,16 +1,26 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Phone, CheckCircle2 } from "lucide-react";
+import Footer from "@/components/Footer";
+import { supabase } from "@/integrations/supabase/client";
 
 const SmsOptIn = () => {
   const [phone, setPhone] = useState("");
   const [smsAgreed, setSmsAgreed] = useState(false);
   const [smsSubmitted, setSmsSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (phone.trim() && smsAgreed) {
-      setSmsSubmitted(true);
+    if (!phone.trim() || !smsAgreed) return;
+    setLoading(true);
+    try {
+      const { error } = await supabase.functions.invoke("submit-sms-optin", {
+        body: { phone },
+      });
+      if (!error) setSmsSubmitted(true);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -19,7 +29,7 @@ const SmsOptIn = () => {
       <header className="nav">
         <div className="nav-inner">
           <Link to="/" className="logo" style={{ textDecoration: "none" }}>ShowingOps</Link>
-          <a href="mailto:hello@showingops.com" className="nav-contact">hello@showingops.com</a>
+          <a href="mailto:showingops@gmail.com" className="nav-contact">showingops@gmail.com</a>
         </div>
       </header>
 
@@ -54,14 +64,16 @@ const SmsOptIn = () => {
                   className="sms-checkbox"
                 />
                 <span>
-                  I agree to receive SMS notifications from ShowingOps. Message and data rates may apply.{" "}
-                  Reply STOP to unsubscribe.
+                  I agree to receive SMS notifications from ShowingOps. Message and data rates may apply. Reply STOP to unsubscribe at any time.
                 </span>
               </label>
 
-              <button type="submit" className="waitlist-btn">
-                Get Early Access
+              <button type="submit" className="waitlist-btn" disabled={loading}>
+                {loading ? "Submitting…" : "Get Early Access"}
               </button>
+              <p className="waitlist-consent">
+                By joining you agree to receive SMS and email communications from ShowingOps. Reply STOP to opt out at any time.
+              </p>
             </form>
           ) : (
             <div className="sms-success">
@@ -75,14 +87,7 @@ const SmsOptIn = () => {
         </div>
       </main>
 
-      <footer className="footer">
-        <p>© {new Date().getFullYear()} ShowingOps. All rights reserved.</p>
-        <div className="footer-links">
-          <Link to="/privacy" className="footer-email">Privacy Policy</Link>
-          <Link to="/terms" className="footer-email">Terms &amp; Conditions</Link>
-          <a href="mailto:hello@showingops.com" className="footer-email">hello@showingops.com</a>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
