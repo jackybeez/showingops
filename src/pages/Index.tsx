@@ -1,5 +1,4 @@
 import { useState } from "react";
-import logo from "@/assets/logo.png";
 import { Link } from "react-router-dom";
 import { Phone, CheckCircle2 } from "lucide-react";
 import heroBg from "@/assets/hero-bg.png";
@@ -58,7 +57,7 @@ const Index = () => {
       {/* Nav */}
       <header className="nav">
         <div className="nav-inner">
-          <img src={logo} alt="ShowingOps" className="nav-logo" />
+          <span className="logo">ShowingOps</span>
           <div className="nav-actions">
             <Link to="/sms-opt-in" className="nav-sms-link">Get SMS Updates</Link>
             <a href="mailto:showingops@gmail.com" className="nav-contact">
