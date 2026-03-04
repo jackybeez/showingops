@@ -12,7 +12,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { phone } = await req.json();
+    const { phone, first_name, last_name, email, brokerage_name } = await req.json();
 
     if (!phone || typeof phone !== "string" || phone.trim().length < 7) {
       return new Response(JSON.stringify({ error: "Invalid phone number" }), {
@@ -28,7 +28,13 @@ Deno.serve(async (req) => {
 
     const { error } = await supabase
       .from("sms_optins")
-      .insert({ phone: phone.trim() });
+      .insert({
+        phone: phone.trim(),
+        first_name: first_name?.trim() || null,
+        last_name: last_name?.trim() || null,
+        email: email?.trim() || null,
+        brokerage_name: brokerage_name?.trim() || null,
+      });
 
     if (error) throw error;
 
