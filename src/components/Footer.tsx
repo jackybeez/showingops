@@ -5,7 +5,7 @@ const Footer = () => (
     <div className="footer-top">
       <p>© {new Date().getFullYear()} ShowingOps. All rights reserved.</p>
       <address className="footer-address">
-        4150 Jason St, Apt 620, Denver, CO 80211 &nbsp;·&nbsp;
+        4150 Jason St, Denver, CO 80211 &nbsp;·&nbsp;
         <a href="tel:+19703095645" className="footer-email">+1 (970) 309-5645</a>
       </address>
     </div>

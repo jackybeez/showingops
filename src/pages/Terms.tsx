@@ -121,7 +121,7 @@ const Terms = () => (
           </p>
           <address style={{ fontStyle: "normal", marginTop: "0.5rem" }}>
             ShowingOps<br />
-            4150 Jason St, Apt 620<br />
+            4150 Jason St<br />
             Denver, CO 80211<br />
             Phone: +1 (970) 309-5645
           </address>
