@@ -551,6 +551,60 @@
   width: 100%;
 }
 
+.sms-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+@media (max-width: 480px) {
+  .sms-field-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sms-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.sms-field-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: hsl(var(--foreground) / 0.7);
+  letter-spacing: 0.02em;
+}
+
+.sms-text-input {
+  padding: 0.65rem 0.85rem;
+}
+
+.sms-legal-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.sms-legal-link {
+  font-size: 0.8rem;
+  color: hsl(var(--foreground) / 0.5);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sms-legal-link:hover {
+  color: hsl(var(--foreground) / 0.85);
+}
+
+.sms-legal-sep {
+  color: hsl(var(--foreground) / 0.3);
+  font-size: 0.8rem;
+}
+
 /* Legal pages */
 .legal-main {
   flex: 1;

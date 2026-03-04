@@ -176,7 +176,7 @@ const Index = () => {
                     className="sms-checkbox"
                   />
                   <span>
-                    I agree to receive SMS notifications from ShowingOps. Message and data rates may apply. Reply STOP to unsubscribe at any time.
+                    I agree to receive SMS notifications from ShowingOps. Message and data rates may apply. Reply STOP to opt out at any time.
                   </span>
                 </label>
 

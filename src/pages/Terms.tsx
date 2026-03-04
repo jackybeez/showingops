@@ -20,7 +20,7 @@ const Terms = () => (
     <main className="legal-main">
       <div className="legal-container">
         <div className="legal-header">
-          <p className="legal-updated">Last updated: March 3, 2026</p>
+          <p className="legal-updated">Last updated: March 4, 2026</p>
           <h1 className="legal-title">Terms &amp; Conditions</h1>
           <p className="legal-intro">
             Please read these Terms &amp; Conditions carefully before using ShowingOps or joining our waitlist.
@@ -121,7 +121,7 @@ const Terms = () => (
           </p>
           <address style={{ fontStyle: "normal", marginTop: "0.5rem" }}>
             ShowingOps<br />
-            4150 Jason St<br />
+            4150 Jason St, Apt 620<br />
             Denver, CO 80211<br />
             Phone: +1 (970) 309-5645
           </address>

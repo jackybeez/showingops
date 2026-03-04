@@ -20,7 +20,7 @@ const PrivacyPolicy = () => (
     <main className="legal-main">
       <div className="legal-container">
         <div className="legal-header">
-          <p className="legal-updated">Last updated: March 3, 2026</p>
+          <p className="legal-updated">Last updated: March 4, 2026</p>
           <h1 className="legal-title">Privacy Policy</h1>
           <p className="legal-intro">
             ShowingOps ("we," "our," or "us") is committed to protecting your privacy. This policy explains
@@ -31,9 +31,10 @@ const PrivacyPolicy = () => (
         <Section title="1. Information We Collect">
           <p>We collect information you provide directly, including:</p>
           <ul>
-            <li><strong>Email address</strong> — submitted via our waitlist form.</li>
-            <li><strong>Phone number</strong> — submitted when you opt in to receive SMS communications from ShowingOps.</li>
-            <li><strong>Business information</strong> — brokerage name, team size, and related details you share with us.</li>
+            <li><strong>First and last name</strong> — submitted when you opt in to SMS or email communications.</li>
+            <li><strong>Email address</strong> — submitted via our waitlist or SMS opt-in form.</li>
+            <li><strong>Phone number</strong> — submitted when you opt in to receive SMS notifications from ShowingOps.</li>
+            <li><strong>Brokerage name</strong> — submitted to identify your real estate organization.</li>
             <li><strong>Communications</strong> — messages you send us via email or other channels.</li>
           </ul>
           <p>We may also collect certain technical data automatically, such as browser type, IP address, and pages visited, through standard web analytics tools.</p>
@@ -42,8 +43,8 @@ const PrivacyPolicy = () => (
         <Section title="2. How We Use Your Information">
           <p>We use the information we collect to:</p>
           <ul>
+            <li>Send SMS account notifications to users who have explicitly opted in, including <strong>new lead alerts, follow-up reminders, and workflow approval prompts</strong>.</li>
             <li>Provide early access and product updates to waitlist members via email.</li>
-            <li>Send SMS notifications to users who have explicitly opted in, including launch updates and priority access information.</li>
             <li>Respond to inquiries and support requests.</li>
             <li>Improve and develop ShowingOps products and services.</li>
             <li>Comply with legal obligations.</li>
@@ -53,20 +54,37 @@ const PrivacyPolicy = () => (
 
         <Section title="3. SMS Communications">
           <p>
-            If you provide your phone number and check the SMS opt-in checkbox, you consent to receive text messages from ShowingOps,
-            including launch announcements and product updates. Message and data rates may apply.
+            If you provide your phone number and opt in via the SMS consent checkbox, you consent to receive
+            text messages from ShowingOps. The types of messages we send include:
           </p>
-          <p><strong>To opt out of SMS communications at any time, reply STOP to any message we send you.</strong> You may also contact us at <a href="mailto:showingops@gmail.com" className="legal-link">showingops@gmail.com</a> to request removal.</p>
+          <ul>
+            <li>New lead alerts</li>
+            <li>Follow-up reminders</li>
+            <li>Workflow approval prompts</li>
+          </ul>
+          <p>
+            <strong>Message frequency varies based on lead activity.</strong> Message and data rates may apply.
+          </p>
+          <p>
+            <strong>To opt out of SMS at any time, reply STOP to any message from ShowingOps.</strong>
+          </p>
+          <p>
+            <strong>For help, reply HELP to any message or contact us at{" "}
+            <a href="mailto:showingops@gmail.com" className="legal-link">showingops@gmail.com</a>.</strong>
+          </p>
           <p>SMS opt-in is entirely voluntary and separate from the email waitlist.</p>
         </Section>
 
         <Section title="4. Data Sharing">
-          <p>We may share your information with:</p>
+          <p>
+            <strong>We do NOT sell or share phone numbers with third parties under any circumstances.</strong>
+          </p>
+          <p>We may share your information only with:</p>
           <ul>
-            <li><strong>Service providers</strong> — trusted vendors who help us operate our platform (e.g., email delivery, SMS messaging, analytics). These providers are bound by confidentiality obligations.</li>
+            <li><strong>Service providers</strong> — trusted vendors who help us operate our platform (e.g., email delivery, SMS messaging). These providers are bound by confidentiality obligations and are prohibited from using your data for their own purposes.</li>
             <li><strong>Legal authorities</strong> — where required by law, regulation, or valid legal process.</li>
           </ul>
-          <p>We do not share your data with third-party advertisers or data brokers.</p>
+          <p>We do not share your data with third-party advertisers, data brokers, or any marketing partners.</p>
         </Section>
 
         <Section title="5. Data Retention">
@@ -77,15 +95,16 @@ const PrivacyPolicy = () => (
         </Section>
 
         <Section title="6. Your Rights & Opt-Out">
-          <p>Depending on your location, you may have the right to:</p>
+          <p>You have the right to:</p>
           <ul>
             <li>Access the personal data we hold about you.</li>
             <li>Request correction of inaccurate data.</li>
             <li>Request deletion of your data.</li>
-            <li>Withdraw consent for SMS or email marketing communications at any time.</li>
+            <li>Withdraw consent for SMS or email communications at any time.</li>
           </ul>
           <p>
             To opt out of SMS: reply <strong>STOP</strong> to any text message from ShowingOps.<br />
+            For SMS help: reply <strong>HELP</strong> to any message.<br />
             To opt out of email or request data deletion: email us at{" "}
             <a href="mailto:showingops@gmail.com" className="legal-link">showingops@gmail.com</a>.
           </p>
@@ -113,7 +132,7 @@ const PrivacyPolicy = () => (
           </p>
           <address style={{ fontStyle: "normal", marginTop: "0.5rem" }}>
             ShowingOps<br />
-            4150 Jason St<br />
+            4150 Jason St, Apt 620<br />
             Denver, CO 80211<br />
             Phone: +1 (970) 309-5645
           </address>

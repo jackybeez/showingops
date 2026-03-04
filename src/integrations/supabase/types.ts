@@ -17,17 +17,29 @@ export type Database = {
       sms_optins: {
         Row: {
           agreed_at: string
+          brokerage_name: string | null
+          email: string | null
+          first_name: string | null
           id: string
+          last_name: string | null
           phone: string
         }
         Insert: {
           agreed_at?: string
+          brokerage_name?: string | null
+          email?: string | null
+          first_name?: string | null
           id?: string
+          last_name?: string | null
           phone: string
         }
         Update: {
           agreed_at?: string
+          brokerage_name?: string | null
+          email?: string | null
+          first_name?: string | null
           id?: string
+          last_name?: string | null
           phone?: string
         }
         Relationships: []
