@@ -48,12 +48,16 @@ const Terms = () => (
           </p>
         </Section>
 
-        <Section title="3. SMS Communications">
+        <Section title="3. SMS Terms">
           <p>
-            By providing your phone number and checking the SMS consent checkbox, you agree to receive
-            text messages from ShowingOps including launch updates and product announcements.
-            Message and data rates may apply. To opt out at any time, reply <strong>STOP</strong> to any
-            text message from ShowingOps. SMS consent is not required as a condition of any purchase or service.
+            Users who opt in to SMS communications may receive operational notifications related to
+            ShowingOps account activity, workflow approvals, assigned leads, and platform notifications.
+          </p>
+          <p>
+            Message and data rates may apply. SMS consent is not required as a condition of any purchase or service.
+          </p>
+          <p>
+            Users may opt out at any time by replying <strong>STOP</strong>.
           </p>
         </Section>
 
