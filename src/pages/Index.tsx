@@ -59,7 +59,7 @@ const Index = () => {
         <div className="nav-inner">
           <span className="logo">ShowingOps</span>
           <div className="nav-actions">
-            <Link to="/sms-opt-in" className="nav-sms-link">Get SMS Updates</Link>
+            <Link to="/sms-opt-in" className="nav-sms-link">Enable SMS Notifications</Link>
             <a href="mailto:showingops@gmail.com" className="nav-contact">
               showingops@gmail.com
             </a>
