@@ -54,23 +54,19 @@ const PrivacyPolicy = () => (
 
         <Section title="3. SMS Communications">
           <p>
-            If you provide your phone number and opt in via the SMS consent checkbox, you consent to receive
-            text messages from ShowingOps. The types of messages we send include:
-          </p>
-          <ul>
-            <li>New lead alerts</li>
-            <li>Follow-up reminders</li>
-            <li>Workflow approval prompts</li>
-          </ul>
-          <p>
-            <strong>Message frequency varies based on lead activity.</strong> Message and data rates may apply.
+            By providing your phone number and opting in to SMS communications, you consent to receive
+            operational text messages from ShowingOps related to account activity, assigned leads,
+            workflow notifications, and approval requests.
           </p>
           <p>
-            <strong>To opt out of SMS at any time, reply STOP to any message from ShowingOps.</strong>
+            Message frequency varies based on account activity. Message and data rates may apply.
+            Reply <strong>STOP</strong> to unsubscribe or <strong>HELP</strong> for assistance.
           </p>
           <p>
-            <strong>For help, reply HELP to any message or contact us at{" "}
-            <a href="mailto:showingops@gmail.com" className="legal-link">showingops@gmail.com</a>.</strong>
+            <strong>No mobile information will be shared with third parties or affiliates for marketing or promotional purposes.</strong>
+          </p>
+          <p>
+            <strong>Text messaging originator opt-in data and consent will not be shared with any third parties.</strong>
           </p>
           <p>SMS opt-in is entirely voluntary and separate from the email waitlist.</p>
         </Section>
