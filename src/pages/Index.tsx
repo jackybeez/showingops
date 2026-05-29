@@ -20,7 +20,6 @@ const Index = () => {
     firstName: "",
     lastName: "",
     phone: "",
-    email: "",
     brokerageName: "",
   });
   const [smsAgreed, setSmsAgreed] = useState(false);
