@@ -9,7 +9,6 @@ const SmsOptIn = () => {
     firstName: "",
     lastName: "",
     phone: "",
-    email: "",
     brokerageName: "",
   });
   const [smsAgreed, setSmsAgreed] = useState(false);
