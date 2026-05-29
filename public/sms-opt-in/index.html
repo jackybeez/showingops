@@ -285,10 +285,8 @@
             <input id="phone" name="phone" type="tel" required placeholder="(555) 000-0000" autocomplete="tel" />
           </div>
 
-          <div class="field-group">
-            <label class="field-label" for="email">Email Address</label>
-            <input id="email" name="email" type="email" required placeholder="jane@brokerage.com" autocomplete="email" />
-          </div>
+
+
 
           <div class="field-group">
             <label class="field-label" for="brokerageName">Brokerage Name</label>
@@ -350,11 +348,10 @@
         var firstName = document.getElementById('firstName').value.trim();
         var lastName = document.getElementById('lastName').value.trim();
         var phone = document.getElementById('phone').value.trim();
-        var email = document.getElementById('email').value.trim();
         var brokerageName = document.getElementById('brokerageName').value.trim();
         var agreed = document.getElementById('smsAgreed').checked;
 
-        if (!firstName || !lastName || !phone || !email || !brokerageName || !agreed) {
+        if (!firstName || !lastName || !phone || !brokerageName || !agreed) {
           errEl.textContent = 'Please fill in all fields and check the agreement box.';
           errEl.classList.add('visible');
           btn.disabled = false;
@@ -373,7 +370,6 @@
               phone: phone,
               first_name: firstName,
               last_name: lastName,
-              email: email,
               brokerage_name: brokerageName
             })
           });
