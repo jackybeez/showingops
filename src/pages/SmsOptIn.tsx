@@ -29,7 +29,6 @@ const SmsOptIn = () => {
           phone: form.phone,
           first_name: form.firstName,
           last_name: form.lastName,
-          email: form.email,
           brokerage_name: form.brokerageName,
         },
       });
