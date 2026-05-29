@@ -23,8 +23,8 @@ const Terms = () => (
           <p className="legal-updated">Last updated: March 4, 2026</p>
           <h1 className="legal-title">Terms &amp; Conditions</h1>
           <p className="legal-intro">
-            Please read these Terms &amp; Conditions carefully before using ShowingOps or joining our waitlist.
-            By submitting your email or otherwise engaging with our services, you agree to be bound by these terms.
+            Please read these Terms &amp; Conditions carefully before using ShowingOps. By submitting your email
+            or otherwise engaging with our services, you agree to be bound by these terms.
           </p>
         </div>
 
@@ -32,21 +32,17 @@ const Terms = () => (
           <p>
             ShowingOps is an AI-powered workflow agent designed for real estate brokerages. It automates lead
             follow-up sequences and surfaces human-in-the-loop approvals to keep your team in control.
-            ShowingOps is currently in pre-launch; access is limited to approved brokerage partners.
           </p>
         </Section>
 
-        <Section title="2. Waitlist & Early Access">
+        <Section title="2. Email Sign-Up">
           <p>
-            By submitting your email via our waitlist form, you consent to receive product updates,
-            launch announcements, and related communications from ShowingOps. You may unsubscribe at
-            any time by contacting <a href="mailto:showingops@gmail.com" className="legal-link">showingops@gmail.com</a>.
-          </p>
-          <p>
-            Joining the waitlist does not guarantee access to the ShowingOps platform. Early access
-            invitations are issued at our sole discretion.
+            By submitting your email via our sign-up form, you consent to receive product updates,
+            account communications, and related messages from ShowingOps. You may unsubscribe at any time
+            by contacting <a href="mailto:showingops@gmail.com" className="legal-link">showingops@gmail.com</a>.
           </p>
         </Section>
+
 
         <Section title="3. SMS Terms">
           <p>

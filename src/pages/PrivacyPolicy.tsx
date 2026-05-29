@@ -32,7 +32,7 @@ const PrivacyPolicy = () => (
           <p>We collect information you provide directly, including:</p>
           <ul>
             <li><strong>First and last name</strong> — submitted when you opt in to SMS or email communications.</li>
-            <li><strong>Email address</strong> — submitted via our waitlist or SMS opt-in form.</li>
+            <li><strong>Email address</strong> — submitted via our sign-up or SMS opt-in form.</li>
             <li><strong>Phone number</strong> — submitted when you opt in to receive SMS notifications from ShowingOps.</li>
             <li><strong>Brokerage name</strong> — submitted to identify your real estate organization.</li>
             <li><strong>Communications</strong> — messages you send us via email or other channels.</li>
@@ -44,7 +44,7 @@ const PrivacyPolicy = () => (
           <p>We use the information we collect to:</p>
           <ul>
             <li>Send SMS account notifications to users who have explicitly opted in, including <strong>new lead alerts, follow-up reminders, and workflow approval prompts</strong>.</li>
-            <li>Provide early access and product updates to waitlist members via email.</li>
+            <li>Send product updates and account communications via email to users who have signed up.</li>
             <li>Respond to inquiries and support requests.</li>
             <li>Improve and develop ShowingOps products and services.</li>
             <li>Comply with legal obligations.</li>
