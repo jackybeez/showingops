@@ -76,50 +76,51 @@ const Index = () => {
           </div>
 
           <div className="hero-content">
-            <div className="badge">
-              <span className="badge-dot" />
-              Coming Soon
-            </div>
-
-            <h1 className="hero-headline">
-              No lead ever falls<br />
-              <em>through the cracks.</em>
-            </h1>
-
-            <p className="hero-subtext">
-              ShowingOps is an AI-powered workflow agent built for real estate brokerages.
-              It automates follow-up sequences, surfaces the right actions at the right time,
-              and keeps your team in control with human-in-the-loop approvals.
-            </p>
-
-            {/* Waitlist */}
-            {!submitted ? (
-              <form onSubmit={handleSubmit} className="waitlist-form">
-                <input
-                  type="email"
-                  required
-                  placeholder="Enter your work email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="waitlist-input"
-                />
-                <button type="submit" className="waitlist-btn" disabled={loading}>
-                  {loading ? "Joining…" : "Join the Waitlist"}
-                </button>
-              </form>
-            ) : (
-              <div className="waitlist-success">
-                <span className="success-check">✓</span>
-                You're on the list — we'll be in touch soon.
-              </div>
-            )}
-
-            <p className="waitlist-note">No spam. Early access for brokerages only.</p>
-            <p className="waitlist-consent">
-              By joining you agree to receive SMS and email communications from ShowingOps. Reply STOP to opt out at any time.
-            </p>
+          <div className="badge">
+            <span className="badge-dot" />
+            SMS Notifications
           </div>
-        </section>
+
+          <h1 className="hero-headline">
+            No lead ever falls<br />
+            <em>through the cracks.</em>
+          </h1>
+
+          <p className="hero-subtext">
+            ShowingOps is an AI-powered workflow agent built for real estate brokerages.
+            It automates follow-up sequences, surfaces the right actions at the right time,
+            and keeps your team in control with human-in-the-loop approvals.
+          </p>
+
+          {/* Email sign-up */}
+          {!submitted ? (
+            <form onSubmit={handleSubmit} className="waitlist-form">
+              <input
+                type="email"
+                required
+                placeholder="Enter your work email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="waitlist-input"
+              />
+              <button type="submit" className="waitlist-btn" disabled={loading}>
+                {loading ? "Signing up…" : "Sign Up"}
+              </button>
+            </form>
+          ) : (
+            <div className="waitlist-success">
+              <span className="success-check">✓</span>
+              You're signed up — we'll be in touch soon.
+            </div>
+          )}
+
+          <p className="waitlist-note">No spam. For real estate brokerages.</p>
+          <p className="waitlist-consent">
+            By signing up you agree to receive email communications from ShowingOps. To receive SMS notifications, opt in separately on our <Link to="/sms-opt-in" className="footer-email">SMS Opt-In page</Link>.
+          </p>
+        </div>
+      </section>
+
 
         {/* Value Props */}
         <section className="value-section">
@@ -148,9 +149,11 @@ const Index = () => {
         <section className="sms-section">
           <div className="sms-inner">
             <div className="sms-text">
-              <span className="sms-eyebrow">Early Access</span>
-              <h2 className="sms-heading">Be the first to know when we launch.</h2>
-              <p className="sms-sub">Get launch updates and priority access directly to your phone.</p>
+              <span className="sms-eyebrow">SMS Sign-Up</span>
+              <h2 className="sms-heading">Sign up for ShowingOps SMS notifications.</h2>
+              <p className="sms-sub">
+                Receive new lead alerts, follow-up reminders, and workflow approval prompts from ShowingOps. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to cancel, HELP for help.
+              </p>
             </div>
 
             {!smsSubmitted ? (
@@ -176,28 +179,26 @@ const Index = () => {
                     className="sms-checkbox"
                   />
                   <span>
-                    I agree to receive SMS notifications from ShowingOps. Message and data rates may apply. Reply STOP to opt out at any time.
+                    By checking this box, I agree to receive SMS messages from ShowingOps including lead notifications, follow-up reminders, and workflow approvals. Msg frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help. See our <Link to="/privacy" className="footer-email">Privacy Policy</Link> and <Link to="/terms" className="footer-email">Terms</Link>.
                   </span>
                 </label>
 
                 <button type="submit" className="waitlist-btn sms-btn" disabled={smsLoading}>
-                  {smsLoading ? "Submitting…" : "Get Early Access"}
+                  {smsLoading ? "Signing up…" : "Sign Up for SMS"}
                 </button>
-                <p className="waitlist-consent">
-                  By joining you agree to receive SMS and email communications from ShowingOps. Reply STOP to opt out at any time.
-                </p>
               </form>
             ) : (
               <div className="sms-success">
                 <CheckCircle2 size={20} />
                 <div>
-                  <p className="sms-success-title">You're in!</p>
-                  <p className="sms-success-sub">We'll text you as soon as ShowingOps launches.</p>
+                  <p className="sms-success-title">You're signed up!</p>
+                  <p className="sms-success-sub">You'll start receiving SMS notifications from ShowingOps. Reply STOP at any time to opt out.</p>
                 </div>
               </div>
             )}
           </div>
         </section>
+
       </main>
 
       <Footer />
