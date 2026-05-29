@@ -133,19 +133,8 @@ const Index = () => {
                   />
                 </div>
 
-                <div className="sms-field-group">
-                  <label className="sms-field-label" htmlFor="email">Email Address</label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    placeholder="jane@brokerage.com"
-                    value={form.email}
-                    onChange={handleChange}
-                    className="sms-input sms-text-input"
-                  />
-                </div>
+
+
 
                 <div className="sms-field-group">
                   <label className="sms-field-label" htmlFor="brokerageName">Brokerage Name</label>
