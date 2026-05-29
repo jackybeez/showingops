@@ -31,11 +31,10 @@ const PrivacyPolicy = () => (
         <Section title="1. Information We Collect">
           <p>We collect information you provide directly, including:</p>
           <ul>
-            <li><strong>First and last name</strong> — submitted when you opt in to SMS or email communications.</li>
-            <li><strong>Email address</strong> — submitted via our sign-up or SMS opt-in form.</li>
+            <li><strong>First and last name</strong> — submitted when you opt in to SMS communications.</li>
             <li><strong>Phone number</strong> — submitted when you opt in to receive SMS notifications from ShowingOps.</li>
             <li><strong>Brokerage name</strong> — submitted to identify your real estate organization.</li>
-            <li><strong>Communications</strong> — messages you send us via email or other channels.</li>
+            <li><strong>Communications</strong> — messages you send us via our contact channels.</li>
           </ul>
           <p>We may also collect certain technical data automatically, such as browser type, IP address, and pages visited, through standard web analytics tools.</p>
         </Section>
@@ -44,7 +43,6 @@ const PrivacyPolicy = () => (
           <p>We use the information we collect to:</p>
           <ul>
             <li>Send SMS account notifications to users who have explicitly opted in, including <strong>new lead alerts, follow-up reminders, and workflow approval prompts</strong>.</li>
-            <li>Send product updates and account communications via email to users who have signed up.</li>
             <li>Respond to inquiries and support requests.</li>
             <li>Improve and develop ShowingOps products and services.</li>
             <li>Comply with legal obligations.</li>
@@ -68,7 +66,7 @@ const PrivacyPolicy = () => (
           <p>
             <strong>Text messaging originator opt-in data and consent will not be shared with any third parties.</strong>
           </p>
-          <p>SMS opt-in is entirely voluntary and separate from the email waitlist.</p>
+          <p>SMS opt-in is entirely voluntary.</p>
         </Section>
 
         <Section title="4. Data Sharing">
@@ -77,7 +75,7 @@ const PrivacyPolicy = () => (
           </p>
           <p>We may share your information only with:</p>
           <ul>
-            <li><strong>Service providers</strong> — trusted vendors who help us operate our platform (e.g., email delivery, SMS messaging). These providers are bound by confidentiality obligations and are prohibited from using your data for their own purposes.</li>
+            <li><strong>Service providers</strong> — trusted vendors who help us operate our platform (e.g., SMS messaging). These providers are bound by confidentiality obligations and are prohibited from using your data for their own purposes.</li>
             <li><strong>Legal authorities</strong> — where required by law, regulation, or valid legal process.</li>
           </ul>
           <p>We do not share your data with third-party advertisers, data brokers, or any marketing partners.</p>
@@ -96,12 +94,12 @@ const PrivacyPolicy = () => (
             <li>Access the personal data we hold about you.</li>
             <li>Request correction of inaccurate data.</li>
             <li>Request deletion of your data.</li>
-            <li>Withdraw consent for SMS or email communications at any time.</li>
+            <li>Withdraw consent for SMS communications at any time.</li>
           </ul>
           <p>
             To opt out of SMS: reply <strong>STOP</strong> to any text message from ShowingOps.<br />
             For SMS help: reply <strong>HELP</strong> to any message.<br />
-            To opt out of email or request data deletion: email us at{" "}
+            For data deletion requests, contact us at{" "}
             <a href="mailto:showingops@gmail.com" className="legal-link">showingops@gmail.com</a>.
           </p>
         </Section>
