@@ -1,68 +1,64 @@
-# Twilio A2P Re-submission Plan
+# Make SMS opt-in the primary CTA on the homepage
 
-## 1. Crawlability — confirmed
+## Goal
 
-Yes, 100%. Here's exactly what a no-JS bot (Twilio, Googlebot, anything with `curl`) sees today on `showingops.lovable.app`:
+Make it impossible for a Twilio A2P reviewer to miss the SMS sign-up. Remove the email form from the hero, put the full SMS opt-in form (phone + name + brokerage + checkbox + disclosures) directly in the hero, and have the existing `/sms-opt-in` page mirror it. No more "two paths" — one obvious path: sign up for SMS notifications.
 
-- `/`, `/sms-opt-in`, `/privacy`, `/privacy-policy`, `/terms` — all return raw HTML on the very first response (no JS execution required).
-- The SMS opt-in form, the unchecked consent checkbox, the exact TCPA language ("Message and data rates may apply", "Reply STOP to opt out", "Reply HELP for help"), the Privacy Policy ("text messaging originator opt-in data and consent will not be shared with any third parties"), and the Terms ("SMS Terms") are all present in the raw HTML source.
-- `robots.txt` explicitly allows all user agents.
-- Static HTML files exist at `public/sms-opt-in/index.html`, `public/privacy-policy/index.html`, `public/terms/index.html`, and the SPA shell `index.html` carries a full `<noscript>` mirror of every page. Twilio's crawler cannot miss it.
+## Changes
 
-There is nothing more to do for crawlability. If they still claim they can't see it, the issue is on their end, not ours.
+### A. Homepage (`src/pages/Index.tsx`) — hero becomes the SMS opt-in
 
-## 2. Why Twilio actually rejected the CTA
+Replace the current hero email form with the full SMS opt-in form, identical in fields and copy to `/sms-opt-in`:
 
-"CTA" in A2P 10DLC review = **Call-to-Action**, meaning *the exact place and wording where a user opts in to SMS*. It is **not** marketing copy. Twilio reviewers want to see, on the public website, a flow that matches what you wrote in your campaign submission:
+- **Badge**: "SMS Notifications" (keep)
+- **Headline**: "No lead ever falls *through the cracks.*" (keep)
+- **Subtext**: Short product description (keep, slightly trimmed)
+- **Form fields** (matching `/sms-opt-in` exactly):
+  - First Name
+  - Last Name
+  - Phone Number
+  - Email Address
+  - Brokerage Name
+  - Consent checkbox with full TCPA language and links to Privacy + Terms
+  - Submit button: "Sign Up for SMS Notifications"
+- **Below form**: small line "By signing up you'll receive SMS notifications from ShowingOps. Msg & data rates may apply. Reply STOP to cancel."
 
-1. A clearly labeled opt-in (not buried under "early access" or "waitlist" — those words make reviewers think SMS is a side-effect of joining a waitlist, which is a red flag for them).
-2. An unchecked consent checkbox the user must tick.
-3. Exact disclosures next to the checkbox: program name, message types, frequency, "Msg & data rates may apply", "Reply STOP to cancel, HELP for help", and a link to Privacy Policy + Terms.
-4. Privacy Policy must say opt-in data is not shared. (Already done.)
+Remove the secondary "SMS section" lower on the page — it would now be a duplicate. Keep the Value Props section between hero and footer for context.
 
-The current page uses "Join the Waitlist", "Get Early Access", "Be the first to know when we launch" — reviewers read this as a marketing list, not an SMS service, and reject it.
+### B. Remove email waitlist from the homepage
 
-## 3. What I'll change
+- Delete the email-only form, its state, and the `submit-waitlist` function call from `Index.tsx`.
+- Leave the `submit-waitlist` edge function and `waitlist_signups` table in place (don't break anything backend-side; just stop calling it from the UI). We can resurrect the email form post-Twilio-approval if you want.
 
-### A. Homepage (`src/pages/Index.tsx`)
-- Remove "Coming Soon" badge → replace with "SMS Notifications".
-- Headline subtext: remove "Early access for brokerages only".
-- Email form button: "Join the Waitlist" → **"Sign Up"**. Heading copy near it stays product-focused (no waitlist language).
-- SMS section:
-  - Eyebrow "Early Access" → **"SMS Sign-Up"**
-  - Heading "Be the first to know when we launch." → **"Sign up for ShowingOps SMS notifications."**
-  - Sub: "Get launch updates and priority access directly to your phone." → **"Receive lead alerts, follow-up reminders, and workflow approval prompts from ShowingOps. Msg frequency varies. Msg & data rates may apply. Reply STOP to cancel, HELP for help."**
-  - Button "Get Early Access" → **"Sign Up for SMS"**.
-  - Checkbox label rewritten to the exact Twilio-preferred form: *"By checking this box, I agree to receive SMS messages from ShowingOps including lead notifications, follow-up reminders, and workflow approvals. Msg frequency varies. Msg & data rates may apply. Reply STOP to opt out, HELP for help. See our [Privacy Policy] and [Terms]."* (with real links)
-- Nav link "Enable SMS Notifications" stays — it's already good.
+### C. Nav
 
-### B. Standalone `/sms-opt-in` page (`public/sms-opt-in/index.html` + `src/pages/SmsOptIn.tsx`)
-- Rename heading from any "early access" wording to **"Sign up for ShowingOps SMS notifications"**.
-- Mirror the exact checkbox language above.
-- Ensure both the static HTML and the React version match word-for-word — Twilio reviewers may screenshot either one.
+- Remove the "Enable SMS Notifications" nav link — the entire homepage *is* the SMS opt-in now, so the link is redundant and looks weird pointing to a near-duplicate page.
+- Keep the `showingops@gmail.com` contact link.
 
-### C. Static `<noscript>` mirror in root `index.html`
-- Update the embedded copy to match the new wording so the no-JS view matches the live view exactly. (Mismatch between `<noscript>` and rendered page is itself a rejection risk.)
+### D. `/sms-opt-in` page stays as-is
 
-### D. Footer / misc
-- No structural changes; links already correct.
+- Twilio's CTA review almost always references a dedicated opt-in URL, so we keep `/sms-opt-in` intact. It now matches the homepage hero almost word-for-word, which is exactly what reviewers want to see.
+- Footer links to it remain.
 
-## 4. Extra tips from prior Twilio A2P rejections
+### E. Static `<noscript>` mirror in `index.html`
 
-These move the needle more than copy changes alone:
+- Update the home section to show the same SMS opt-in form copy (so no-JS Twilio bots see SMS opt-in on `/` too, not a waitlist).
 
-1. **Re-submit with screenshots.** In the campaign re-submission, attach a screenshot of `/sms-opt-in` showing the form + checkbox + disclosures, and a screenshot of the Privacy Policy section that says opt-in data won't be shared. Reviewers approve faster when they don't have to hunt.
-2. **Paste the opt-in URL directly into the "Call to Action / Message Flow" field** — e.g. `https://showingops.lovable.app/sms-opt-in`. Don't just say "see our website".
-3. **Sample messages must match the use case.** If your campaign says "Account Notifications", your sample messages should look like `"ShowingOps: New lead assigned to you - Jane Doe, 123 Main St. Reply STOP to opt out."` — not marketing/promo content.
-4. **Opt-in keywords field**: enter `START`. Opt-out: `STOP`. Help: `HELP`. These must be handled by your number.
-5. **Brand vetting**: make sure the Brand registered with TCR matches "ShowingOps" exactly and the website URL on the Brand matches the URL Twilio is crawling.
-6. **Volume/throughput**: keep daily message volume low (under 200/day) on the first submission. Easier to get approved, can raise later.
+### F. Styling
 
-## 5. Files touched
+- Reuse the existing `sms-form`, `sms-input`, `sms-checkbox-label`, `sms-field-group`, `sms-field-row` classes already defined for `/sms-opt-in`. The hero gets a slightly wider form container so it doesn't feel cramped; one small CSS addition in `App.css` for hero-form layout.
 
-- `src/pages/Index.tsx` — copy changes only
-- `src/pages/SmsOptIn.tsx` — copy changes only
-- `public/sms-opt-in/index.html` — copy changes only
-- `index.html` — update `<noscript>` mirror to match
+## Files touched
 
-No backend, schema, or routing changes. Pure copy + crawlable-HTML alignment.
+- `src/pages/Index.tsx` — rewrite hero, remove email form + duplicate SMS section
+- `src/App.css` — minor hero form layout tweak
+- `index.html` — update `<noscript>` home section to mirror new hero
+- (no changes to `/sms-opt-in`, legal pages, edge functions, or DB)
+
+## What the Twilio reviewer will see
+
+1. Land on `showingops.lovable.app/`
+2. See "SMS Notifications" badge → headline → 5-field form → unchecked consent checkbox with full TCPA language + Privacy/Terms links → "Sign Up for SMS Notifications" button.
+3. Done. There is no other CTA, no waitlist, no ambiguity.
+
+Want me to ship this?

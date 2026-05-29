@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Phone, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import heroBg from "@/assets/hero-bg.png";
 import Footer from "@/components/Footer";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,37 +16,36 @@ const ValueProp = ({ icon, title, description }: { icon: string; title: string; 
 );
 
 const Index = () => {
-  const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [phone, setPhone] = useState("");
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    email: "",
+    brokerageName: "",
+  });
   const [smsAgreed, setSmsAgreed] = useState(false);
   const [smsSubmitted, setSmsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [smsLoading, setSmsLoading] = useState(false);
 
-  const handleSmsSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!phone.trim() || !smsAgreed) return;
-    setSmsLoading(true);
-    try {
-      const { error } = await supabase.functions.invoke("submit-sms-optin", {
-        body: { phone },
-      });
-      if (!error) setSmsSubmitted(true);
-    } finally {
-      setSmsLoading(false);
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim()) return;
+    if (!form.phone.trim() || !smsAgreed) return;
     setLoading(true);
     try {
-      const { error } = await supabase.functions.invoke("submit-waitlist", {
-        body: { email },
+      const { error } = await supabase.functions.invoke("submit-sms-optin", {
+        body: {
+          phone: form.phone,
+          first_name: form.firstName,
+          last_name: form.lastName,
+          email: form.email,
+          brokerage_name: form.brokerageName,
+        },
       });
-      if (!error) setSubmitted(true);
+      if (!error) setSmsSubmitted(true);
     } finally {
       setLoading(false);
     }
@@ -59,7 +58,6 @@ const Index = () => {
         <div className="nav-inner">
           <span className="logo">ShowingOps</span>
           <div className="nav-actions">
-            <Link to="/sms-opt-in" className="nav-sms-link">Enable SMS Notifications</Link>
             <a href="mailto:showingops@gmail.com" className="nav-contact">
               showingops@gmail.com
             </a>
@@ -67,7 +65,7 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Hero */}
+      {/* Hero — SMS Opt-In is the primary CTA */}
       <main>
         <section className="hero">
           <div className="hero-image-wrap">
@@ -76,51 +74,129 @@ const Index = () => {
           </div>
 
           <div className="hero-content">
-          <div className="badge">
-            <span className="badge-dot" />
-            SMS Notifications
-          </div>
-
-          <h1 className="hero-headline">
-            No lead ever falls<br />
-            <em>through the cracks.</em>
-          </h1>
-
-          <p className="hero-subtext">
-            ShowingOps is an AI-powered workflow agent built for real estate brokerages.
-            It automates follow-up sequences, surfaces the right actions at the right time,
-            and keeps your team in control with human-in-the-loop approvals.
-          </p>
-
-          {/* Email sign-up */}
-          {!submitted ? (
-            <form onSubmit={handleSubmit} className="waitlist-form">
-              <input
-                type="email"
-                required
-                placeholder="Enter your work email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="waitlist-input"
-              />
-              <button type="submit" className="waitlist-btn" disabled={loading}>
-                {loading ? "Signing up…" : "Sign Up"}
-              </button>
-            </form>
-          ) : (
-            <div className="waitlist-success">
-              <span className="success-check">✓</span>
-              You're signed up — we'll be in touch soon.
+            <div className="badge">
+              <span className="badge-dot" />
+              SMS Notifications
             </div>
-          )}
 
-          <p className="waitlist-note">No spam. For real estate brokerages.</p>
-          <p className="waitlist-consent">
-            By signing up you agree to receive email communications from ShowingOps. To receive SMS notifications, opt in separately on our <Link to="/sms-opt-in" className="footer-email">SMS Opt-In page</Link>.
-          </p>
-        </div>
-      </section>
+            <h1 className="hero-headline">
+              No lead ever falls<br />
+              <em>through the cracks.</em>
+            </h1>
 
+            <p className="hero-subtext">
+              ShowingOps is an AI-powered workflow agent for real estate brokerages.
+              Sign up below to receive SMS notifications — new lead alerts, follow-up
+              reminders, and workflow approval prompts — directly to your phone.
+            </p>
+
+            {!smsSubmitted ? (
+              <form onSubmit={handleSubmit} className="sms-form sms-page-form hero-sms-form">
+                <div className="sms-field-row">
+                  <div className="sms-field-group">
+                    <label className="sms-field-label" htmlFor="firstName">First Name</label>
+                    <input
+                      id="firstName"
+                      name="firstName"
+                      type="text"
+                      required
+                      placeholder="Jane"
+                      value={form.firstName}
+                      onChange={handleChange}
+                      className="sms-input sms-text-input"
+                    />
+                  </div>
+                  <div className="sms-field-group">
+                    <label className="sms-field-label" htmlFor="lastName">Last Name</label>
+                    <input
+                      id="lastName"
+                      name="lastName"
+                      type="text"
+                      required
+                      placeholder="Smith"
+                      value={form.lastName}
+                      onChange={handleChange}
+                      className="sms-input sms-text-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="sms-field-group">
+                  <label className="sms-field-label" htmlFor="phone">Phone Number</label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    required
+                    placeholder="(555) 000-0000"
+                    value={form.phone}
+                    onChange={handleChange}
+                    className="sms-input sms-text-input"
+                  />
+                </div>
+
+                <div className="sms-field-group">
+                  <label className="sms-field-label" htmlFor="email">Email Address</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    placeholder="jane@brokerage.com"
+                    value={form.email}
+                    onChange={handleChange}
+                    className="sms-input sms-text-input"
+                  />
+                </div>
+
+                <div className="sms-field-group">
+                  <label className="sms-field-label" htmlFor="brokerageName">Brokerage Name</label>
+                  <input
+                    id="brokerageName"
+                    name="brokerageName"
+                    type="text"
+                    required
+                    placeholder="Acme Realty Group"
+                    value={form.brokerageName}
+                    onChange={handleChange}
+                    className="sms-input sms-text-input"
+                  />
+                </div>
+
+                <label className="sms-checkbox-label">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={smsAgreed}
+                    onChange={(e) => setSmsAgreed(e.target.checked)}
+                    className="sms-checkbox"
+                  />
+                  <span>
+                    By checking this box, I agree to receive SMS messages from ShowingOps
+                    including lead notifications, follow-up reminders, and workflow approvals.
+                    Msg frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out,
+                    HELP for help. See our <Link to="/privacy" className="footer-email">Privacy Policy</Link> and{" "}
+                    <Link to="/terms" className="footer-email">Terms</Link>.
+                  </span>
+                </label>
+
+                <button type="submit" className="waitlist-btn sms-btn" disabled={loading}>
+                  {loading ? "Signing up…" : "Sign Up for SMS Notifications"}
+                </button>
+              </form>
+            ) : (
+              <div className="sms-success">
+                <CheckCircle2 size={20} />
+                <div>
+                  <p className="sms-success-title">You're signed up!</p>
+                  <p className="sms-success-sub">
+                    You'll start receiving SMS notifications from ShowingOps. Reply STOP at any time to opt out.
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
 
         {/* Value Props */}
         <section className="value-section">
@@ -144,61 +220,6 @@ const Index = () => {
             />
           </div>
         </section>
-
-        {/* SMS Opt-in */}
-        <section className="sms-section">
-          <div className="sms-inner">
-            <div className="sms-text">
-              <span className="sms-eyebrow">SMS Sign-Up</span>
-              <h2 className="sms-heading">Sign up for ShowingOps SMS notifications.</h2>
-              <p className="sms-sub">
-                Receive new lead alerts, follow-up reminders, and workflow approval prompts from ShowingOps. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to cancel, HELP for help.
-              </p>
-            </div>
-
-            {!smsSubmitted ? (
-              <form onSubmit={handleSmsSubmit} className="sms-form">
-                <div className="sms-input-wrap">
-                  <Phone size={15} className="sms-input-icon" />
-                  <input
-                    type="tel"
-                    required
-                    placeholder="(555) 000-0000"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="sms-input"
-                  />
-                </div>
-
-                <label className="sms-checkbox-label">
-                  <input
-                    type="checkbox"
-                    required
-                    checked={smsAgreed}
-                    onChange={(e) => setSmsAgreed(e.target.checked)}
-                    className="sms-checkbox"
-                  />
-                  <span>
-                    By checking this box, I agree to receive SMS messages from ShowingOps including lead notifications, follow-up reminders, and workflow approvals. Msg frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help. See our <Link to="/privacy" className="footer-email">Privacy Policy</Link> and <Link to="/terms" className="footer-email">Terms</Link>.
-                  </span>
-                </label>
-
-                <button type="submit" className="waitlist-btn sms-btn" disabled={smsLoading}>
-                  {smsLoading ? "Signing up…" : "Sign Up for SMS"}
-                </button>
-              </form>
-            ) : (
-              <div className="sms-success">
-                <CheckCircle2 size={20} />
-                <div>
-                  <p className="sms-success-title">You're signed up!</p>
-                  <p className="sms-success-sub">You'll start receiving SMS notifications from ShowingOps. Reply STOP at any time to opt out.</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
-
       </main>
 
       <Footer />
