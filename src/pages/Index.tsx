@@ -191,7 +191,7 @@ const Index = () => {
             <ValueProp
               icon="⚡"
               title="Automated follow-up"
-              description="Every new lead triggers a smart workflow — texts, emails, and reminders that run on your behalf without missing a beat."
+              description="Every new lead triggers a smart workflow — SMS messages and reminders that run on your behalf without missing a beat."
             />
             <div className="value-divider" />
             <ValueProp

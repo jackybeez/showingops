@@ -12,7 +12,6 @@ const Footer = () => (
     <div className="footer-links">
       <Link to="/privacy" className="footer-email">Privacy Policy</Link>
       <Link to="/terms" className="footer-email">Terms &amp; Conditions</Link>
-      <Link to="/sms-opt-in" className="footer-email">SMS Opt-In</Link>
       <a href="mailto:showingops@gmail.com" className="footer-email">showingops@gmail.com</a>
     </div>
   </footer>
