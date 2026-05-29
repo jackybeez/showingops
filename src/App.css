@@ -735,3 +735,10 @@
     padding: 1rem 1.5rem;
   }
 }
+
+/* Hero SMS form — wider container, left-aligned fields for a real form feel */
+.hero-sms-form {
+  max-width: 520px;
+  margin: 0 auto;
+  text-align: left;
+}
