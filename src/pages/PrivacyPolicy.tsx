@@ -52,9 +52,10 @@ const PrivacyPolicy = () => (
 
         <Section title="3. SMS Communications">
           <p>
-            By providing your phone number and opting in to SMS communications, you consent to receive
-            operational text messages from ShowingOps related to account activity, assigned leads,
-            workflow notifications, and approval requests.
+            By providing your phone number and checking the SMS consent box, you consent to receive
+            transactional SMS workflow notifications from ShowingOps. These messages are account-specific
+            and include workflow approval requests, task reminders, and lead assignment notifications.
+            ShowingOps does not send promotional or marketing SMS messages.
           </p>
           <p>
             Message frequency varies based on account activity. Message and data rates may apply.
