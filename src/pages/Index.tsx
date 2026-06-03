@@ -23,6 +23,7 @@ const Index = () => {
     brokerageName: "",
   });
   const [smsAgreed, setSmsAgreed] = useState(false);
+  const [termsAgreed, setTermsAgreed] = useState(false);
   const [smsSubmitted, setSmsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
