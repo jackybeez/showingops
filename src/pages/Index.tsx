@@ -33,7 +33,7 @@ const Index = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.phone.trim() || !smsAgreed) return;
+    if (!form.phone.trim() || !smsAgreed || !termsAgreed) return;
     setLoading(true);
     try {
       const { error } = await supabase.functions.invoke("submit-sms-optin", {
