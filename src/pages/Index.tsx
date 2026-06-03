@@ -84,9 +84,11 @@ const Index = () => {
             </h1>
 
             <p className="hero-subtext">
-              ShowingOps is an AI-powered workflow agent for real estate brokerages.
-              Sign up below to receive SMS notifications — new lead alerts, follow-up
-              reminders, and workflow approval prompts — directly to your phone.
+              ShowingOps sends transactional SMS workflow notifications to real estate agents and brokers
+              who have explicitly opted in. Messages include workflow approval requests, lead assignment
+              notifications, and task reminders specific to your account activity. ShowingOps does not send
+              promotional or marketing messages of any kind. Message frequency varies. Msg &amp; data rates
+              may apply. Reply STOP to opt out. Reply HELP for help.
             </p>
 
             {!smsSubmitted ? (
