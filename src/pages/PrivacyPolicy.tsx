@@ -42,7 +42,7 @@ const PrivacyPolicy = () => (
         <Section title="2. How We Use Your Information">
           <p>We use the information we collect to:</p>
           <ul>
-            <li>Send SMS account notifications to users who have explicitly opted in, including <strong>new lead alerts, follow-up reminders, and workflow approval prompts</strong>.</li>
+            <li>Send transactional SMS workflow notifications to users who have explicitly opted in, including <strong>workflow approval requests, task reminders, and lead assignment notifications</strong>.</li>
             <li>Respond to inquiries and support requests.</li>
             <li>Improve and develop ShowingOps products and services.</li>
             <li>Comply with legal obligations.</li>
