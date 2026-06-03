@@ -162,11 +162,26 @@ const Index = () => {
                     className="sms-checkbox"
                   />
                   <span>
-                    By checking this box, I agree to receive SMS messages from ShowingOps
-                    including lead notifications, follow-up reminders, and workflow approvals.
-                    Msg frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out,
-                    HELP for help. See our <Link to="/privacy" className="footer-email">Privacy Policy</Link> and{" "}
-                    <Link to="/terms" className="footer-email">Terms</Link>.
+                    I agree to receive SMS workflow notifications from ShowingOps at the phone number provided.
+                    These messages include workflow approval requests, task reminders, and lead assignment
+                    notifications specific to my account. This is not a condition of any purchase or service.
+                    Message frequency varies based on account activity. Message and data rates may apply.
+                    Reply STOP to opt out at any time. Reply HELP for help.
+                  </span>
+                </label>
+
+                <label className="sms-checkbox-label">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={termsAgreed}
+                    onChange={(e) => setTermsAgreed(e.target.checked)}
+                    className="sms-checkbox"
+                  />
+                  <span>
+                    I have read and agree to the{" "}
+                    <Link to="/privacy" className="footer-email">Privacy Policy</Link> and{" "}
+                    <Link to="/terms" className="footer-email">Terms of Service</Link>.
                   </span>
                 </label>
 
