@@ -23,6 +23,7 @@ const Index = () => {
     brokerageName: "",
   });
   const [smsAgreed, setSmsAgreed] = useState(false);
+  const [termsAgreed, setTermsAgreed] = useState(false);
   const [smsSubmitted, setSmsSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -32,7 +33,7 @@ const Index = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.phone.trim() || !smsAgreed) return;
+    if (!form.phone.trim() || !smsAgreed || !termsAgreed) return;
     setLoading(true);
     try {
       const { error } = await supabase.functions.invoke("submit-sms-optin", {
@@ -83,9 +84,11 @@ const Index = () => {
             </h1>
 
             <p className="hero-subtext">
-              ShowingOps is an AI-powered workflow agent for real estate brokerages.
-              Sign up below to receive SMS notifications — new lead alerts, follow-up
-              reminders, and workflow approval prompts — directly to your phone.
+              ShowingOps sends transactional SMS workflow notifications to real estate agents and brokers
+              who have explicitly opted in. Messages include workflow approval requests, lead assignment
+              notifications, and task reminders specific to your account activity. ShowingOps does not send
+              promotional or marketing messages of any kind. Message frequency varies. Msg &amp; data rates
+              may apply. Reply STOP to opt out. Reply HELP for help.
             </p>
 
             {!smsSubmitted ? (
@@ -159,11 +162,26 @@ const Index = () => {
                     className="sms-checkbox"
                   />
                   <span>
-                    By checking this box, I agree to receive SMS messages from ShowingOps
-                    including lead notifications, follow-up reminders, and workflow approvals.
-                    Msg frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out,
-                    HELP for help. See our <Link to="/privacy" className="footer-email">Privacy Policy</Link> and{" "}
-                    <Link to="/terms" className="footer-email">Terms</Link>.
+                    I agree to receive SMS workflow notifications from ShowingOps at the phone number provided.
+                    These messages include workflow approval requests, task reminders, and lead assignment
+                    notifications specific to my account. This is not a condition of any purchase or service.
+                    Message frequency varies based on account activity. Message and data rates may apply.
+                    Reply STOP to opt out at any time. Reply HELP for help.
+                  </span>
+                </label>
+
+                <label className="sms-checkbox-label">
+                  <input
+                    type="checkbox"
+                    required
+                    checked={termsAgreed}
+                    onChange={(e) => setTermsAgreed(e.target.checked)}
+                    className="sms-checkbox"
+                  />
+                  <span>
+                    I have read and agree to the{" "}
+                    <Link to="/privacy" className="footer-email">Privacy Policy</Link> and{" "}
+                    <Link to="/terms" className="footer-email">Terms of Service</Link>.
                   </span>
                 </label>
 

@@ -42,7 +42,7 @@ const PrivacyPolicy = () => (
         <Section title="2. How We Use Your Information">
           <p>We use the information we collect to:</p>
           <ul>
-            <li>Send SMS account notifications to users who have explicitly opted in, including <strong>new lead alerts, follow-up reminders, and workflow approval prompts</strong>.</li>
+            <li>Send transactional SMS workflow notifications to users who have explicitly opted in, including <strong>workflow approval requests, task reminders, and lead assignment notifications</strong>.</li>
             <li>Respond to inquiries and support requests.</li>
             <li>Improve and develop ShowingOps products and services.</li>
             <li>Comply with legal obligations.</li>
@@ -52,9 +52,10 @@ const PrivacyPolicy = () => (
 
         <Section title="3. SMS Communications">
           <p>
-            By providing your phone number and opting in to SMS communications, you consent to receive
-            operational text messages from ShowingOps related to account activity, assigned leads,
-            workflow notifications, and approval requests.
+            By providing your phone number and checking the SMS consent box, you consent to receive
+            transactional SMS workflow notifications from ShowingOps. These messages are account-specific
+            and include workflow approval requests, task reminders, and lead assignment notifications.
+            ShowingOps does not send promotional or marketing SMS messages.
           </p>
           <p>
             Message frequency varies based on account activity. Message and data rates may apply.

@@ -5,7 +5,7 @@
     <link rel="icon" href="/favicon.png" type="image/png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ShowingOps | AI Workflow Agent for Real Estate Brokerages</title>
-    <meta name="description" content="ShowingOps is an AI-powered workflow agent for real estate brokerages. We send SMS notifications to agents and brokers who have opted in to receive lead alerts, follow-up reminders, and approval prompts.">
+    <meta name="description" content="ShowingOps is an AI-powered workflow agent for real estate brokerages. We send transactional SMS workflow notifications to agents and brokers who have explicitly opted in to receive workflow approval requests, task reminders, and lead assignment notifications.">
     <meta name="author" content="ShowingOps" />
     <meta name="robots" content="index, follow" />
 
@@ -21,12 +21,12 @@
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e35ae097-f53e-45f8-b845-d99945f7417d/id-preview-e5f8a16d--0f42beb7-4339-46c5-8941-2e0295a77f7c.lovable.app-1772386449689.png">
     <meta property="og:title" content="ShowingOps | AI Workflow Agent for Real Estate Brokerages">
-    <meta property="og:description" content="ShowingOps is an AI-powered workflow agent for real estate brokerages. We send SMS notifications to agents and brokers who have opted in to receive lead alerts, follow-up reminders, and approval prompts.">
+    <meta property="og:description" content="ShowingOps is an AI-powered workflow agent for real estate brokerages. We send transactional SMS workflow notifications to agents and brokers who have explicitly opted in to receive workflow approval requests, task reminders, and lead assignment notifications.">
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/e35ae097-f53e-45f8-b845-d99945f7417d/id-preview-e5f8a16d--0f42beb7-4339-46c5-8941-2e0295a77f7c.lovable.app-1772386449689.png">
     <meta name="twitter:title" content="ShowingOps | AI Workflow Agent for Real Estate Brokerages">
-    <meta name="twitter:description" content="ShowingOps is an AI-powered workflow agent for real estate brokerages. We send SMS notifications to agents and brokers who have opted in to receive lead alerts, follow-up reminders, and approval prompts.">
+    <meta name="twitter:description" content="ShowingOps is an AI-powered workflow agent for real estate brokerages. We send transactional SMS workflow notifications to agents and brokers who have explicitly opted in to receive workflow approval requests, task reminders, and lead assignment notifications.">
   </head>
 
   <body>
@@ -41,7 +41,7 @@
         <section id="home">
           <h1>ShowingOps &mdash; AI Workflow Agent for Real Estate Brokerages</h1>
           <p>ShowingOps is an AI-powered workflow agent built for real estate brokerages. It automates lead follow-up sequences and keeps your team in control with human-in-the-loop approvals.</p>
-          <p>ShowingOps sends SMS notifications to real estate agents and brokers who have explicitly opted in &mdash; new lead alerts, follow-up reminders, and workflow approval prompts. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out, HELP for help.</p>
+          <p>ShowingOps sends transactional SMS workflow notifications to real estate agents and brokers who have explicitly opted in. Messages include workflow approval requests, lead assignment notifications, and task reminders specific to your account activity. ShowingOps does not send promotional or marketing messages of any kind. Message frequency varies. Msg &amp; data rates may apply. Reply STOP to opt out. Reply HELP for help.</p>
           <p><strong>To sign up for SMS notifications, scroll down to the form below.</strong></p>
           <h2>Business Information</h2>
           <p>Business name: ShowingOps</p>
@@ -56,7 +56,7 @@
 
         <section id="sms-opt-in">
           <h1>Opt In to ShowingOps SMS Notifications</h1>
-          <p>ShowingOps sends SMS account notifications to real estate agents and brokers who have explicitly opted in. These messages include new lead alerts, follow-up reminders, and workflow approval prompts. Message frequency varies based on lead activity. Message and data rates may apply. Reply STOP to unsubscribe at any time. Reply HELP for help.</p>
+          <p>ShowingOps sends transactional SMS workflow notifications to real estate agents and brokers who have explicitly opted in. These messages include workflow approval requests, lead assignment notifications, and task reminders tied to your account activity. Message frequency varies based on account activity. Message and data rates may apply. Reply STOP to unsubscribe at any time. Reply HELP for help.</p>
 
           <form id="sms-opt-in-form" action="https://bqunagsvuucbrlqjfjbg.supabase.co/functions/v1/submit-sms-optin" method="POST">
             <p>
@@ -80,16 +80,17 @@
             <p>
               <label>
                 <input type="checkbox" name="sms_agreed" id="smsAgreed" required value="yes" />
-                I agree to receive SMS account notifications from ShowingOps including new lead alerts, follow-up reminders, and approval prompts. Message frequency varies. Message and data rates may apply. Reply STOP to opt out at any time. Reply HELP for help.
+                I agree to receive SMS workflow notifications from ShowingOps at the phone number provided. These messages include workflow approval requests, task reminders, and lead assignment notifications specific to my account. This is not a condition of any purchase or service. Message frequency varies based on account activity. Message and data rates may apply. Reply STOP to opt out at any time. Reply HELP for help.
+              </label>
+            </p>
+            <p>
+              <label>
+                <input type="checkbox" name="terms_agreed" id="termsAgreed" required value="yes" />
+                I have read and agree to the <a href="#privacy">Privacy Policy</a> and <a href="#terms">Terms of Service</a>.
               </label>
             </p>
             <p>
               <button type="submit">Opt In to SMS Notifications</button>
-            </p>
-            <p>
-              By submitting this form you agree to our
-              <a href="#privacy">Privacy Policy</a> and
-              <a href="#terms">Terms of Service</a>.
             </p>
           </form>
         </section>
@@ -114,7 +115,7 @@
           <h2>2. How We Use Your Information</h2>
           <p>We use the information we collect to:</p>
           <ul>
-            <li>Send SMS account notifications to users who have explicitly opted in, including <strong>new lead alerts, follow-up reminders, and workflow approval prompts</strong>.</li>
+            <li>Send transactional SMS workflow notifications to users who have explicitly opted in, including <strong>workflow approval requests, task reminders, and lead assignment notifications</strong>.</li>
             <li>Respond to inquiries and support requests.</li>
             <li>Improve and develop ShowingOps products and services.</li>
             <li>Comply with legal obligations.</li>
@@ -122,7 +123,7 @@
           <p>We will never sell your personal information to third parties.</p>
 
           <h2>3. SMS Communications</h2>
-          <p>By providing your phone number and opting in to SMS communications, you consent to receive operational text messages from ShowingOps related to account activity, assigned leads, workflow notifications, and approval requests.</p>
+          <p>By providing your phone number and checking the SMS consent box, you consent to receive transactional SMS workflow notifications from ShowingOps. These messages are account-specific and include workflow approval requests, task reminders, and lead assignment notifications. ShowingOps does not send promotional or marketing SMS messages.</p>
           <p>Message frequency varies based on account activity. Message and data rates may apply. Reply <strong>STOP</strong> to unsubscribe or <strong>HELP</strong> for assistance.</p>
           <p><strong>No mobile information will be shared with third parties or affiliates for marketing or promotional purposes. Text messaging originator opt-in data and consent will not be shared with any third parties.</strong></p>
           <p>SMS opt-in is entirely voluntary.</p>
