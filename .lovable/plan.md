@@ -1,27 +1,30 @@
-## Problem
 
-- The footer and React Router link to `/privacy`, but the only static HTML mirror lives at `public/privacy-policy/index.html` (served at `/privacy-policy`).
-- On the published Lovable host, `/privacy` falls back to the SPA `index.html` and React Router renders `PrivacyPolicy`. That works for humans, but Twilio / basic crawlers that don't execute JS see an empty shell — and depending on cache state can get a 404-looking response.
-- We need `/privacy` to return a complete static HTML privacy policy (same content Twilio reviewers expect).
+# Make SMS consent checkbox optional
 
-## Fix
+Twilio/TCR rejected because the SMS consent checkbox is currently `required` and `handleSubmit` blocks submission unless `smsAgreed` is true. Consent must be 100% optional.
 
-1. **Create `public/privacy/index.html`** — copy of the current `public/privacy-policy/index.html`, with:
-   - `<link rel="canonical" href="https://showingops.lovable.app/privacy" />`
-   - Internal links unchanged (`/`, `/terms`).
-   - All existing legal copy preserved verbatim (sections 1–9, address, contact).
+## Changes (src/pages/Index.tsx only)
 
-2. **Update `public/privacy-policy/index.html`** so the old path still works but points crawlers at the canonical `/privacy`:
-   - Change `<link rel="canonical">` to `https://showingops.lovable.app/privacy`.
-   - Add `<meta http-equiv="refresh" content="0; url=/privacy" />` so any old inbound link forwards to `/privacy`.
-   - Leave full content in place as a fallback for non-JS clients that ignore the refresh.
+1. **Remove `required` from the SMS consent checkbox** and remove `smsAgreed` from the submit gate.
+   - Current submit guard: `if (!form.phone.trim() || !smsAgreed || !termsAgreed) return;`
+   - New: `if (!form.phone.trim() || !termsAgreed) return;`
+   - Remove `required` attribute on the SMS consent `<input type="checkbox">`.
+   - Keep the Terms of Service checkbox `required` (only required box).
 
-3. **Leave React app alone** — `App.tsx` already has `<Route path="/privacy">`, and `Footer.tsx` already links to `/privacy`. No code changes there.
+2. **Prefix the SMS consent label with "(Optional)"**:
+   - New text starts: `"(Optional) I agree to receive SMS workflow notifications from ShowingOps at the phone number provided. These messages include workflow approval requests, task reminders, and lead assignment notifications specific to my account. This is not a condition of any purchase or service. Message frequency varies based on account activity. Message and data rates may apply. Reply STOP to opt out at any time. Reply HELP for help."`
 
-4. **Verify after publish**: `curl -sI https://showingops.com/privacy` returns `200` and `curl -s https://showingops.com/privacy | grep "Privacy Policy"` shows the static H1 — confirming bots get full HTML without running JS.
+3. **Pass consent state to backend** so unchecked submissions don't get enrolled in SMS:
+   - Send `sms_consent: smsAgreed` in the edge function payload (for record-keeping). No backend/schema changes in this plan — the existing function ignores unknown fields. If the user wants the DB to store the consent flag, that's a follow-up.
 
-## Why this is safe
+## Not changing
 
-- No business logic, no form, no consent flow touched.
-- Static `/privacy/index.html` is served directly by Lovable's static hosting (takes precedence over the SPA fallback), so crawlers get raw HTML on first byte.
-- `/privacy-policy` keeps working for any legacy reference Twilio may have cached.
+- Hero subtext copy, value props, footer, privacy policy, terms — all unchanged.
+- No changes to `submit-sms-optin` edge function or DB schema.
+- Terms of Service checkbox stays required.
+
+## Verification after build
+
+- Load `/`, fill name + phone + brokerage + check ONLY Terms → submit succeeds.
+- Check both boxes → submit succeeds.
+- Leave Terms unchecked → submit blocked.

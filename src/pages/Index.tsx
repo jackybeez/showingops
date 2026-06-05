@@ -33,7 +33,7 @@ const Index = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.phone.trim() || !smsAgreed || !termsAgreed) return;
+    if (!form.phone.trim() || !termsAgreed) return;
     setLoading(true);
     try {
       const { error } = await supabase.functions.invoke("submit-sms-optin", {
@@ -42,6 +42,7 @@ const Index = () => {
           first_name: form.firstName,
           last_name: form.lastName,
           brokerage_name: form.brokerageName,
+          sms_consent: smsAgreed,
         },
       });
       if (!error) setSmsSubmitted(true);
@@ -156,13 +157,12 @@ const Index = () => {
                 <label className="sms-checkbox-label">
                   <input
                     type="checkbox"
-                    required
                     checked={smsAgreed}
                     onChange={(e) => setSmsAgreed(e.target.checked)}
                     className="sms-checkbox"
                   />
                   <span>
-                    I agree to receive SMS workflow notifications from ShowingOps at the phone number provided.
+                    (Optional) I agree to receive SMS workflow notifications from ShowingOps at the phone number provided.
                     These messages include workflow approval requests, task reminders, and lead assignment
                     notifications specific to my account. This is not a condition of any purchase or service.
                     Message frequency varies based on account activity. Message and data rates may apply.
