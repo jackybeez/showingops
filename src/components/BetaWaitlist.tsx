@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { CheckCircle2, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -22,7 +23,10 @@ const BetaWaitlist = () => {
     team_size: "",
     crm: "",
     market: "",
+    phone: "",
   });
+  const [smsConsent, setSmsConsent] = useState(false);
+  const [termsAgreed, setTermsAgreed] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,11 +38,15 @@ const BetaWaitlist = () => {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    if (!form.name.trim() || !form.email.trim()) return;
+    if (!form.name.trim() || !form.email.trim() || !termsAgreed) return;
+    if (smsConsent && !form.phone.trim()) {
+      setError("Please add your phone number to receive SMS notifications, or uncheck the SMS option.");
+      return;
+    }
     setLoading(true);
     try {
       const { error } = await supabase.functions.invoke("submit-beta", {
-        body: form,
+        body: { ...form, sms_consent: smsConsent },
       });
       if (error) throw error;
       setSubmitted(true);
@@ -54,18 +62,18 @@ const BetaWaitlist = () => {
 
   return (
     <section id="beta" className="relative border-t border-border bg-card">
-      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28 grid gap-12 md:grid-cols-2 md:items-center">
+      <div className="mx-auto max-w-6xl px-6 py-20 md:py-28 grid gap-12 md:grid-cols-2 md:items-start">
         <div>
           <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
             <Sparkles size={12} /> Private Beta
           </span>
-          <h2 className="mt-4 text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
-            Join the ShowingOps beta.
+          <h2 className="mt-4 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
+            Join the Private Beta.
           </h2>
           <p className="mt-5 text-base leading-7 text-muted-foreground max-w-md">
             We're onboarding a small group of brokerages and top-producing
-            teams. Tell us about your business and we'll be in touch as spots
-            open up.
+            teams. Tell us about your business and we'll be in touch as
+            onboarding spots open up.
           </p>
           <ul className="mt-8 space-y-3 text-sm text-foreground/80">
             {[
@@ -140,6 +148,59 @@ const BetaWaitlist = () => {
               <input id="beta-market" name="market" value={form.market} onChange={onChange} placeholder="Denver, CO" className={`${inputCls} mt-1.5`} />
             </div>
 
+            <div>
+              <label className="text-xs font-medium text-foreground" htmlFor="beta-phone">
+                Phone number <span className="text-muted-foreground font-normal">(optional but recommended)</span>
+              </label>
+              <input id="beta-phone" name="phone" type="tel" value={form.phone} onChange={onChange} placeholder="(555) 000-0000" autoComplete="tel" className={`${inputCls} mt-1.5`} />
+            </div>
+
+            {/* Optional SMS opt-in — Twilio A2P compliance block */}
+            <div className="rounded-xl border border-border bg-muted/40 p-4 mt-1">
+              <label className="flex items-start gap-2.5 text-[0.8rem] leading-[1.55] text-foreground cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={smsConsent}
+                  onChange={(e) => setSmsConsent(e.target.checked)}
+                  className="mt-0.5 h-4 w-4 accent-accent"
+                />
+                <span className="font-medium">
+                  (Optional) I'd like to receive ShowingOps workflow SMS notifications if I'm accepted into the beta.
+                </span>
+              </label>
+              <p className="mt-2.5 text-[0.72rem] leading-[1.6] text-muted-foreground">
+                By checking this box, you agree to receive SMS workflow
+                notifications from ShowingOps at the phone number provided.
+                These messages include workflow approval requests, task
+                reminders, and lead assignment notifications specific to your
+                account. This is not a condition of any purchase or service.
+                Message frequency varies based on account activity. Message
+                and data rates may apply. Reply STOP to opt out at any time.
+                Reply HELP for help.
+              </p>
+            </div>
+
+            <label className="flex items-start gap-2.5 text-[0.78rem] leading-[1.55] text-muted-foreground cursor-pointer">
+              <input
+                type="checkbox"
+                required
+                checked={termsAgreed}
+                onChange={(e) => setTermsAgreed(e.target.checked)}
+                className="mt-0.5 h-4 w-4 accent-accent"
+              />
+              <span>
+                I have read and agree to the{" "}
+                <Link to="/privacy" className="text-secondary underline underline-offset-2">
+                  Privacy Policy
+                </Link>{" "}
+                and{" "}
+                <Link to="/terms" className="text-secondary underline underline-offset-2">
+                  Terms of Service
+                </Link>
+                .
+              </span>
+            </label>
+
             {error && <p className="text-xs text-destructive">{error}</p>}
 
             <button
@@ -160,7 +221,10 @@ const BetaWaitlist = () => {
               <p className="font-semibold text-lg">You're on the list.</p>
               <p className="mt-1 text-sm text-muted-foreground">
                 Thanks for your interest in the ShowingOps beta. We'll reach
-                out as onboarding spots open up.
+                out as onboarding spots open up
+                {smsConsent
+                  ? ". You're also opted in to SMS workflow notifications — reply STOP at any time to opt out."
+                  : "."}
               </p>
             </div>
           </div>

@@ -23,6 +23,8 @@ export type Database = {
           id: string
           market: string | null
           name: string
+          phone: string | null
+          sms_consent: boolean
           team_size: string | null
         }
         Insert: {
@@ -33,6 +35,8 @@ export type Database = {
           id?: string
           market?: string | null
           name: string
+          phone?: string | null
+          sms_consent?: boolean
           team_size?: string | null
         }
         Update: {
@@ -43,6 +47,8 @@ export type Database = {
           id?: string
           market?: string | null
           name?: string
+          phone?: string | null
+          sms_consent?: boolean
           team_size?: string | null
         }
         Relationships: []
