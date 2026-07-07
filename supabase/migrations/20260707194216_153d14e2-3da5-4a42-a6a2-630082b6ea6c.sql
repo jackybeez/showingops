@@ -1,0 +1,1 @@
+ALTER TABLE public.beta_signups ADD COLUMN IF NOT EXISTS phone text; ALTER TABLE public.beta_signups ADD COLUMN IF NOT EXISTS sms_consent boolean NOT NULL DEFAULT false;
