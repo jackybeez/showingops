@@ -23,6 +23,8 @@ Deno.serve(async (req) => {
     const team_size = clean(body.team_size, 40);
     const crm = clean(body.crm, 80);
     const market = clean(body.market, 200);
+    const phone = clean(body.phone, 40);
+    const sms_consent = body.sms_consent === true;
 
     if (!name || !email || !isEmail(email)) {
       return new Response(
@@ -46,9 +48,27 @@ Deno.serve(async (req) => {
       team_size: team_size || null,
       crm: crm || null,
       market: market || null,
+      phone: phone || null,
+      sms_consent,
     });
 
     if (error) throw error;
+
+    // If the applicant opted into SMS AND provided a phone, also record it
+    // in the compliance-tracked sms_optins table so nothing about A2P
+    // recordkeeping changes.
+    if (sms_consent && phone) {
+      const [first_name, ...rest] = name.split(" ");
+      const last_name = rest.join(" ");
+      const { error: smsErr } = await supabase.from("sms_optins").insert({
+        phone,
+        first_name: first_name || null,
+        last_name: last_name || null,
+        email,
+        brokerage_name: brokerage || null,
+      });
+      if (smsErr) console.error("sms_optins insert failed", smsErr);
+    }
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
