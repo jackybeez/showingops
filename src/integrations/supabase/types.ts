@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      beta_signups: {
+        Row: {
+          brokerage: string | null
+          created_at: string
+          crm: string | null
+          email: string
+          id: string
+          market: string | null
+          name: string
+          team_size: string | null
+        }
+        Insert: {
+          brokerage?: string | null
+          created_at?: string
+          crm?: string | null
+          email: string
+          id?: string
+          market?: string | null
+          name: string
+          team_size?: string | null
+        }
+        Update: {
+          brokerage?: string | null
+          created_at?: string
+          crm?: string | null
+          email?: string
+          id?: string
+          market?: string | null
+          name?: string
+          team_size?: string | null
+        }
+        Relationships: []
+      }
       sms_optins: {
         Row: {
           agreed_at: string
