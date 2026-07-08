@@ -13,11 +13,12 @@ import {
   FileText,
   Sparkles,
   Database,
+  type LucideIcon,
 } from "lucide-react";
 
 type Step = {
   id: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: LucideIcon;
   title: string;
   meta: string;
 };

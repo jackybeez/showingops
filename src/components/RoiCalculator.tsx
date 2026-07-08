@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { TrendingUp, Clock, DollarSign, CalendarCheck } from "lucide-react";
+import { TrendingUp, Clock, DollarSign, CalendarCheck, type LucideIcon } from "lucide-react";
 
 const Field = ({
   label,
@@ -119,7 +119,7 @@ const Metric = ({
   value,
   highlight,
 }: {
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: LucideIcon;
   label: string;
   value: string;
   highlight?: boolean;
