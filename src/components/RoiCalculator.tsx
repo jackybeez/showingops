@@ -45,7 +45,7 @@ const currency = (n: number) =>
 const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
 
 const RoiCalculator = () => {
-  const [leads, setLeads] = useState(25);
+  const [leads, setLeads] = useState(12);
   const [commission, setCommission] = useState(9000);
   const [responseMin, setResponseMin] = useState(60);
   const [coldPct, setColdPct] = useState(45);
@@ -56,7 +56,8 @@ const RoiCalculator = () => {
     const appts = recoveredLeads * 0.45;
     const closeRate = 0.22;
     const revenueMonthly = appts * closeRate * commission;
-    const hoursMonthly = leads * 0.6 + 8;
+    // ~45 min of follow-up work per lead + ~6 hrs/mo baseline weekly ops
+    const hoursMonthly = leads * 0.75 + 6;
     const annual = revenueMonthly * 12;
     return {
       appts: Math.max(0, Math.round(appts * 10) / 10),
