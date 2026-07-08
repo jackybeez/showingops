@@ -45,7 +45,7 @@ const currency = (n: number) =>
 const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
 
 const RoiCalculator = () => {
-  const [leads, setLeads] = useState(25);
+  const [leads, setLeads] = useState(12);
   const [commission, setCommission] = useState(9000);
   const [responseMin, setResponseMin] = useState(60);
   const [coldPct, setColdPct] = useState(45);
@@ -56,7 +56,8 @@ const RoiCalculator = () => {
     const appts = recoveredLeads * 0.45;
     const closeRate = 0.22;
     const revenueMonthly = appts * closeRate * commission;
-    const hoursMonthly = leads * 0.6 + 8;
+    // ~45 min of follow-up work per lead + ~6 hrs/mo baseline weekly ops
+    const hoursMonthly = leads * 0.75 + 6;
     const annual = revenueMonthly * 12;
     return {
       appts: Math.max(0, Math.round(appts * 10) / 10),
@@ -83,7 +84,7 @@ const RoiCalculator = () => {
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
           {/* Inputs */}
           <div className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-[var(--shadow-card)] space-y-6">
-            <Field label="Leads per month" value={leads} min={5} max={150} step={1} format={(n) => `${n}`} onChange={setLeads} />
+            <Field label="Leads per month" value={leads} min={2} max={25} step={1} format={(n) => `${n}`} onChange={setLeads} />
             <Field label="Average commission" value={commission} min={4000} max={20000} step={500} format={currency} onChange={setCommission} />
             <Field label="Current avg response time" value={responseMin} min={5} max={180} step={5} format={(n) => `${n} min`} onChange={setResponseMin} />
             <Field label="Leads that go cold today" value={coldPct} min={10} max={70} step={1} format={(n) => `${n}%`} onChange={setColdPct} />
@@ -105,8 +106,8 @@ const RoiCalculator = () => {
               <p className="mt-2 text-[0.72rem] leading-5 text-muted-foreground">
                 Faster follow-up recovers up to 60% of leads that would go
                 cold. Recovered leads book showings at ~45%, and ~22% of
-                those close. Hours saved reflect ~35 min of follow-up work
-                per lead plus baseline weekly ops.
+                those close. Hours saved assume ~45 min of follow-up work
+                per lead plus ~6 hrs/mo of baseline weekly ops.
               </p>
             </details>
             <p className="mt-4 text-[0.7rem] leading-5 text-muted-foreground">

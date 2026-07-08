@@ -125,7 +125,7 @@ const Index = () => {
                   href="#beta"
                   className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:bg-primary/90"
                 >
-                  Claim your founding spot <ArrowRight size={16} />
+                  Get early access <ArrowRight size={16} />
                 </a>
                 <a
                   href="#workflow"
