@@ -6,16 +6,24 @@ import {
   Calendar,
   Brain,
   Inbox,
-  Target,
   ShieldCheck,
   CheckCircle2,
   AlertTriangle,
   ClipboardX,
   PhoneOff,
   TrendingDown,
+  Phone,
+  FileText,
+  Mail,
+  Clock,
+  Repeat,
+  ListChecks,
 } from "lucide-react";
 import Footer from "@/components/Footer";
-import BetaWaitlist from "@/components/BetaWaitlist";
+import LeadLifecycleDemo from "@/components/LeadLifecycleDemo";
+import OperationsFeed from "@/components/OperationsFeed";
+import RoiCalculator from "@/components/RoiCalculator";
+import FoundingMember from "@/components/FoundingMember";
 
 const problems = [
   { icon: PhoneOff, title: "Missed follow-up", desc: "Newly assigned leads sit for hours while competitors are already on the phone." },
