@@ -12,3 +12,6 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Host: https://showingops.com
+Sitemap: https://showingops.com/sitemap.xml
