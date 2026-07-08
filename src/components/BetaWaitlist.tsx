@@ -68,7 +68,7 @@ const BetaWaitlist = () => {
             <Sparkles size={12} /> Private Beta
           </span>
           <h2 className="mt-4 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
-            Claim your founding spot.
+            Get early access.
           </h2>
           <p className="mt-5 text-base leading-7 text-muted-foreground max-w-md">
             We're onboarding a small group of brokerages and top-producing
