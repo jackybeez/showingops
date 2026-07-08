@@ -95,11 +95,11 @@ const estimateRecoveredClosings = (
   // How much of the leaky pipeline is realistically recoverable through
   // operational execution. Bounded so it never looks magical.
   const responseFactor = clamp((responseMin - 5) / 175, 0, 1); // 0 at instant, 1 at 3hr
-  const recoverableLow = 0.04 + 0.05 * responseFactor;  // 4%–9% of cold leads
-  const recoverableHigh = 0.09 + 0.11 * responseFactor; // 9%–20% of cold leads
+  const recoverableLow = 0.06 + 0.07 * responseFactor;  // 6%–13% of cold leads
+  const recoverableHigh = 0.12 + 0.15 * responseFactor; // 12%–27% of cold leads
 
   // Recovered lead → closed deal (conservative blended rate).
-  const closeRate = 0.14;
+  const closeRate = 0.15;
 
   const rawLow = annualLeads * coldShare * recoverableLow * closeRate;
   const rawHigh = annualLeads * coldShare * recoverableHigh * closeRate;
@@ -109,8 +109,8 @@ const estimateRecoveredClosings = (
   let low = Math.floor(rawLow);
   let high = Math.max(Math.ceil(rawHigh), low + 1);
 
-  if (annualLeads * coldShare < 8) {
-    // Very small pipelines: honest 0–1 messaging.
+  if (annualLeads * coldShare < 12) {
+    // Small pipelines: honest 0–1 messaging.
     low = 0;
     high = Math.max(1, high);
   } else {
@@ -322,7 +322,7 @@ const RoiCalculator = () => {
                   a full year — never to over-promise.
                 </p>
                 <ul className="list-disc space-y-1 pl-4">
-                  <li>Only a small share of cold leads (roughly 4–20%) are treated as realistically recoverable, based on how fast today's response is.</li>
+                  <li>Only a small share of cold leads (roughly 6–27%) are treated as realistically recoverable, based on how fast today's response is.</li>
                   <li>Recovered leads convert to closings at a conservative blended rate.</li>
                   <li>Outcomes are rounded to whole deals — you either close the house or you don't.</li>
                   <li>Time saved reflects follow-up, scheduling, and coordination that gets automated (~45 min per lead plus baseline weekly ops).</li>
