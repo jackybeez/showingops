@@ -165,12 +165,12 @@ const BetaWaitlist = () => {
                   className="mt-0.5 h-4 w-4 accent-accent"
                 />
                 <span className="font-medium">
-                  (Optional) I'd like to receive ShowingOps workflow SMS notifications if I'm accepted into the beta.
+                  (Optional) I'd like to receive Showing Ops workflow SMS notifications if I'm accepted into the beta.
                 </span>
               </label>
               <p className="mt-2.5 text-[0.72rem] leading-[1.6] text-muted-foreground">
                 By checking this box, you agree to receive SMS workflow
-                notifications from ShowingOps at the phone number provided.
+                notifications from Showing Ops at the phone number provided.
                 These messages include workflow approval requests, task
                 reminders, and lead assignment notifications specific to your
                 account. This is not a condition of any purchase or service.
