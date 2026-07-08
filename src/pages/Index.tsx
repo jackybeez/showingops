@@ -33,14 +33,18 @@ const problems = [
 ];
 
 const capabilities = [
-  { icon: Zap, title: "Speed-to-Lead", desc: "Respond to newly assigned leads in under a minute — even while you're with another client." },
-  { icon: MessageSquare, title: "Intelligent Follow-up", desc: "Persistent, personalized follow-up that keeps conversations moving until someone responds." },
-  { icon: Database, title: "CRM Automation", desc: "Every call, conversation, note, task, and activity is written back automatically so your CRM always stays clean.", highlight: true },
-  { icon: Calendar, title: "Smart Scheduling", desc: "Coordinate calls and showings using your real calendar availability — without endless back-and-forth." },
-  { icon: Brain, title: "Operational Memory", desc: "Remembers every conversation, preference, commitment, and timeline so nothing gets forgotten." },
-  { icon: Inbox, title: "Inbox Management", desc: "Routine work stays automated. Only important conversations interrupt you." },
-  { icon: Target, title: "Lead Intelligence", desc: "Understand which leads deserve attention first based on engagement and buying signals." },
-  { icon: ShieldCheck, title: "Human Approval", desc: "Automation never goes rogue. Sensitive messages pause for approval when appropriate." },
+  { icon: Zap, title: "Speed-to-Lead", desc: "Engage newly assigned leads in under a minute — even while you're with another client." },
+  { icon: Phone, title: "Guided calling workflow", desc: "Get prompted to call the right lead at the right moment, with context already loaded." },
+  { icon: FileText, title: "AI-generated follow-up drafts", desc: "Personalized texts and emails written for you — you just approve and send." },
+  { icon: Mail, title: "SMS & email coordination", desc: "One conversation, across channels, without you copy-pasting between apps." },
+  { icon: Brain, title: "Conversation memory", desc: "Every preference, commitment, and timeline remembered — forever." },
+  { icon: Calendar, title: "Showing scheduling", desc: "Coordinates showings against your real calendar availability, no back-and-forth." },
+  { icon: Database, title: "Automatic Follow Up Boss updates", desc: "Calls, texts, notes, tasks, and activity written back so your CRM stays clean.", highlight: true },
+  { icon: ListChecks, title: "Activity timeline", desc: "A clear, timestamped record of every operational action taken on your behalf." },
+  { icon: Repeat, title: "Intelligent follow-up sequences", desc: "Keeps warm leads warm until someone responds — without sounding automated." },
+  { icon: Clock, title: "Quiet hours & compliance", desc: "Respects local hours, opt-outs, and SMS regulations by default." },
+  { icon: ShieldCheck, title: "Human approval", desc: "Sensitive messages pause for your one-tap approval. Automation never goes rogue." },
+  { icon: Inbox, title: "Inbox management", desc: "Routine work stays automated. Only important conversations interrupt you." },
 ];
 
 const outcomes = [
