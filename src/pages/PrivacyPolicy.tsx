@@ -12,7 +12,7 @@ const PrivacyPolicy = () => (
   <div className="page-wrapper">
     <header className="nav">
       <div className="nav-inner">
-        <Link to="/" className="logo" style={{ textDecoration: "none" }}>ShowingOps</Link>
+        <Link to="/" className="logo" style={{ textDecoration: "none" }}>Showing Ops</Link>
         <a href="mailto:showingops@gmail.com" className="nav-contact">showingops@gmail.com</a>
       </div>
     </header>

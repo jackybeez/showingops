@@ -220,7 +220,7 @@ const BetaWaitlist = () => {
             <div>
               <p className="font-semibold text-lg">You're on the list.</p>
               <p className="mt-1 text-sm text-muted-foreground">
-                Thanks for your interest in the ShowingOps beta. We'll reach
+                Thanks for your interest in the Showing Ops beta. We'll reach
                 out as onboarding spots open up
                 {smsConsent
                   ? ". You're also opted in to SMS workflow notifications — reply STOP at any time to opt out."
