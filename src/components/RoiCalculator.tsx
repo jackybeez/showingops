@@ -107,7 +107,7 @@ const estimateRecoveredClosings = (
   // Round to whole deals. Guarantee at least 1 on the high end when there's
   // any meaningful pipeline — realtors don't think in half-closings.
   let low = Math.floor(rawLow);
-  let high = Math.max(Math.ceil(rawHigh), low + 1);
+  let high = Math.ceil(rawHigh);
 
   if (annualLeads * coldShare < 12) {
     // Small pipelines: honest 0–1 messaging.
@@ -115,6 +115,7 @@ const estimateRecoveredClosings = (
     high = Math.max(1, high);
   } else {
     low = Math.max(1, low);
+    high = Math.max(low + 1, high);
   }
 
   // Cap upper end so the tool never over-promises.
