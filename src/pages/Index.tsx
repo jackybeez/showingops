@@ -46,7 +46,7 @@ const outcomes = [
 
 const workflowSteps = [
   { label: "A new lead is assigned to you", tag: "Through your CRM" },
-  { label: "ShowingOps responds instantly", tag: "You're notified · first outreach drafted" },
+  { label: "Showing Ops responds instantly", tag: "You're notified · first outreach drafted" },
   { label: "You stay in control", tag: "Call · approve a draft · or let it run" },
   { label: "Your CRM updates itself", tag: "Calls · texts · notes · tasks · timeline" },
   { label: "Appointments get coordinated", tag: "Calendar · showings · reminders" },
@@ -71,7 +71,7 @@ const Index = () => {
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur">
         <div className="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
           <a href="#top" className="font-serif text-xl tracking-tight text-foreground">
-            ShowingOps
+            Showing Ops
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
             <a href="#problem" className="hover:text-foreground transition">The Problem</a>
@@ -103,7 +103,7 @@ const Index = () => {
                 <em className="text-accent not-italic italic">through the cracks.</em>
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-8 text-muted-foreground">
-                ShowingOps is an always-on AI operations manager for real
+                Showing Ops is an always-on AI operations manager for real
                 estate agents. It continuously executes the follow-up, CRM
                 updates, scheduling, and operational work required to run
                 your business — so you can spend more time selling homes.
@@ -214,7 +214,7 @@ const Index = () => {
               </h2>
               <p className="mt-5 text-lg leading-8 text-muted-foreground">
                 Your brokerage, ISA, or team lead assigns the lead in your
-                CRM. From that moment on, ShowingOps takes over the
+                CRM. From that moment on, Showing Ops takes over the
                 operational work in the background — with you in control at
                 every important step.
               </p>
@@ -275,7 +275,7 @@ const Index = () => {
               While you're showing homes…
             </h2>
             <p className="mt-5 text-lg leading-8 text-primary-foreground/70 max-w-2xl mx-auto">
-              ShowingOps is quietly doing the operational work of a full-time
+              Showing Ops is quietly doing the operational work of a full-time
               chief of staff — in the background, without being asked.
             </p>
 
@@ -292,7 +292,7 @@ const Index = () => {
             </ul>
 
             <p className="mt-12 font-serif text-2xl md:text-3xl leading-snug tracking-tight text-primary-foreground">
-              ShowingOps quietly runs the operational side of your business
+              Showing Ops quietly runs the operational side of your business
               <br className="hidden md:block" />
               so you can focus on relationships and closing deals.
             </p>
@@ -308,7 +308,7 @@ const Index = () => {
                 Not another CRM plugin. An AI employee.
               </h2>
               <p className="mt-5 text-lg leading-8 text-muted-foreground">
-                ShowingOps is the operational layer your business has been
+                Showing Ops is the operational layer your business has been
                 trying to hire for — always on, always accurate, always in the
                 background.
               </p>
