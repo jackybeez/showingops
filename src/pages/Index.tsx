@@ -367,8 +367,11 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Beta waitlist — includes the optional SMS opt-in with full A2P compliance text */}
-        <BetaWaitlist />
+        {/* ROI calculator */}
+        <RoiCalculator />
+
+        {/* Founding Member perks + beta waitlist (SMS opt-in / A2P compliance untouched) */}
+        <FoundingMember />
       </main>
 
       <Footer />
