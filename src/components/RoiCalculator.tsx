@@ -106,8 +106,8 @@ const RoiCalculator = () => {
               <p className="mt-2 text-[0.72rem] leading-5 text-muted-foreground">
                 Faster follow-up recovers up to 60% of leads that would go
                 cold. Recovered leads book showings at ~45%, and ~22% of
-                those close. Hours saved reflect ~35 min of follow-up work
-                per lead plus baseline weekly ops.
+                those close. Hours saved assume ~45 min of follow-up work
+                per lead plus ~6 hrs/mo of baseline weekly ops.
               </p>
             </details>
             <p className="mt-4 text-[0.7rem] leading-5 text-muted-foreground">
