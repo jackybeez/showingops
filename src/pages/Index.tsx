@@ -6,16 +6,24 @@ import {
   Calendar,
   Brain,
   Inbox,
-  Target,
   ShieldCheck,
   CheckCircle2,
   AlertTriangle,
   ClipboardX,
   PhoneOff,
   TrendingDown,
+  Phone,
+  FileText,
+  Mail,
+  Clock,
+  Repeat,
+  ListChecks,
 } from "lucide-react";
 import Footer from "@/components/Footer";
-import BetaWaitlist from "@/components/BetaWaitlist";
+import LeadLifecycleDemo from "@/components/LeadLifecycleDemo";
+import OperationsFeed from "@/components/OperationsFeed";
+import RoiCalculator from "@/components/RoiCalculator";
+import FoundingMember from "@/components/FoundingMember";
 
 const problems = [
   { icon: PhoneOff, title: "Missed follow-up", desc: "Newly assigned leads sit for hours while competitors are already on the phone." },
@@ -25,14 +33,18 @@ const problems = [
 ];
 
 const capabilities = [
-  { icon: Zap, title: "Speed-to-Lead", desc: "Respond to newly assigned leads in under a minute — even while you're with another client." },
-  { icon: MessageSquare, title: "Intelligent Follow-up", desc: "Persistent, personalized follow-up that keeps conversations moving until someone responds." },
-  { icon: Database, title: "CRM Automation", desc: "Every call, conversation, note, task, and activity is written back automatically so your CRM always stays clean.", highlight: true },
-  { icon: Calendar, title: "Smart Scheduling", desc: "Coordinate calls and showings using your real calendar availability — without endless back-and-forth." },
-  { icon: Brain, title: "Operational Memory", desc: "Remembers every conversation, preference, commitment, and timeline so nothing gets forgotten." },
-  { icon: Inbox, title: "Inbox Management", desc: "Routine work stays automated. Only important conversations interrupt you." },
-  { icon: Target, title: "Lead Intelligence", desc: "Understand which leads deserve attention first based on engagement and buying signals." },
-  { icon: ShieldCheck, title: "Human Approval", desc: "Automation never goes rogue. Sensitive messages pause for approval when appropriate." },
+  { icon: Zap, title: "Speed-to-Lead", desc: "Engage newly assigned leads in under a minute — even while you're with another client." },
+  { icon: Phone, title: "Guided calling workflow", desc: "Get prompted to call the right lead at the right moment, with context already loaded." },
+  { icon: FileText, title: "AI-generated follow-up drafts", desc: "Personalized texts and emails written for you — you just approve and send." },
+  { icon: Mail, title: "SMS & email coordination", desc: "One conversation, across channels, without you copy-pasting between apps." },
+  { icon: Brain, title: "Conversation memory", desc: "Every preference, commitment, and timeline remembered — forever." },
+  { icon: Calendar, title: "Showing scheduling", desc: "Coordinates showings against your real calendar availability, no back-and-forth." },
+  { icon: Database, title: "Automatic Follow Up Boss updates", desc: "Calls, texts, notes, tasks, and activity written back so your CRM stays clean.", highlight: true },
+  { icon: ListChecks, title: "Activity timeline", desc: "A clear, timestamped record of every operational action taken on your behalf." },
+  { icon: Repeat, title: "Intelligent follow-up sequences", desc: "Keeps warm leads warm until someone responds — without sounding automated." },
+  { icon: Clock, title: "Quiet hours & compliance", desc: "Respects local hours, opt-outs, and SMS regulations by default." },
+  { icon: ShieldCheck, title: "Human approval", desc: "Sensitive messages pause for your one-tap approval. Automation never goes rogue." },
+  { icon: Inbox, title: "Inbox management", desc: "Routine work stays automated. Only important conversations interrupt you." },
 ];
 
 const outcomes = [
@@ -176,6 +188,12 @@ const Index = () => {
           </div>
         </section>
 
+        {/* Interactive walkthrough */}
+        <LeadLifecycleDemo />
+
+        {/* Operations feed */}
+        <OperationsFeed />
+
         {/* Problem */}
         <section id="problem" className="border-b border-border">
           <div className="mx-auto max-w-6xl px-6 py-24">
@@ -238,10 +256,15 @@ const Index = () => {
         <section id="capabilities" className="border-b border-border">
           <div className="mx-auto max-w-6xl px-6 py-24">
             <div className="max-w-2xl">
-              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Capabilities</span>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">What Showing Ops actually handles</span>
               <h2 className="mt-3 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
-                One platform. Every operational job, handled.
+                Not an AI texting tool. Your operational layer.
               </h2>
+              <p className="mt-5 text-lg leading-8 text-muted-foreground">
+                Showing Ops takes over the moment a lead is assigned to you
+                — and stays with the opportunity until it closes or is
+                intentionally released.
+              </p>
             </div>
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {capabilities.map((c) => (
@@ -344,8 +367,11 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Beta waitlist — includes the optional SMS opt-in with full A2P compliance text */}
-        <BetaWaitlist />
+        {/* ROI calculator */}
+        <RoiCalculator />
+
+        {/* Founding Member perks + beta waitlist (SMS opt-in / A2P compliance untouched) */}
+        <FoundingMember />
       </main>
 
       <Footer />
