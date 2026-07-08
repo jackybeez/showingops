@@ -23,7 +23,7 @@ const PrivacyPolicy = () => (
           <p className="legal-updated">Last updated: March 4, 2026</p>
           <h1 className="legal-title">Privacy Policy</h1>
           <p className="legal-intro">
-            ShowingOps ("we," "our," or "us") is committed to protecting your privacy. This policy explains
+            Showing Ops ("we," "our," or "us") is committed to protecting your privacy. This policy explains
             what information we collect, how we use it, and your rights regarding that information.
           </p>
         </div>
@@ -32,7 +32,7 @@ const PrivacyPolicy = () => (
           <p>We collect information you provide directly, including:</p>
           <ul>
             <li><strong>First and last name</strong> — submitted when you opt in to SMS communications.</li>
-            <li><strong>Phone number</strong> — submitted when you opt in to receive SMS notifications from ShowingOps.</li>
+            <li><strong>Phone number</strong> — submitted when you opt in to receive SMS notifications from Showing Ops.</li>
             <li><strong>Brokerage name</strong> — submitted to identify your real estate organization.</li>
             <li><strong>Communications</strong> — messages you send us via our contact channels.</li>
           </ul>
@@ -44,7 +44,7 @@ const PrivacyPolicy = () => (
           <ul>
             <li>Send transactional SMS workflow notifications to users who have explicitly opted in, including <strong>workflow approval requests, task reminders, and lead assignment notifications</strong>.</li>
             <li>Respond to inquiries and support requests.</li>
-            <li>Improve and develop ShowingOps products and services.</li>
+            <li>Improve and develop Showing Ops products and services.</li>
             <li>Comply with legal obligations.</li>
           </ul>
           <p>We will never sell your personal information to third parties.</p>
@@ -53,9 +53,9 @@ const PrivacyPolicy = () => (
         <Section title="3. SMS Communications">
           <p>
             By providing your phone number and checking the SMS consent box, you consent to receive
-            transactional SMS workflow notifications from ShowingOps. These messages are account-specific
+            transactional SMS workflow notifications from Showing Ops. These messages are account-specific
             and include workflow approval requests, task reminders, and lead assignment notifications.
-            ShowingOps does not send promotional or marketing SMS messages.
+            Showing Ops does not send promotional or marketing SMS messages.
           </p>
           <p>
             Message frequency varies based on account activity. Message and data rates may apply.
@@ -98,7 +98,7 @@ const PrivacyPolicy = () => (
             <li>Withdraw consent for SMS communications at any time.</li>
           </ul>
           <p>
-            To opt out of SMS: reply <strong>STOP</strong> to any text message from ShowingOps.<br />
+            To opt out of SMS: reply <strong>STOP</strong> to any text message from Showing Ops.<br />
             For SMS help: reply <strong>HELP</strong> to any message.<br />
             For data deletion requests, contact us at{" "}
             <a href="mailto:showingops@gmail.com" className="legal-link">showingops@gmail.com</a>.
@@ -126,9 +126,10 @@ const PrivacyPolicy = () => (
             <a href="mailto:showingops@gmail.com" className="legal-link">showingops@gmail.com</a> or write to us at:
           </p>
           <address style={{ fontStyle: "normal", marginTop: "0.5rem" }}>
-            ShowingOps<br />
-            4150 Jason St<br />
+            Showing Ops<br />
+            4150 Jason St Apt 620<br />
             Denver, CO 80211<br />
+            United States<br />
             Phone: +1 (970) 309-5645
           </address>
         </Section>
