@@ -55,20 +55,6 @@ const formatResponseTime = (min: number) => {
 
 const roundToNearest = (n: number, nearest: number) => Math.round(n / nearest) * nearest;
 
-const formatClosingRange = (closings: number) => {
-  if (closings < 0.35) return "Likely 0";
-  if (closings < 1) return "0–1";
-  const rounded = Math.max(1, Math.round(closings));
-  return `${rounded}`;
-};
-
-const formatClosingLabel = (closings: number) => {
-  if (closings < 0.35) return "missed closings / year";
-  if (closings < 1) return "missed closing / year";
-  const rounded = Math.max(1, Math.round(closings));
-  return rounded === 1 ? "likely missed closing / year" : "likely missed closings / year";
-};
-
 // Smooth count-up hook
 const useAnimatedNumber = (target: number, duration = 500) => {
   const [value, setValue] = useState(target);
@@ -80,7 +66,6 @@ const useAnimatedNumber = (target: number, duration = 500) => {
     const tick = (now: number) => {
       const { from, to, t0 } = startRef.current!;
       const p = Math.min(1, (now - t0) / duration);
-      // easeOutCubic
       const eased = 1 - Math.pow(1 - p, 3);
       setValue(from + (to - from) * eased);
       if (p < 1) rafRef.current = requestAnimationFrame(tick);
@@ -95,58 +80,103 @@ const useAnimatedNumber = (target: number, duration = 500) => {
   return value;
 };
 
+// Business-impact estimator (not a linear math calculator).
+// Returns a conservative low/high range of additional closings a realtor can
+// realistically recover per year through faster response, consistent follow-up,
+// and operational execution.
+const estimateRecoveredClosings = (
+  leads: number,
+  responseMin: number,
+  coldPct: number,
+) => {
+  const annualLeads = leads * 12;
+  const coldShare = coldPct / 100;
+
+  // How much of the leaky pipeline is realistically recoverable through
+  // operational execution. Bounded so it never looks magical.
+  const responseFactor = clamp((responseMin - 5) / 175, 0, 1); // 0 at instant, 1 at 3hr
+  const recoverableLow = 0.04 + 0.05 * responseFactor;  // 4%–9% of cold leads
+  const recoverableHigh = 0.09 + 0.11 * responseFactor; // 9%–20% of cold leads
+
+  // Recovered lead → closed deal (conservative blended rate).
+  const closeRate = 0.14;
+
+  const rawLow = annualLeads * coldShare * recoverableLow * closeRate;
+  const rawHigh = annualLeads * coldShare * recoverableHigh * closeRate;
+
+  // Round to whole deals. Guarantee at least 1 on the high end when there's
+  // any meaningful pipeline — realtors don't think in half-closings.
+  let low = Math.floor(rawLow);
+  let high = Math.max(Math.ceil(rawHigh), low + 1);
+
+  if (annualLeads * coldShare < 8) {
+    // Very small pipelines: honest 0–1 messaging.
+    low = 0;
+    high = Math.max(1, high);
+  } else {
+    low = Math.max(1, low);
+  }
+
+  // Cap upper end so the tool never over-promises.
+  high = Math.min(high, Math.max(3, Math.round(leads * 0.4)));
+  if (high < low) high = low;
+
+  return { low, high };
+};
+
 const RoiCalculator = () => {
-  const [leads, setLeads] = useState(7);
+  const [leads, setLeads] = useState(8);
   const [commission, setCommission] = useState(9000);
   const [responseMin, setResponseMin] = useState(45);
-  const [coldPct, setColdPct] = useState(30);
+  const [coldPct, setColdPct] = useState(35);
 
   const results = useMemo(() => {
-    // Conservative model for a realtor's normal month.
-    // Slow response makes some cold leads realistically recoverable, but not all of them.
-    const coldLeadsMonthly = leads * (coldPct / 100);
-    const preventableShare = clamp(responseMin / 120, 0.12, 0.55);
-    const recoverableLeadsMonthly = coldLeadsMonthly * preventableShare;
+    const { low, high } = estimateRecoveredClosings(leads, responseMin, coldPct);
 
-    // Recovered lead → appointment → closing. These stay deliberately modest.
-    const apptRate = 0.3;
-    const closeRate = 0.18;
-    const appointmentsPerMonth = recoverableLeadsMonthly * apptRate;
-    const expectedClosingsPerYear = appointmentsPerMonth * closeRate * 12;
+    const commissionLow = low * commission;
+    const commissionHigh = high * commission;
 
-    // Time burden: ~45 minutes per new lead plus 1.5 hrs/week baseline ops.
-    const followUpHoursMonthly = leads * 0.75 + 6;
-    const commissionAtRisk = expectedClosingsPerYear * commission;
+    // Time: ~45 min per lead of follow-up + baseline weekly ops (~2 hrs/wk).
+    // ShowingOps automates the majority of that repetitive coordination.
+    const followUpHoursWeekly = (leads * 0.75) / 4.33 + 2;
+    const hoursSavedWeekly = followUpHoursWeekly * 0.65;
 
     return {
-      expectedClosingsPerYear,
-      appointmentsPerMonth,
-      followUpHoursMonthly,
-      commissionAtRisk,
-      coldLeadsMonthly,
+      closingsLow: low,
+      closingsHigh: high,
+      commissionLow,
+      commissionHigh,
+      hoursSavedWeekly,
     };
   }, [leads, commission, responseMin, coldPct]);
 
-  const animCommission = useAnimatedNumber(results.commissionAtRisk);
-  const animHours = useAnimatedNumber(results.followUpHoursMonthly);
-  const animAppointments = useAnimatedNumber(results.appointmentsPerMonth);
+  const animCommissionLow = useAnimatedNumber(results.commissionLow);
+  const animCommissionHigh = useAnimatedNumber(results.commissionHigh);
+  const animHours = useAnimatedNumber(results.hoursSavedWeekly);
+
+  const closingsLabel =
+    results.closingsLow === results.closingsHigh
+      ? `${results.closingsHigh}`
+      : `${results.closingsLow}–${results.closingsHigh}`;
+
+  const commissionLabel = useMemo(() => {
+    const lo = currency(roundToNearest(animCommissionLow, 500));
+    const hi = currency(roundToNearest(animCommissionHigh, 500));
+    if (results.closingsLow === results.closingsHigh) return hi;
+    return `${lo}–${hi}`;
+  }, [animCommissionLow, animCommissionHigh, results.closingsLow, results.closingsHigh]);
 
   const summary = useMemo(() => {
-    const closingRange = formatClosingRange(results.expectedClosingsPerYear);
-    const revenue = currency(roundToNearest(results.commissionAtRisk, 500));
-    const hours = Math.round(results.followUpHoursMonthly);
-    return `With ${leads} new ${leads === 1 ? "lead" : "leads"} a month and ${coldPct}% going cold, the model estimates ${closingRange.toLowerCase()} ${formatClosingLabel(
-      results.expectedClosingsPerYear,
-    )}, about ${revenue} in annual commission at risk, and roughly ${hours} hours a month tied up in follow-up and coordination.`;
-  }, [results, leads, coldPct]);
-
-  const responseCopy = useMemo(
-    () =>
-      `ShowingOps is designed to move first response from ${formatResponseTime(
+    const dealCopy =
+      results.closingsLow === results.closingsHigh
+        ? `${results.closingsHigh} additional ${results.closingsHigh === 1 ? "closing" : "closings"}`
+        : `${results.closingsLow}–${results.closingsHigh} additional closings`;
+    return `At ${leads} new leads a month with a ${formatResponseTime(
       responseMin,
-    )} to under one minute, then keep the lead warm with consistent follow-up.`,
-    [responseMin],
-  );
+    )} average response, consistent follow-up and faster first contact realistically recover ${dealCopy} a year — roughly ${commissionLabel} in commission, and about ${animHours.toFixed(
+      1,
+    )} hours back every week.`;
+  }, [results, leads, responseMin, commissionLabel, animHours]);
 
   return (
     <section id="roi" className="border-b border-border">
@@ -157,8 +187,9 @@ const RoiCalculator = () => {
             What is inconsistent follow-up costing you?
           </h2>
           <p className="mt-5 text-lg leading-8 text-muted-foreground">
-            Use a realistic month. The estimate stays conservative, shows whole-deal outcomes,
-            and focuses on what happens when a lead waits too long.
+            A conservative estimate of what faster response and consistent follow-up
+            can recover over a full year — in whole deals, real commission, and
+            hours off your plate.
           </p>
         </div>
 
@@ -207,39 +238,66 @@ const RoiCalculator = () => {
           {/* Outputs */}
           <div className="rounded-2xl border border-accent/40 bg-card p-6 md:p-8 shadow-[var(--shadow-card)] ring-1 ring-accent/20">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">
-              Estimated impact with ShowingOps
+              Estimated annual impact with ShowingOps
             </p>
 
-            <div className="mt-5 grid gap-4 sm:grid-cols-2">
-              <Metric
-                icon={CalendarCheck}
-                label="Missed deals"
-                value={formatClosingRange(results.expectedClosingsPerYear)}
-                suffix={formatClosingLabel(results.expectedClosingsPerYear)}
-                sub="Real estate closes in whole deals, so this is shown as a likely range."
-              />
+            {/* Primary metric */}
+            <div className="mt-5 rounded-xl border border-accent/50 bg-accent/5 p-5">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <CalendarCheck size={14} className="text-accent" />
+                <span className="text-[0.7rem] uppercase tracking-[0.12em]">
+                  Potential additional closings per year
+                </span>
+              </div>
+              <p className="mt-2 font-serif text-4xl md:text-5xl tracking-tight text-accent tabular-nums">
+                {closingsLabel}
+              </p>
+              <p className="mt-1 text-[0.72rem] uppercase tracking-[0.12em] text-muted-foreground">
+                {results.closingsHigh === 1 ? "deal recovered" : "deals recovered"}
+              </p>
+              <p className="mt-2 text-[0.78rem] leading-5 text-foreground/80">
+                Recovering even a single transaction typically pays for ShowingOps many times over.
+              </p>
+            </div>
+
+            {/* Supporting metrics */}
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <Metric
                 icon={DollarSign}
-                label="Commission at risk"
-                value={`~${currency(roundToNearest(animCommission, 500))}`}
+                label="Commission potential"
+                value={commissionLabel}
                 suffix="per year"
-                sub="Rounded estimate based on your average commission."
+                sub="From faster response, persistent follow-up, and operational consistency — not magic."
                 highlight
               />
               <Metric
                 icon={Clock}
-                label="Follow-up load"
-                value={`${Math.round(animHours)} hrs`}
-                suffix="per month"
-                sub="45 minutes per lead plus baseline weekly coordination."
+                label="Hours saved"
+                value={`${animHours.toFixed(1)} hrs`}
+                suffix="every week"
+                sub="Repetitive follow-up, scheduling, and coordination handled automatically."
               />
-              <Metric
-                icon={Zap}
-                label="Appointments protected"
-                value={`${animAppointments.toFixed(1)}`}
-                suffix="per month"
-                sub={responseCopy}
-              />
+            </div>
+
+            {/* Speed-to-lead visual */}
+            <div className="mt-4 rounded-xl border border-border bg-background p-4">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Zap size={14} className="text-accent" />
+                <span className="text-[0.7rem] uppercase tracking-[0.12em]">Speed-to-lead</span>
+              </div>
+              <div className="mt-3 flex items-center gap-3">
+                <div className="flex-1 rounded-lg border border-border bg-background/60 px-3 py-2">
+                  <p className="text-[0.62rem] uppercase tracking-[0.12em] text-muted-foreground">Today</p>
+                  <p className="mt-1 font-serif text-xl text-foreground tabular-nums">
+                    {formatResponseTime(responseMin)}
+                  </p>
+                </div>
+                <ArrowRight size={18} className="shrink-0 text-accent" />
+                <div className="flex-1 rounded-lg border border-accent/40 bg-accent/5 px-3 py-2">
+                  <p className="text-[0.62rem] uppercase tracking-[0.12em] text-accent">With ShowingOps</p>
+                  <p className="mt-1 font-serif text-xl text-accent tabular-nums">Under 1 min</p>
+                </div>
+              </div>
             </div>
 
             {/* Personalized summary */}
@@ -259,23 +317,19 @@ const RoiCalculator = () => {
               </summary>
               <div className="mt-2 space-y-2 text-[0.75rem] leading-5 text-muted-foreground">
                 <p>
-                  These are intentionally conservative estimates, built around how a normal
-                  realtor pipeline behaves rather than inflated software benchmarks:
+                  This is a conservative business-impact estimator, not a mathematical model.
+                  It's built to reflect what consistent operational execution recovers over
+                  a full year — never to over-promise.
                 </p>
                 <ul className="list-disc space-y-1 pl-4">
-                  <li>New leads range from 1–30 per month for solo agents and small teams.</li>
-                  <li>Follow-up work assumes about 45 minutes per lead.</li>
-                  <li>Baseline coordination adds about 1.5 hours per week.</li>
-                  <li>Only a portion of cold leads are considered realistically recoverable.</li>
-                  <li>Recovered leads become appointments at 30% and close at 18%.</li>
+                  <li>Only a small share of cold leads (roughly 4–20%) are treated as realistically recoverable, based on how fast today's response is.</li>
+                  <li>Recovered leads convert to closings at a conservative blended rate.</li>
+                  <li>Outcomes are rounded to whole deals — you either close the house or you don't.</li>
+                  <li>Time saved reflects follow-up, scheduling, and coordination that gets automated (~45 min per lead plus baseline weekly ops).</li>
+                  <li>Commission at risk is rounded to the nearest $500.</li>
                 </ul>
-                <p>
-                  Commission at risk is rounded to the nearest $500. Missed deals are shown
-                  as whole-deal ranges because a realtor either closes the house or does not.
-                </p>
                 <p className="text-foreground/70">
-                  These are estimates, not guarantees. Actual results vary by
-                  market, lead source, and business.
+                  These are estimates, not guarantees. Actual results vary by market, lead source, and business.
                 </p>
               </div>
             </details>
