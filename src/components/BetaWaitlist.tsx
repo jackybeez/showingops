@@ -68,7 +68,7 @@ const BetaWaitlist = () => {
             <Sparkles size={12} /> Private Beta
           </span>
           <h2 className="mt-4 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
-            Join the Private Beta.
+            Claim your founding spot.
           </h2>
           <p className="mt-5 text-base leading-7 text-muted-foreground max-w-md">
             We're onboarding a small group of brokerages and top-producing
@@ -208,10 +208,10 @@ const BetaWaitlist = () => {
               disabled={loading}
               className="mt-1 inline-flex items-center justify-center rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:bg-primary/90 disabled:opacity-60"
             >
-              {loading ? "Submitting…" : "Request beta access"}
+              {loading ? "Submitting…" : "Claim my founding spot →"}
             </button>
             <p className="text-[0.7rem] text-muted-foreground">
-              We'll only email you about your beta application. No spam, ever.
+              Free during private beta · Locked-in founding pricing · No credit card
             </p>
           </form>
         ) : (

@@ -95,7 +95,7 @@ const Index = () => {
             href="#beta"
             className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:bg-primary/90"
           >
-            Join Beta <ArrowRight size={14} />
+            Get early access <ArrowRight size={14} />
           </a>
         </div>
       </header>
@@ -125,7 +125,7 @@ const Index = () => {
                   href="#beta"
                   className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:bg-primary/90"
                 >
-                  Join the Private Beta <ArrowRight size={16} />
+                  Claim your founding spot <ArrowRight size={16} />
                 </a>
                 <a
                   href="#workflow"
@@ -135,7 +135,7 @@ const Index = () => {
                 </a>
               </div>
               <p className="mt-5 text-xs text-muted-foreground">
-                Private beta · Onboarding brokerages and top-producing teams now
+                Free during private beta · Locked-in founding pricing · No credit card
               </p>
             </div>
 
