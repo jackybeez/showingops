@@ -1,111 +1,45 @@
-## Goals
+## Plan
 
-Tighten three specific pieces without touching the visual identity, layout, or compliance surfaces:
+Fix the ROI calculator so it matches how realtors actually think about leads, follow-up, and closings.
 
-1. Make the demo's final step visibly show a scheduled meeting (calendar view).
-2. Rebalance the ROI calculator so numbers feel believable and the payoff feels meaningful.
-3. Rewrite the "Join Beta" CTAs to be more enticing.
+### 1. Rescale the lead input
+- Change **New leads per month** to start at `1` and max at `30`.
+- Set the default around `6–8` so the first impression feels realistic.
+- Keep the slider useful for both solo agents and higher-volume teams.
 
-No new pages. No design system changes. Reuse existing tokens (`bg-card`, `text-accent`, `border-border`, DM Serif/DM Sans, existing shadows).
+### 2. Replace fractional closings with realtor-friendly outcomes
+- Remove output like `+0.6 closings/year`.
+- Use whole-number language instead, such as:
+  - `1 likely missed closing / year`
+  - `0–1 missed closings / year`
+  - `2 likely missed closings / year`
+- For lower-volume scenarios, show ranges or probability-style copy instead of fake precision.
+- The calculator should never imply someone can close “half a house.”
 
----
+### 3. Make the math more credible
+- Base the model on realistic lead volume and conservative assumptions:
+  - Follow-up/admin time: about **45 minutes per lead**
+  - Baseline weekly ops/admin work included separately
+  - Only a small share of delayed/cold leads become appointments
+  - Only a conservative share of those appointments become closed deals
+- Under-promise the revenue estimate rather than inflate it.
 
-## 1. `LeadLifecycleDemo.tsx` — clearer "meeting scheduled" moment
+### 4. Fix the results layout
+- Remove the awkward three-card grid with an empty fourth space.
+- Use either:
+  - a clean 2x2 set of four balanced result cards, or
+  - one larger primary result with two supporting metrics underneath.
+- Keep the current premium visual identity, colors, typography, spacing, and tokens.
 
-Replace the current generic "Done / Sparkles" final card with a mini calendar mock so the outcome is obvious.
+### 5. Rewrite the calculator copy
+- Make the section feel less like a generic SaaS ROI calculator and more like a real estate follow-up calculator.
+- Emphasize the core question: “What happens when leads wait too long?”
+- Keep the disclaimer and assumptions visible, plain-English, and credible.
 
-New final `MockCard` ("done" step):
-- Header: "Showing confirmed" · tag "Added to calendar"
-- A small week strip (Mon–Sun initials) with Thursday highlighted in `accent`.
-- One prominent event block for Thursday:
-  - Time: `Thu, Jul 9 · 3:00 PM`
-  - Title: `Showing — John Smith`
-  - Location line: `Denver, CO · 45 min`
-  - A green `CheckCircle2` + "Confirmed with John" row.
-- Small footer line: "Synced to your calendar & Follow Up Boss."
+### Files to update
+- `src/components/RoiCalculator.tsx` only.
 
-Also update the step rail entry for `done`:
-- Title: "Showing scheduled on your calendar"
-- Meta: "Thu, Jul 9 · 3:00 PM — confirmed with John"
-- Icon: `CalendarCheck` (swap from `Sparkles`)
-
-Keep animations, autoplay, branching, and step count identical. Pure presentation change inside the existing card.
-
----
-
-## 2. `RoiCalculator.tsx` — believable inputs, more attractive outputs
-
-### Slider ranges (rescaled)
-
-| Field | Current | New | Default |
-|---|---|---|---|
-| Leads per month | 10–500 | 5–150 | 25 |
-| Average commission | $2k–$30k | $4k–$20k | $9,000 |
-| Current avg response time | 1–240 min | 5–180 min | 60 |
-| Leads that go cold today | 5–80% | 10–70% | 45% |
-
-### Formula rework (more realistic + more attractive hours)
-
-Assumptions surfaced in a small "How we calculate this" collapsible under the results:
-
-- `recoveredRate = clamp(responseMin / 120, 0.1, 0.6)` — faster follow-up recovers up to 60% of cold leads.
-- `recoveredLeads = leads * (coldPct/100) * recoveredRate`
-- `apptsRecovered = recoveredLeads * 0.45`
-- `closeRate = 0.22`
-- `revenueMonthly = apptsRecovered * closeRate * commission`
-- `hoursMonthly = leads * 0.6 + 8` — reflects real per-lead follow-up work (~35 min/lead) plus baseline weekly ops. At 25 leads → ~23 hrs/mo; at 60 → ~44 hrs/mo. Much more compelling than 4 hrs.
-- `annual = revenueMonthly * 12`
-
-Round appts to 1 decimal, revenue/hours/annual to whole numbers.
-
-### Copy tweaks
-- Section eyebrow stays "ROI".
-- Headline stays.
-- Sub: "Move the sliders to match your business. See what one dropped lead per week is actually costing you."
-- Rename metric labels for punch:
-  - "Extra appointments / month"
-  - "Revenue you're leaving on the table"
-  - "Hours back every month"
-  - "Recovered revenue / year"
-- CTA button text → "Get my hours back" (see CTA section).
-
-Add tiny "based on industry benchmarks" note next to the disclaimer.
-
----
-
-## 3. Join Beta CTAs — more enticing copy
-
-Audit every CTA and update in place. No new components.
-
-| Location | Current | New |
-|---|---|---|
-| Nav (`Index.tsx` header) | "Join Beta →" | "Get early access →" |
-| Hero primary CTA | (whatever "Join Beta" variant) | "Claim your founding spot →" |
-| Hero secondary/inline | — | leave as is if it's "See it in action" |
-| Lead Lifecycle Demo bottom (if present) | n/a | n/a |
-| ROI calculator CTA | "Claim these hours back" | "Get my hours back →" |
-| Founding Member section CTA area (`BetaWaitlist` submit button) | "Join Beta" | "Claim my founding spot →" |
-| Any mid-page "Join Beta" strip | "Join Beta" | "Reserve early access →" |
-| Footer CTA (if any) | "Join Beta" | "Get early access →" |
-
-Also add a small trust microcopy line beneath the primary hero + waitlist CTAs (only where not already present):
-> "Free during private beta · Locked-in founding pricing · No credit card"
-
-Only edit the button label + adjacent microcopy — do not touch form logic, Edge Function calls, `BetaWaitlist` submission behavior, or SMS compliance text.
-
----
-
-## Files touched
-
-- `src/components/LeadLifecycleDemo.tsx` — final step card + rail entry.
-- `src/components/RoiCalculator.tsx` — ranges, formulas, labels, CTA text.
-- `src/components/BetaWaitlist.tsx` — submit button label + microcopy only (leave form/handler intact).
-- `src/pages/Index.tsx` — nav + hero CTA labels, any inline "Join Beta" strings.
-- `src/components/Footer.tsx` — CTA label if one exists there.
-
-## Not touched
-
-- Design tokens, fonts, colors, spacing scale.
-- Supabase edge functions, tables, waitlist submission logic.
-- SMS opt-in text, `/privacy`, `/terms`, `/sms-opt-in`, footer legal.
-- Site structure — still a single-page flow.
+### What will not change
+- No redesign of the overall site.
+- No backend changes.
+- No changes to waitlist logic, compliance pages, navigation, or brand styling.
