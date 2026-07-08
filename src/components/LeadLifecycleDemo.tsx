@@ -12,6 +12,7 @@ import {
   PhoneOff,
   FileText,
   Sparkles,
+  CalendarCheck,
   Database,
   type LucideIcon,
 } from "lucide-react";
@@ -34,7 +35,7 @@ const STEPS: Step[] = [
   { id: "reply", icon: MessageSquare, title: "John replies", meta: '"Yes — tomorrow afternoon works."' },
   { id: "schedule", icon: Calendar, title: "Showing times suggested from your calendar", meta: "Thu 1:30 · 3:00 · 4:30 PM" },
   { id: "fub", icon: Database, title: "Follow Up Boss updated automatically", meta: "Notes · activity · next task logged" },
-  { id: "done", icon: Sparkles, title: "Workflow complete", meta: "Showing on the calendar · nothing dropped" },
+  { id: "done", icon: CalendarCheck, title: "Showing scheduled on your calendar", meta: "Thu, Jul 9 · 3:00 PM — confirmed with John" },
 ];
 
 const LeadLifecycleDemo = () => {
@@ -186,18 +187,45 @@ const LeadLifecycleDemo = () => {
             </ul>
           </MockCard>
         );
-      case "done":
+      case "done": {
+        const days = ["M", "T", "W", "T", "F", "S", "S"];
         return (
-          <MockCard title="Done" tag="Workflow complete">
-            <div className="flex flex-col items-center py-3">
-              <div className="h-12 w-12 rounded-full bg-accent/15 text-accent grid place-items-center">
-                <Sparkles size={22} />
-              </div>
-              <p className="mt-3 text-sm font-semibold text-foreground">Showing on the calendar</p>
-              <p className="text-xs text-muted-foreground">Nothing dropped. You closed the loop.</p>
+          <MockCard title="Showing confirmed" tag="Added to calendar">
+            <div className="grid grid-cols-7 gap-1.5">
+              {days.map((d, i) => (
+                <div
+                  key={i}
+                  className={`flex flex-col items-center rounded-lg border py-1.5 text-[0.65rem] font-semibold ${
+                    i === 3
+                      ? "border-accent bg-accent/10 text-accent"
+                      : "border-border bg-background text-muted-foreground"
+                  }`}
+                >
+                  <span className="uppercase tracking-wider">{d}</span>
+                  <span className={`mt-0.5 text-sm ${i === 3 ? "text-accent" : "text-foreground"}`}>{7 + i}</span>
+                </div>
+              ))}
             </div>
+            <div className="mt-4 rounded-xl border border-accent/40 bg-accent/5 p-3">
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-1 rounded-full bg-accent" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-accent">Thu, Jul 9 · 3:00 PM</p>
+                  <p className="mt-0.5 text-sm font-semibold text-foreground truncate">Showing — John Smith</p>
+                  <p className="text-[0.72rem] text-muted-foreground truncate">Denver, CO · 45 min</p>
+                </div>
+              </div>
+              <div className="mt-3 flex items-center gap-2 border-t border-accent/20 pt-2.5 text-[0.72rem] text-foreground">
+                <CheckCircle2 size={12} className="text-accent" />
+                Confirmed with John · reminder scheduled
+              </div>
+            </div>
+            <p className="mt-3 text-[0.68rem] text-muted-foreground text-center">
+              Synced to your calendar &amp; Follow Up Boss
+            </p>
           </MockCard>
         );
+      }
     }
   }, [active.id]);
 
