@@ -188,6 +188,12 @@ const Index = () => {
           </div>
         </section>
 
+        {/* Interactive walkthrough */}
+        <LeadLifecycleDemo />
+
+        {/* Operations feed */}
+        <OperationsFeed />
+
         {/* Problem */}
         <section id="problem" className="border-b border-border">
           <div className="mx-auto max-w-6xl px-6 py-24">
@@ -250,10 +256,15 @@ const Index = () => {
         <section id="capabilities" className="border-b border-border">
           <div className="mx-auto max-w-6xl px-6 py-24">
             <div className="max-w-2xl">
-              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Capabilities</span>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">What Showing Ops actually handles</span>
               <h2 className="mt-3 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
-                One platform. Every operational job, handled.
+                Not an AI texting tool. Your operational layer.
               </h2>
+              <p className="mt-5 text-lg leading-8 text-muted-foreground">
+                Showing Ops takes over the moment a lead is assigned to you
+                — and stays with the opportunity until it closes or is
+                intentionally released.
+              </p>
             </div>
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {capabilities.map((c) => (
