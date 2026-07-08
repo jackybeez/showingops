@@ -11,7 +11,6 @@ import {
   Zap,
   PhoneOff,
   FileText,
-  Sparkles,
   CalendarCheck,
   Database,
   type LucideIcon,
