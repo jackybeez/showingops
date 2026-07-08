@@ -190,33 +190,41 @@ const LeadLifecycleDemo = () => {
         const days = ["M", "T", "W", "T", "F", "S", "S"];
         return (
           <MockCard title="Showing confirmed" tag="Added to calendar">
+            <div className="flex items-center justify-between pb-2">
+              <p className="font-serif text-base text-foreground">July 2026</p>
+              <span className="text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Week of Jul 6</span>
+            </div>
             <div className="grid grid-cols-7 gap-1.5">
               {days.map((d, i) => (
                 <div
                   key={i}
-                  className={`flex flex-col items-center rounded-lg border py-1.5 text-[0.65rem] font-semibold ${
+                  className={`flex flex-col items-center rounded-lg border py-2 text-[0.65rem] font-semibold ${
                     i === 3
-                      ? "border-accent bg-accent/10 text-accent"
+                      ? "border-accent bg-accent text-accent-foreground shadow-[var(--shadow-glow)]"
                       : "border-border bg-background text-muted-foreground"
                   }`}
                 >
-                  <span className="uppercase tracking-wider">{d}</span>
-                  <span className={`mt-0.5 text-sm ${i === 3 ? "text-accent" : "text-foreground"}`}>{7 + i}</span>
+                  <span className="uppercase tracking-wider opacity-80">{d}</span>
+                  <span className={`mt-0.5 text-base ${i === 3 ? "text-accent-foreground" : "text-foreground"}`}>{6 + i}</span>
+                  {i === 3 && <span className="mt-1 h-1 w-1 rounded-full bg-accent-foreground" />}
                 </div>
               ))}
             </div>
-            <div className="mt-4 rounded-xl border border-accent/40 bg-accent/5 p-3">
-              <div className="flex items-center gap-2">
-                <div className="h-8 w-1 rounded-full bg-accent" />
+            <div className="mt-4 rounded-xl border-2 border-accent bg-accent/10 p-4">
+              <div className="flex items-start gap-3">
+                <div className="flex flex-col items-center rounded-lg bg-accent px-2.5 py-1.5 text-accent-foreground">
+                  <span className="text-[0.6rem] font-bold uppercase tracking-wider">Thu</span>
+                  <span className="font-serif text-xl leading-none">9</span>
+                </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-accent">Thu, Jul 9 · 3:00 PM</p>
+                  <p className="text-[0.7rem] font-semibold uppercase tracking-[0.12em] text-accent">3:00 – 3:45 PM</p>
                   <p className="mt-0.5 text-sm font-semibold text-foreground truncate">Showing — John Smith</p>
-                  <p className="text-[0.72rem] text-muted-foreground truncate">Denver, CO · 45 min</p>
+                  <p className="text-[0.72rem] text-muted-foreground truncate">1420 Downing St · Denver, CO</p>
                 </div>
               </div>
-              <div className="mt-3 flex items-center gap-2 border-t border-accent/20 pt-2.5 text-[0.72rem] text-foreground">
-                <CheckCircle2 size={12} className="text-accent" />
-                Confirmed with John · reminder scheduled
+              <div className="mt-3 flex items-center gap-2 border-t border-accent/30 pt-2.5 text-[0.72rem] font-medium text-foreground">
+                <CheckCircle2 size={14} className="text-accent" />
+                Confirmed with John · SMS reminder scheduled 24h prior
               </div>
             </div>
             <p className="mt-3 text-[0.68rem] text-muted-foreground text-center">
