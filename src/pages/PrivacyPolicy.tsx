@@ -52,6 +52,11 @@ const PrivacyPolicy = () => (
 
         <Section title="3. SMS Communications">
           <p>
+            <strong>Mobile phone numbers and SMS opt-in information collected for text messaging are not
+            sold or shared with third parties or affiliates for marketing purposes. Message and data rates
+            may apply. Reply STOP to opt out or HELP for help.</strong>
+          </p>
+          <p>
             By providing your phone number and checking the SMS consent box, you consent to receive
             transactional SMS workflow notifications from Showing Ops. These messages are account-specific
             and include workflow approval requests, task reminders, and lead assignment notifications.

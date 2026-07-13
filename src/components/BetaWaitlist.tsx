@@ -169,14 +169,13 @@ const BetaWaitlist = () => {
                 </span>
               </label>
               <p className="mt-2.5 text-[0.72rem] leading-[1.6] text-muted-foreground">
-                By checking this box, you agree to receive SMS workflow
-                notifications from Showing Ops at the phone number provided.
-                These messages include workflow approval requests, task
-                reminders, and lead assignment notifications specific to your
-                account. This is not a condition of any purchase or service.
-                Message frequency varies based on account activity. Message
-                and data rates may apply. Reply STOP to opt out at any time.
-                Reply HELP for help.
+                By checking this box, you agree to receive SMS messages from Showing Ops at the number
+                provided — including workflow approval requests, task reminders, and lead-assignment and
+                account notifications. Message frequency varies. Message and data rates may apply. Reply
+                STOP to opt out or HELP for help. See our{" "}
+                <Link to="/privacy" className="text-secondary underline underline-offset-2">Privacy Policy</Link>{" "}
+                and{" "}
+                <Link to="/sms-opt-in" className="text-secondary underline underline-offset-2">Messaging Terms</Link>.
               </p>
             </div>
 
