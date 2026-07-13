@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Request Real Estate Info | Showing Ops</title>
+<meta name="description" content="Request to be contacted by a licensed real estate agent by text message about your real estate inquiry." />
+<link rel="canonical" href="https://showingops.com/lead-optin" />
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background:#fff; color:#0f172a; margin:0; padding:4rem 1.5rem; }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  h1 { font-size: 2rem; margin: 0 0 2rem; }
+  label { display:block; font-weight:600; margin-bottom:.5rem; font-size:.95rem; }
+  input[type=tel] { width:100%; box-sizing:border-box; padding:.75rem 1rem; border:1px solid #cbd5e1; border-radius:.5rem; font-size:1rem; }
+  .row { display:flex; gap:.75rem; align-items:flex-start; margin: 1.5rem 0; }
+  .row input[type=checkbox] { margin-top:.25rem; width:1.15rem; height:1.15rem; }
+  .info p { font-size:.9rem; color:#334155; line-height:1.55; margin:.5rem 0; }
+  button { width:100%; background:#0f172a; color:#fff; border:0; padding:.9rem 1.25rem; font-size:1rem; font-weight:600; border-radius:.5rem; cursor:pointer; margin-top:1.5rem; }
+  a { color:#0f172a; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1>Request Real Estate Info</h1>
+  <form method="post" action="/lead-optin">
+    <div>
+      <label for="phone">Mobile Phone Number*</label>
+      <input id="phone" name="phone" type="tel" required placeholder="(555) 555-5555" autocomplete="tel" />
+    </div>
+    <div class="row">
+      <input id="consent" name="consent" type="checkbox" value="yes" />
+      <label for="consent" style="font-weight:400; font-size:.9rem; line-height:1.55;">
+        Yes, I'd like a licensed real estate agent to contact me by text message about my real estate inquiry. I understand these are conversational messages related to my request.
+      </label>
+    </div>
+    <div class="info">
+      <p><strong>Message Frequency:</strong> Message frequency varies based on your conversation.</p>
+      <p><strong>Standard Rates:</strong> Message and data rates may apply depending on your mobile plan.</p>
+      <p><strong>Help &amp; Stop:</strong> Reply HELP for help or STOP to opt out at any time. By providing your number and checking this box, you agree to be contacted by your real estate agent/brokerage — and Showing Ops acting on the agent's behalf — by text about your inquiry. Consent is not a condition of any purchase.</p>
+      <p><a href="/terms">Terms of Service</a> · <a href="/privacy">Privacy Policy</a></p>
+    </div>
+    <button type="submit">Yes, contact me</button>
+  </form>
+</main>
+</body>
+</html>
