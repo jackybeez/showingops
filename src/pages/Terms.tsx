@@ -48,7 +48,16 @@ const Terms = () => (
           </p>
         </Section>
 
-        <Section title="3. Acceptable Use">
+        <Section title="3. Agent Consent Attestation">
+          <p>
+            Users who send messages to their own leads or clients through the platform represent and
+            warrant that they have obtained all necessary consent from those recipients to be contacted
+            by phone, SMS, and email, and are solely responsible for compliance with applicable law
+            (including TCPA). Showing Ops sends such messages on the user's behalf.
+          </p>
+        </Section>
+
+        <Section title="4. Acceptable Use">
           <p>You agree not to:</p>
           <ul>
             <li>Use Showing Ops to violate any applicable laws or regulations.</li>
@@ -58,7 +67,8 @@ const Terms = () => (
           </ul>
         </Section>
 
-        <Section title="4. Intellectual Property">
+        <Section title="5. Intellectual Property">
+
           <p>
             All content, branding, software, and materials associated with Showing Ops are the exclusive
             property of Showing Ops and its licensors. Nothing in these terms grants you any rights to use
