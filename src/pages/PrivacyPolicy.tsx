@@ -67,6 +67,9 @@ const PrivacyPolicy = () => (
             Reply <strong>STOP</strong> to unsubscribe or <strong>HELP</strong> for assistance.
           </p>
           <p>
+            <strong>SMS message frequency varies. Message and data rates may apply. Reply STOP to opt out, HELP for help.</strong>
+          </p>
+          <p>
             <strong>No mobile information will be shared with third parties or affiliates for marketing or promotional purposes.</strong>
           </p>
           <p>
