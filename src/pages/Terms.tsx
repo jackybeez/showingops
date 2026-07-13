@@ -76,7 +76,7 @@ const Terms = () => (
           </p>
         </Section>
 
-        <Section title="5. Disclaimer of Warranties">
+        <Section title="6. Disclaimer of Warranties">
           <p>
             Showing Ops is provided on an "as is" and "as available" basis during the pre-launch phase.
             We make no warranties, express or implied, regarding the reliability, accuracy, or fitness for a
@@ -85,7 +85,7 @@ const Terms = () => (
           </p>
         </Section>
 
-        <Section title="6. Limitation of Liability">
+        <Section title="7. Limitation of Liability">
           <p>
             To the fullest extent permitted by law, Showing Ops and its officers, directors, and employees
             shall not be liable for any indirect, incidental, special, or consequential damages arising from
@@ -93,21 +93,21 @@ const Terms = () => (
           </p>
         </Section>
 
-        <Section title="7. Indemnification">
+        <Section title="8. Indemnification">
           <p>
             You agree to indemnify and hold Showing Ops harmless from any claims, losses, or damages
             (including legal fees) arising from your violation of these Terms or your misuse of our services.
           </p>
         </Section>
 
-        <Section title="8. Governing Law">
+        <Section title="9. Governing Law">
           <p>
             These Terms are governed by the laws of the State of Colorado, United States, without regard to
             conflict of law principles. Any disputes shall be resolved exclusively in the courts of Colorado.
           </p>
         </Section>
 
-        <Section title="9. Changes to These Terms">
+        <Section title="10. Changes to These Terms">
           <p>
             We reserve the right to update these Terms at any time. Continued use of Showing Ops after
             changes are posted constitutes acceptance of the revised terms. The "Last updated" date at
@@ -115,7 +115,7 @@ const Terms = () => (
           </p>
         </Section>
 
-        <Section title="10. Contact">
+        <Section title="11. Contact">
           <p>
             Questions about these Terms? Reach us at{" "}
             <a href="mailto:showingops@gmail.com" className="legal-link">showingops@gmail.com</a> or write to us at:
