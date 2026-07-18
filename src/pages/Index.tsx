@@ -20,6 +20,7 @@ import {
   ListChecks,
 } from "lucide-react";
 import Footer from "@/components/Footer";
+import logoAsset from "@/assets/showing-ops-logo.png.asset.json";
 import LeadLifecycleDemo from "@/components/LeadLifecycleDemo";
 import OperationsFeed from "@/components/OperationsFeed";
 import RoiCalculator from "@/components/RoiCalculator";
@@ -82,8 +83,9 @@ const Index = () => {
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur">
         <div className="mx-auto max-w-6xl px-6 h-16 flex items-center justify-between">
-          <a href="#top" className="font-serif text-xl tracking-tight text-foreground">
-            Showing Ops
+          <a href="#top" className="flex items-center gap-2 font-serif text-xl tracking-tight text-foreground">
+            <img src={logoAsset.url} alt="Showing Ops logo" className="h-8 w-8 object-contain" />
+            <span>Showing Ops</span>
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm text-muted-foreground">
             <a href="#problem" className="hover:text-foreground transition">The Problem</a>
