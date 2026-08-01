@@ -280,9 +280,10 @@ const RoiCalculator = ({
     const commissionHigh = high * commission;
 
     // Time: ~60 min per lead of follow-up, scheduling and coordination, plus
-    // baseline weekly ops (~3 hrs/wk). Showing Ops automates the majority.
-    const followUpHoursWeekly = leads / 4.33 + 3;
-    const hoursSavedWeekly = followUpHoursWeekly * 0.7;
+    // baseline weekly ops (~5 hrs/wk of pipeline admin that never goes away).
+    // Showing Ops automates the majority.
+    const followUpHoursWeekly = leads / 4.33 + 5;
+    const hoursSavedWeekly = Math.max(4, followUpHoursWeekly * 0.75);
     const hoursSavedAnnual = hoursSavedWeekly * 52;
 
     // Value of that reclaimed time at the agent's own implied hourly rate.
@@ -444,7 +445,7 @@ const RoiCalculator = ({
                     <li>Only a small share of cold leads (roughly 6–27%) are treated as realistically recoverable, based on how fast today&rsquo;s response is.</li>
                     <li>Recovered leads convert to closings at a conservative blended rate.</li>
                     <li>Outcomes are rounded to whole deals — you either close the house or you don&rsquo;t.</li>
-                    <li>Time saved reflects follow-up, scheduling, and coordination that gets automated (~60 min per lead plus baseline weekly ops).</li>
+                    <li>Time saved reflects follow-up, scheduling, and coordination that gets automated (~60 min per lead plus roughly 5 hours a week of baseline pipeline admin).</li>
                     <li>
                       Your time is valued at your own implied hourly rate — commission per
                       closing divided by roughly {HOURS_PER_TRANSACTION} hours of real work
