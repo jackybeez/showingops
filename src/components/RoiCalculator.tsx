@@ -133,7 +133,10 @@ const estimateRecoveredClosings = (
   return { low, high };
 };
 
-const RoiCalculator = ({ heading = "h2" }: { heading?: "h1" | "h2" }) => {
+const RoiCalculator = ({
+  heading = "h2",
+  showIntro = true,
+}: { heading?: "h1" | "h2"; showIntro?: boolean }) => {
   const [leads, setLeads] = useState(12);
   const [commission, setCommission] = useState(9000);
   const [responseMin, setResponseMin] = useState(45);
@@ -211,20 +214,22 @@ const RoiCalculator = ({ heading = "h2" }: { heading?: "h1" | "h2" }) => {
 
   return (
     <section id="roi" className="border-b border-border">
-      <div className="mx-auto max-w-6xl px-6 py-24">
-        <div className="max-w-2xl">
-          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">ROI</span>
-          <Heading className="mt-3 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
-            What is inconsistent follow-up costing you?
-          </Heading>
-          <p className="mt-5 text-lg leading-8 text-muted-foreground">
-            A conservative estimate of what faster response and consistent follow-up
-            can recover over a full year — in whole deals, real commission, and
-            hours off your plate.
-          </p>
-        </div>
+      <div className={`mx-auto max-w-6xl px-6 ${showIntro ? "py-24" : "pt-12 pb-24"}`}>
+        {showIntro && (
+          <div className="max-w-2xl">
+            <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">ROI</span>
+            <Heading className="mt-3 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
+              What is inconsistent follow-up costing you?
+            </Heading>
+            <p className="mt-5 text-lg leading-8 text-muted-foreground">
+              A conservative estimate of what faster response and consistent follow-up
+              can recover over a full year — in whole deals, real commission, and
+              hours off your plate.
+            </p>
+          </div>
+        )}
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
+        <div className={`grid gap-6 lg:grid-cols-2 ${showIntro ? "mt-12" : ""}`}>
           {/* Inputs */}
           <div className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-[var(--shadow-card)] space-y-6">
             <Field
