@@ -10,6 +10,13 @@ const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 const clean = (v: unknown, max = 200) =>
   typeof v === "string" ? v.trim().slice(0, max) : "";
 
+// Optional non-negative integer, bounded so nothing absurd can be stored.
+const num = (v: unknown, max: number) => {
+  const n = typeof v === "number" ? v : Number(v);
+  if (!Number.isFinite(n) || n < 0) return null;
+  return Math.min(Math.round(n), max);
+};
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -26,7 +33,22 @@ Deno.serve(async (req) => {
     const phone = clean(body.phone, 40);
     const sms_consent = body.sms_consent === true;
 
-    if (!name || !email || !isEmail(email)) {
+    // "roi-calculator" submissions are email-only by design; the full beta
+    // form still collects a name client-side.
+    const source = clean(body.source, 40) || "beta-form";
+    const isRoiCapture = source === "roi-calculator";
+
+    if (!email || !isEmail(email)) {
+      return new Response(
+        JSON.stringify({ error: "A valid email is required." }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
+
+    if (!isRoiCapture && !name) {
       return new Response(
         JSON.stringify({ error: "Name and a valid email are required." }),
         {
@@ -42,7 +64,7 @@ Deno.serve(async (req) => {
     );
 
     const { error } = await supabase.from("beta_signups").insert({
-      name,
+      name: name || null,
       email,
       brokerage: brokerage || null,
       team_size: team_size || null,
@@ -50,7 +72,15 @@ Deno.serve(async (req) => {
       market: market || null,
       phone: phone || null,
       sms_consent,
+      source,
+      roi_leads: num(body.roi_leads, 1000),
+      roi_commission: num(body.roi_commission, 10_000_000),
+      roi_response_min: num(body.roi_response_min, 100_000),
+      roi_cold_pct: num(body.roi_cold_pct, 100),
+      roi_recovered_low: num(body.roi_recovered_low, 100_000_000),
+      roi_recovered_high: num(body.roi_recovered_high, 100_000_000),
     });
+
 
     if (error) throw error;
 
