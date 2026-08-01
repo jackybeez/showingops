@@ -22,9 +22,16 @@ export type Database = {
           email: string
           id: string
           market: string | null
-          name: string
+          name: string | null
           phone: string | null
+          roi_cold_pct: number | null
+          roi_commission: number | null
+          roi_leads: number | null
+          roi_recovered_high: number | null
+          roi_recovered_low: number | null
+          roi_response_min: number | null
           sms_consent: boolean
+          source: string | null
           team_size: string | null
         }
         Insert: {
@@ -34,9 +41,16 @@ export type Database = {
           email: string
           id?: string
           market?: string | null
-          name: string
+          name?: string | null
           phone?: string | null
+          roi_cold_pct?: number | null
+          roi_commission?: number | null
+          roi_leads?: number | null
+          roi_recovered_high?: number | null
+          roi_recovered_low?: number | null
+          roi_response_min?: number | null
           sms_consent?: boolean
+          source?: string | null
           team_size?: string | null
         }
         Update: {
@@ -46,9 +60,16 @@ export type Database = {
           email?: string
           id?: string
           market?: string | null
-          name?: string
+          name?: string | null
           phone?: string | null
+          roi_cold_pct?: number | null
+          roi_commission?: number | null
+          roi_leads?: number | null
+          roi_recovered_high?: number | null
+          roi_recovered_low?: number | null
+          roi_response_min?: number | null
           sms_consent?: boolean
+          source?: string | null
           team_size?: string | null
         }
         Relationships: []
