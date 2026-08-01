@@ -24,7 +24,7 @@ const faqs = [
   },
   {
     q: "How does Showing Ops actually recover those leads?",
-    a: "Showing Ops is an AI operations manager. When a lead is assigned in your CRM it responds within a minute, drafts personalized follow-up for your approval, keeps warm leads warm with intelligent sequences, coordinates showings against your real calendar, and writes every call, text, note, and task back to your CRM automatically.",
+    a: "Showing Ops is the always-on AI operations platform for real estate. When a lead is assigned in your CRM it responds within a minute, prepares personalized follow-up for your approval, keeps warm leads engaged, coordinates showings against your real calendar, and writes every call, text, note, and task back to your CRM automatically.",
   },
 ];
 
