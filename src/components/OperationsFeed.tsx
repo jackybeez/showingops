@@ -39,13 +39,14 @@ const OperationsFeed = () => {
         <div>
           <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Meet your operations feed</span>
           <h2 className="mt-3 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
-            Watch your AI employee quietly working.
+            See exactly what's being handled for you.
           </h2>
           <p className="mt-5 text-lg leading-8 text-muted-foreground">
-            Every action Showing Ops takes shows up on a real, timestamped
-            operational feed. No black box. No guesswork. Just a clear
-            record of the work getting done in the background.
+            Every action Showing Ops takes appears on a real, timestamped
+            operational record. No black box. No guesswork. Just a clear
+            account of the work happening in the background.
           </p>
+
           <ul className="mt-8 space-y-2.5 text-sm text-foreground/80">
             <li className="flex items-start gap-2.5"><CheckCircle2 className="mt-0.5 text-accent shrink-0" size={16} /> Every call, text, and note logged automatically</li>
             <li className="flex items-start gap-2.5"><CheckCircle2 className="mt-0.5 text-accent shrink-0" size={16} /> Timestamped so you always know what happened when</li>
