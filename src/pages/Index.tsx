@@ -1,23 +1,16 @@
 import {
   ArrowRight,
   Zap,
-  MessageSquare,
-  Database,
-  Calendar,
   Brain,
-  Inbox,
   ShieldCheck,
   CheckCircle2,
   AlertTriangle,
   ClipboardX,
   PhoneOff,
   TrendingDown,
-  Phone,
-  FileText,
-  Mail,
-  Clock,
-  Repeat,
-  ListChecks,
+  Database,
+  CalendarClock,
+  BellRing,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
@@ -26,34 +19,53 @@ import OperationsFeed from "@/components/OperationsFeed";
 import FoundingMember from "@/components/FoundingMember";
 
 const problems = [
-  { icon: PhoneOff, title: "Missed follow-up", desc: "Newly assigned leads sit for hours while competitors are already on the phone." },
-  { icon: ClipboardX, title: "Forgotten conversations", desc: "Context lives in scattered texts, emails, and someone's memory — never the CRM." },
-  { icon: AlertTriangle, title: "Stale CRM data", desc: "Notes, activities, and next steps never get logged, so pipeline reporting is fiction." },
-  { icon: TrendingDown, title: "Dropped opportunities", desc: "Warm leads go cold because the next step never gets taken." },
+  { icon: PhoneOff, title: "Follow-up gets delayed", desc: "A new lead sits for hours because you were mid-showing, not because you didn't care." },
+  { icon: ClipboardX, title: "Conversations get forgotten", desc: "Context lives in scattered threads and someone's memory instead of one place." },
+  { icon: AlertTriangle, title: "CRM data goes stale", desc: "Notes, activity, and next steps never get logged, so your pipeline stops reflecting reality." },
+  { icon: TrendingDown, title: "Tasks fall through the cracks", desc: "There aren't enough hours in the day, so the next step quietly never gets taken." },
 ];
 
 const capabilities = [
-  { icon: Zap, title: "Speed-to-Lead", desc: "Engage newly assigned leads in under a minute — even while you're with another client." },
-  { icon: Phone, title: "Guided calling workflow", desc: "Get prompted to call the right lead at the right moment, with context already loaded." },
-  { icon: FileText, title: "AI-generated follow-up drafts", desc: "Personalized texts and emails written for you — you just approve and send." },
-  { icon: Mail, title: "SMS & email coordination", desc: "One conversation, across channels, without you copy-pasting between apps." },
-  { icon: Brain, title: "Conversation memory", desc: "Every preference, commitment, and timeline remembered — forever." },
-  { icon: Calendar, title: "Showing scheduling", desc: "Coordinates showings against your real calendar availability, no back-and-forth." },
-  { icon: Database, title: "Automatic Follow Up Boss updates", desc: "Calls, texts, notes, tasks, and activity written back so your CRM stays clean.", highlight: true },
-  { icon: ListChecks, title: "Activity timeline", desc: "A clear, timestamped record of every operational action taken on your behalf." },
-  { icon: Repeat, title: "Intelligent follow-up sequences", desc: "Keeps warm leads warm until someone responds — without sounding automated." },
-  { icon: Clock, title: "Quiet hours & compliance", desc: "Respects local hours, opt-outs, and SMS regulations by default." },
-  { icon: ShieldCheck, title: "Human approval", desc: "Sensitive messages pause for your one-tap approval. Automation never goes rogue." },
-  { icon: Inbox, title: "Inbox management", desc: "Routine work stays automated. Only important conversations interrupt you." },
+  {
+    icon: Zap,
+    title: "Response and follow-up",
+    desc: "Newly assigned leads get a reply in under a minute, and warm leads keep hearing from you until someone responds.",
+  },
+  {
+    icon: Brain,
+    title: "Conversation memory and context",
+    desc: "Every preference, commitment, and timeline is remembered and ready before you pick up the phone.",
+  },
+  {
+    icon: Database,
+    title: "CRM accuracy",
+    desc: "Calls, texts, notes, tasks, and activity are written back to Follow Up Boss, so your pipeline stays true.",
+    highlight: true,
+  },
+  {
+    icon: CalendarClock,
+    title: "Scheduling and preparation",
+    desc: "Showings are coordinated against your real calendar, and you arrive with the background already gathered.",
+  },
+  {
+    icon: BellRing,
+    title: "Reminders and task management",
+    desc: "The right next step is prepared and surfaced at the right moment, instead of living on a sticky note.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Decisions that need you",
+    desc: "Routine operational work runs quietly. Anything requiring your judgment pauses for a one-tap decision.",
+  },
 ];
 
 const outcomes = [
-  "Never let another lead slip through the cracks",
-  "AI that works continuously in the background",
-  "Human approval whenever it actually matters",
-  "A CRM that always reflects reality",
-  "Every conversation remembered — forever",
-  "More time selling, less time managing software",
+  "You stop holding your entire pipeline in your head",
+  "Nothing waits on you to remember it",
+  "Your CRM reflects reality without you maintaining it",
+  "Every conversation carries its full history forward",
+  "You're pulled in only when your expertise matters",
+  "More hours with clients, fewer hours inside software",
 ];
 
 const workflowSteps = [
@@ -67,13 +79,13 @@ const workflowSteps = [
 
 const whileYouAreOut = [
   "Responding to newly assigned leads",
-  "Following up with prospects",
-  "Updating your CRM",
-  "Drafting messages for your review",
-  "Scheduling appointments and showings",
-  "Remembering every conversation",
-  "Watching for stalled opportunities",
-  "Surfacing only what actually needs your attention",
+  "Keeping conversations moving forward",
+  "Keeping your CRM current",
+  "Preparing communications for your review",
+  "Coordinating appointments and showings",
+  "Holding the full history of every conversation",
+  "Watching for opportunities that have gone quiet",
+  "Surfacing only the decisions that need your judgment",
 ];
 
 const Index = () => {
@@ -89,7 +101,7 @@ const Index = () => {
             <a href="#problem" className="hover:text-foreground transition">The Problem</a>
             <a href="#workflow" className="hover:text-foreground transition">How it works</a>
             <a href="#capabilities" className="hover:text-foreground transition">Capabilities</a>
-            <a href="#operations-manager" className="hover:text-foreground transition">The Manager</a>
+            <a href="#operations-manager" className="hover:text-foreground transition">The Platform</a>
             <Link to="/roi-calculator" className="hover:text-foreground transition">ROI Calculator</Link>
           </nav>
           <a
@@ -109,17 +121,18 @@ const Index = () => {
             <div>
               <span className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-medium text-accent tracking-wide">
                 <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                AI Operations Manager for Real Estate
+                The AI Operations Platform for Real Estate
               </span>
               <h1 className="mt-6 font-serif text-[2.75rem] md:text-[4.25rem] leading-[1.02] tracking-[-0.02em] text-foreground">
                 No lead ever slips<br />
                 <em className="text-accent not-italic italic">through the cracks.</em>
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-8 text-muted-foreground">
-                Showing Ops is an always-on AI operations manager for real
-                estate agents. It continuously executes the follow-up, CRM
-                updates, scheduling, and operational work required to run
-                your business — so you can spend more time selling homes.
+                Showing Ops is the always-on AI operations platform for real
+                estate. It continuously manages the operational work happening
+                behind every transaction — leads, conversations, CRM activity,
+                tasks, and approvals — and only involves you when your
+                expertise is actually needed.
               </p>
               <div className="mt-9 flex flex-wrap items-center gap-3">
                 <a
@@ -201,12 +214,12 @@ const Index = () => {
             <div className="max-w-2xl">
               <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">The Problem</span>
               <h2 className="mt-3 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
-                Deals aren't lost because you're bad at selling.
+                Deals aren't lost because you can't sell.
               </h2>
               <p className="mt-5 text-lg leading-8 text-muted-foreground">
-                They're lost in the gaps between conversations — the follow-up
-                that never happened, the CRM note that never got written, the
-                lead that quietly fell out of memory.
+                They're lost in the operational gaps — the follow-up that ran
+                late, the note that never got written, the context that got
+                lost, the task that no one had time for.
               </p>
             </div>
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -233,9 +246,9 @@ const Index = () => {
               </h2>
               <p className="mt-5 text-lg leading-8 text-muted-foreground">
                 Your brokerage, ISA, or team lead assigns the lead in your
-                CRM. From that moment on, Showing Ops takes over the
-                operational work in the background — with you in control at
-                every important step.
+                CRM. From that moment on, Showing Ops runs the operational
+                work in the background — and brings you in at every step that
+                genuinely needs a person.
               </p>
             </div>
 
@@ -257,17 +270,17 @@ const Index = () => {
         <section id="capabilities" className="border-b border-border">
           <div className="mx-auto max-w-6xl px-6 py-24">
             <div className="max-w-2xl">
-              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">What Showing Ops actually handles</span>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">What Showing Ops handles</span>
               <h2 className="mt-3 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
-                Not an AI texting tool. Your operational layer.
+                Six kinds of operational work you stop carrying.
               </h2>
               <p className="mt-5 text-lg leading-8 text-muted-foreground">
-                Showing Ops takes over the moment a lead is assigned to you
-                — and stays with the opportunity until it closes or is
+                Showing Ops takes over the moment a lead is assigned to you —
+                and stays with the opportunity until it closes or is
                 intentionally released.
               </p>
             </div>
-            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {capabilities.map((c) => (
                 <div
                   key={c.title}
@@ -291,16 +304,17 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Your AI Operations Manager — narrative */}
+        {/* The platform — narrative */}
         <section id="operations-manager" className="border-b border-border bg-primary text-primary-foreground">
           <div className="mx-auto max-w-4xl px-6 py-28 text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Your AI Operations Manager</span>
+            <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Your operations teammate</span>
             <h2 className="mt-4 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight">
               While you're showing homes…
             </h2>
             <p className="mt-5 text-lg leading-8 text-primary-foreground/70 max-w-2xl mx-auto">
-              Showing Ops is quietly doing the operational work of a full-time
-              chief of staff — in the background, without being asked.
+              Showing Ops keeps the operational side of your business running
+              in the background — without being asked, and without needing to
+              be managed.
             </p>
 
             <ul className="mt-12 grid gap-3 sm:grid-cols-2 text-left max-w-2xl mx-auto">
@@ -316,9 +330,9 @@ const Index = () => {
             </ul>
 
             <p className="mt-12 font-serif text-2xl md:text-3xl leading-snug tracking-tight text-primary-foreground">
-              Showing Ops quietly runs the operational side of your business
+              You build the relationships and close the deals.
               <br className="hidden md:block" />
-              so you can focus on relationships and closing deals.
+              Showing Ops runs the operations.
             </p>
           </div>
         </section>
@@ -327,14 +341,14 @@ const Index = () => {
         <section className="border-b border-border">
           <div className="mx-auto max-w-6xl px-6 py-24 grid gap-12 md:grid-cols-2 md:items-center">
             <div>
-              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Why realtors love it</span>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">What changes for you</span>
               <h2 className="mt-3 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
-                Not another CRM plugin. An AI employee.
+                You don't have to manage everything anymore.
               </h2>
               <p className="mt-5 text-lg leading-8 text-muted-foreground">
-                Showing Ops is the operational layer your business has been
-                trying to hire for — always on, always accurate, always in the
-                background.
+                Showing Ops isn't another tool to keep up with. It's the
+                operational layer your business has been trying to hire for —
+                always on, always accurate, always in the background.
               </p>
             </div>
             <ul className="grid gap-3 sm:grid-cols-2">
@@ -353,14 +367,15 @@ const Index = () => {
           <div className="mx-auto max-w-4xl px-6 py-24 text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">Where we're going</span>
             <h2 className="mt-4 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
-              The operating system for residential real estate.
+              The operating system that quietly runs a real estate business.
             </h2>
             <p className="mt-6 text-lg leading-8 text-muted-foreground">
-              We're building toward a single AI operations layer that runs the
-              back-office of every real estate business — from lead
-              engagement to closed transaction. The beta focuses on lead
-              operations today; transaction coordination, agent onboarding,
-              and back-office workflows are on the near-term roadmap.
+              Today Showing Ops handles lead operations, approvals, and CRM
+              accuracy. Next on the roadmap: conversation and call
+              intelligence, daily operational summaries, showing preparation,
+              task creation, team visibility, and brokerage-level insight —
+              one operational layer for the whole business, from first
+              conversation to closed transaction.
             </p>
             <p className="mt-4 text-sm text-muted-foreground/80">
               We only ship what we've built. Roadmap items are clearly marked.
@@ -375,7 +390,7 @@ const Index = () => {
               <div className="max-w-2xl">
                 <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">ROI</span>
                 <h2 className="mt-3 font-serif text-3xl md:text-4xl leading-[1.08] tracking-tight text-foreground">
-                  What is inconsistent follow-up costing you?
+                  What is operational work costing you?
                 </h2>
                 <p className="mt-4 text-base leading-7 text-muted-foreground">
                   A typical agent taking 12 leads a month with a 45-minute average
