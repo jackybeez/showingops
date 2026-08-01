@@ -280,9 +280,10 @@ const RoiCalculator = ({
     const commissionHigh = high * commission;
 
     // Time: ~60 min per lead of follow-up, scheduling and coordination, plus
-    // baseline weekly ops (~3 hrs/wk). Showing Ops automates the majority.
-    const followUpHoursWeekly = leads / 4.33 + 3;
-    const hoursSavedWeekly = followUpHoursWeekly * 0.7;
+    // baseline weekly ops (~5 hrs/wk of pipeline admin that never goes away).
+    // Showing Ops automates the majority.
+    const followUpHoursWeekly = leads / 4.33 + 5;
+    const hoursSavedWeekly = Math.max(4, followUpHoursWeekly * 0.75);
     const hoursSavedAnnual = hoursSavedWeekly * 52;
 
     // Value of that reclaimed time at the agent's own implied hourly rate.
