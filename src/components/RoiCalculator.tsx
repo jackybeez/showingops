@@ -1,5 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { TrendingUp, Clock, DollarSign, CalendarCheck, ArrowRight, Zap, type LucideIcon } from "lucide-react";
+import { TrendingUp, Clock, DollarSign, CalendarCheck, ArrowRight, Zap, Flame, Gauge, type LucideIcon } from "lucide-react";
+
+// Showing Ops founding-member price. One place to change it.
+const PRICE_MONTHLY = 35;
+const PRICE_ANNUAL = PRICE_MONTHLY * 12;
+
+// Rough hours of real work behind a single closed transaction. Used to convert
+// an agent's commission into an implied hourly value for their own time.
+const HOURS_PER_TRANSACTION = 80;
 
 const Field = ({
   label,
@@ -125,8 +133,11 @@ const estimateRecoveredClosings = (
   return { low, high };
 };
 
-const RoiCalculator = () => {
-  const [leads, setLeads] = useState(8);
+const RoiCalculator = ({
+  heading = "h2",
+  showIntro = true,
+}: { heading?: "h1" | "h2"; showIntro?: boolean }) => {
+  const [leads, setLeads] = useState(12);
   const [commission, setCommission] = useState(9000);
   const [responseMin, setResponseMin] = useState(45);
   const [coldPct, setColdPct] = useState(35);
@@ -137,10 +148,20 @@ const RoiCalculator = () => {
     const commissionLow = low * commission;
     const commissionHigh = high * commission;
 
-    // Time: ~45 min per lead of follow-up + baseline weekly ops (~2 hrs/wk).
-    // ShowingOps automates the majority of that repetitive coordination.
-    const followUpHoursWeekly = (leads * 0.75) / 4.33 + 2;
-    const hoursSavedWeekly = followUpHoursWeekly * 0.65;
+    // Time: ~60 min per lead of follow-up, scheduling and coordination, plus
+    // baseline weekly ops (~3 hrs/wk). Showing Ops automates the majority.
+    const followUpHoursWeekly = leads / 4.33 + 3;
+    const hoursSavedWeekly = followUpHoursWeekly * 0.7;
+    const hoursSavedAnnual = hoursSavedWeekly * 52;
+
+    // Value of that reclaimed time at the agent's own implied hourly rate.
+    const hourlyValue = commission / HOURS_PER_TRANSACTION;
+    const timeValueAnnual = hoursSavedAnnual * hourlyValue;
+
+    // Total upside vs. what Showing Ops costs for a year.
+    const upsideLow = commissionLow + timeValueAnnual;
+    const upsideHigh = commissionHigh + timeValueAnnual;
+    const roiMultiple = upsideLow / PRICE_ANNUAL;
 
     return {
       closingsLow: low,
@@ -148,12 +169,20 @@ const RoiCalculator = () => {
       commissionLow,
       commissionHigh,
       hoursSavedWeekly,
+      hoursSavedAnnual,
+      hourlyValue,
+      timeValueAnnual,
+      upsideLow,
+      upsideHigh,
+      roiMultiple,
     };
   }, [leads, commission, responseMin, coldPct]);
 
   const animCommissionLow = useAnimatedNumber(results.commissionLow);
   const animCommissionHigh = useAnimatedNumber(results.commissionHigh);
   const animHours = useAnimatedNumber(results.hoursSavedWeekly);
+  const animTimeValue = useAnimatedNumber(results.timeValueAnnual);
+  const animRoi = useAnimatedNumber(results.roiMultiple);
 
   const closingsLabel =
     results.closingsLow === results.closingsHigh
@@ -174,34 +203,40 @@ const RoiCalculator = () => {
         : `${results.closingsLow}–${results.closingsHigh} additional closings`;
     return `At ${leads} new leads a month with a ${formatResponseTime(
       responseMin,
-    )} average response, consistent follow-up and faster first contact realistically recover ${dealCopy} a year — roughly ${commissionLabel} in commission, and about ${animHours.toFixed(
+    )} average response, consistent follow-up and faster first contact realistically recover ${dealCopy} a year — roughly ${commissionLabel} in commission, plus about ${animHours.toFixed(
       1,
-    )} hours back every week.`;
-  }, [results, leads, responseMin, commissionLabel, animHours]);
+    )} hours back every week (${Math.round(results.hoursSavedAnnual)} hours a year) worth another ${currency(
+      roundToNearest(animTimeValue, 500),
+    )} of your own selling time.`;
+  }, [results, leads, responseMin, commissionLabel, animHours, animTimeValue]);
+
+  const Heading = heading;
 
   return (
     <section id="roi" className="border-b border-border">
-      <div className="mx-auto max-w-6xl px-6 py-24">
-        <div className="max-w-2xl">
-          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">ROI</span>
-          <h2 className="mt-3 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
-            What is inconsistent follow-up costing you?
-          </h2>
-          <p className="mt-5 text-lg leading-8 text-muted-foreground">
-            A conservative estimate of what faster response and consistent follow-up
-            can recover over a full year — in whole deals, real commission, and
-            hours off your plate.
-          </p>
-        </div>
+      <div className={`mx-auto max-w-6xl px-6 ${showIntro ? "py-24" : "pt-12 pb-24"}`}>
+        {showIntro && (
+          <div className="max-w-2xl">
+            <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">ROI</span>
+            <Heading className="mt-3 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
+              What is inconsistent follow-up costing you?
+            </Heading>
+            <p className="mt-5 text-lg leading-8 text-muted-foreground">
+              A conservative estimate of what faster response and consistent follow-up
+              can recover over a full year — in whole deals, real commission, and
+              hours off your plate.
+            </p>
+          </div>
+        )}
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-2">
+        <div className={`grid gap-6 lg:grid-cols-2 ${showIntro ? "mt-12" : ""}`}>
           {/* Inputs */}
           <div className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-[var(--shadow-card)] space-y-6">
             <Field
               label="New leads per month"
               value={leads}
               min={1}
-              max={30}
+              max={40}
               step={1}
               format={(n) => `${n}`}
               onChange={setLeads}
@@ -239,45 +274,90 @@ const RoiCalculator = () => {
           {/* Outputs */}
           <div className="rounded-2xl border border-accent/40 bg-card p-6 md:p-8 shadow-[var(--shadow-card)] ring-1 ring-accent/20">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">
-              Estimated annual impact with ShowingOps
+              Estimated annual impact with Showing Ops
             </p>
 
-            {/* Primary metric */}
+            {/* Primary metric — money first */}
             <div className="mt-5 rounded-xl border border-accent/50 bg-accent/5 p-5">
               <div className="flex items-center gap-2 text-muted-foreground">
-                <CalendarCheck size={14} className="text-accent" />
+                <DollarSign size={14} className="text-accent" />
                 <span className="text-[0.7rem] uppercase tracking-[0.12em]">
-                  Potential additional closings per year
+                  Commission you could recover per year
                 </span>
               </div>
               <p className="mt-2 font-serif text-4xl md:text-5xl tracking-tight text-accent tabular-nums">
-                {closingsLabel}
+                {commissionLabel}
               </p>
-              <p className="mt-1 text-[0.72rem] uppercase tracking-[0.12em] text-muted-foreground">
-                {results.closingsHigh === 1 ? "deal recovered" : "deals recovered"}
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent/10 px-3 py-1 text-[0.7rem] font-semibold text-accent">
+                  <CalendarCheck size={12} /> {closingsLabel} more{" "}
+                  {results.closingsHigh === 1 ? "closing" : "closings"} a year
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-[0.7rem] font-semibold text-foreground">
+                  <Clock size={12} className="text-accent" /> {animHours.toFixed(1)} hrs/wk back
+                </span>
+              </div>
+              <p className="mt-3 text-[0.78rem] leading-5 text-foreground/80">
+                Recovering even a single transaction typically pays for Showing Ops many times over.
               </p>
-              <p className="mt-2 text-[0.78rem] leading-5 text-foreground/80">
-                Recovering even a single transaction typically pays for ShowingOps many times over.
+            </div>
+
+            {/* ROI multiple — the headline comparison */}
+            <div className="mt-4 rounded-xl border border-accent/50 bg-accent/5 p-5">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Gauge size={14} className="text-accent" />
+                <span className="text-[0.7rem] uppercase tracking-[0.12em]">Return on your subscription</span>
+              </div>
+              <p className="mt-2 font-serif text-3xl md:text-4xl tracking-tight text-accent tabular-nums">
+                {animRoi >= 1 ? `${Math.max(1, Math.round(animRoi))}x` : "—"}
+              </p>
+              <p className="mt-1 text-[0.78rem] leading-5 text-foreground/80">
+                Against {currency(PRICE_ANNUAL)} a year ({currency(PRICE_MONTHLY)}/month), the conservative
+                low end of your recovered commission plus reclaimed selling time is worth about{" "}
+                <span className="font-semibold text-foreground">
+                  {currency(roundToNearest(results.upsideLow, 500))}
+                </span>
+                .
               </p>
             </div>
 
             {/* Supporting metrics */}
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
               <Metric
-                icon={DollarSign}
-                label="Commission potential"
-                value={commissionLabel}
-                suffix="per year"
-                sub="From faster response, persistent follow-up, and operational consistency — not magic."
-                highlight
-              />
-              <Metric
                 icon={Clock}
-                label="Hours saved"
+                label="Time back"
                 value={`${animHours.toFixed(1)} hrs`}
                 suffix="every week"
-                sub="Repetitive follow-up, scheduling, and coordination handled automatically."
+                sub={`About ${Math.round(results.hoursSavedAnnual)} hours a year of follow-up, scheduling, and coordination handled for you.`}
               />
+              <Metric
+                icon={TrendingUp}
+                label="Value of that time"
+                value={currency(roundToNearest(animTimeValue, 500))}
+                suffix="per year"
+                sub={`At roughly ${currency(results.hourlyValue)}/hour — your own implied rate based on commission per closing.`}
+                highlight
+              />
+            </div>
+
+            {/* Cost of doing nothing */}
+            <div className="mt-4 rounded-xl border border-destructive/40 bg-destructive/5 p-4">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Flame size={14} className="text-destructive" />
+                <span className="text-[0.7rem] font-semibold uppercase tracking-[0.12em]">
+                  The cost of doing nothing
+                </span>
+              </div>
+              <p className="mt-2 text-sm leading-6 text-foreground/90">
+                Right now, leads going cold and follow-up that never happens are costing you an
+                estimated{" "}
+                <span className="font-semibold text-foreground">
+                  {currency(roundToNearest(results.upsideLow, 500))}–
+                  {currency(roundToNearest(results.upsideHigh, 500))}
+                </span>{" "}
+                a year in commission and lost selling time. That number repeats every year you
+                don't fix it.
+              </p>
             </div>
 
             {/* Speed-to-lead visual */}
@@ -295,7 +375,7 @@ const RoiCalculator = () => {
                 </div>
                 <ArrowRight size={18} className="shrink-0 text-accent" />
                 <div className="flex-1 rounded-lg border border-accent/40 bg-accent/5 px-3 py-2">
-                  <p className="text-[0.62rem] uppercase tracking-[0.12em] text-accent">With ShowingOps</p>
+                  <p className="text-[0.62rem] uppercase tracking-[0.12em] text-accent">With Showing Ops</p>
                   <p className="mt-1 font-serif text-xl text-accent tabular-nums">Under 1 min</p>
                 </div>
               </div>
@@ -326,8 +406,10 @@ const RoiCalculator = () => {
                   <li>Only a small share of cold leads (roughly 6–27%) are treated as realistically recoverable, based on how fast today's response is.</li>
                   <li>Recovered leads convert to closings at a conservative blended rate.</li>
                   <li>Outcomes are rounded to whole deals — you either close the house or you don't.</li>
-                  <li>Time saved reflects follow-up, scheduling, and coordination that gets automated (~45 min per lead plus baseline weekly ops).</li>
-                  <li>Commission at risk is rounded to the nearest $500.</li>
+                  <li>Time saved reflects follow-up, scheduling, and coordination that gets automated (~60 min per lead plus about 3 hrs/week of baseline operations).</li>
+                  <li>Your time is valued at commission per closing ÷ {HOURS_PER_TRANSACTION} hours of work per transaction.</li>
+                  <li>Return is measured against {currency(PRICE_ANNUAL)}/year ({currency(PRICE_MONTHLY)}/month) using the conservative low end of the range.</li>
+                  <li>Commission and time value are rounded to the nearest $500.</li>
                 </ul>
                 <p className="text-foreground/70">
                   These are estimates, not guarantees. Actual results vary by market, lead source, and business.
@@ -336,7 +418,7 @@ const RoiCalculator = () => {
             </details>
 
             <a
-              href="#beta"
+              href="/#beta"
               className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:bg-primary/90"
             >
               Get early access <ArrowRight size={16} />
