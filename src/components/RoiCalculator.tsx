@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { TrendingUp, Clock, DollarSign, CalendarCheck, ArrowRight, Zap, Flame, Gauge, type LucideIcon } from "lucide-react";
+import { ArrowRight, Clock, Flame, Gauge, Loader2, Mail, Zap, CheckCircle2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 // Showing Ops founding-member price. One place to change it.
 const PRICE_MONTHLY = 35;
@@ -29,9 +31,9 @@ const Field = ({
   hint?: string;
 }) => (
   <div>
-    <div className="flex items-center justify-between gap-3">
+    <div className="flex items-baseline justify-between gap-3">
       <label className="text-sm font-medium text-foreground">{label}</label>
-      <span className="text-sm font-semibold text-accent tabular-nums">{format(value)}</span>
+      <span className="font-serif text-xl text-foreground tabular-nums">{format(value)}</span>
     </div>
     {hint && <p className="mt-0.5 text-[0.7rem] leading-4 text-muted-foreground">{hint}</p>}
     <input
@@ -41,7 +43,8 @@ const Field = ({
       step={step}
       value={value}
       onChange={(e) => onChange(Number(e.target.value))}
-      className="mt-2 w-full accent-accent"
+      aria-label={label}
+      className="mt-3 w-full accent-accent"
     />
     <div className="mt-1 flex justify-between text-[0.68rem] text-muted-foreground tabular-nums">
       <span>{format(min)}</span>
@@ -63,13 +66,23 @@ const formatResponseTime = (min: number) => {
 
 const roundToNearest = (n: number, nearest: number) => Math.round(n / nearest) * nearest;
 
-// Smooth count-up hook
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  typeof window.matchMedia === "function" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Smooth count-up hook. Snaps instantly when the visitor has asked for
+// reduced motion.
 const useAnimatedNumber = (target: number, duration = 500) => {
   const [value, setValue] = useState(target);
   const rafRef = useRef<number>();
   const startRef = useRef<{ from: number; to: number; t0: number }>();
 
   useEffect(() => {
+    if (prefersReducedMotion()) {
+      setValue(target);
+      return;
+    }
     startRef.current = { from: value, to: target, t0: performance.now() };
     const tick = (now: number) => {
       const { from, to, t0 } = startRef.current!;
@@ -133,6 +146,124 @@ const estimateRecoveredClosings = (
   return { low, high };
 };
 
+type RoiSnapshot = {
+  roi_leads: number;
+  roi_commission: number;
+  roi_response_min: number;
+  roi_cold_pct: number;
+  roi_recovered_low: number;
+  roi_recovered_high: number;
+};
+
+const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+
+/**
+ * Inline lead capture that lives inside the results panel — the highest-intent
+ * moment on the page. Sends the visitor's own modeled numbers along with the
+ * email so we can see what pipelines people are actually running.
+ */
+const RoiCaptureForm = ({ snapshot }: { snapshot: RoiSnapshot }) => {
+  const { toast } = useToast();
+  const [email, setEmail] = useState("");
+  const [sending, setSending] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const value = email.trim().toLowerCase();
+    if (!isEmail(value) || value.length > 200) {
+      toast({
+        title: "Check that email",
+        description: "Enter a valid email address so we know where to send it.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setSending(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("submit-beta", {
+        body: { email: value, source: "roi-calculator", ...snapshot },
+      });
+      if (error) throw error;
+      if (data && (data as { error?: string }).error) {
+        throw new Error((data as { error?: string }).error);
+      }
+      setDone(true);
+    } catch (err) {
+      console.error("ROI capture failed", err);
+      toast({
+        title: "Something went wrong",
+        description: "We couldn't save that just now. Please try again in a moment.",
+        variant: "destructive",
+      });
+    } finally {
+      setSending(false);
+    }
+  };
+
+  if (done) {
+    return (
+      <div className="rounded-xl border border-accent/40 bg-accent/10 p-5">
+        <div className="flex items-start gap-3">
+          <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-accent" />
+          <div>
+            <p className="text-sm font-semibold text-panel-foreground">You&rsquo;re on the list.</p>
+            <p className="mt-1 text-sm leading-6 text-panel-muted">
+              We&rsquo;ll send your breakdown and your founding-member invite to{" "}
+              <span className="text-panel-foreground">{email.trim().toLowerCase()}</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-xl border border-panel-foreground/10 bg-panel-foreground/5 p-5">
+      <p className="font-serif text-xl leading-tight text-panel-foreground">
+        Want this breakdown in writing?
+      </p>
+      <p className="mt-1.5 text-sm leading-6 text-panel-muted">
+        We&rsquo;ll email your numbers plus exactly how Showing Ops recovers them.
+      </p>
+      <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-2 sm:flex-row">
+        <div className="relative flex-1">
+          <Mail
+            size={15}
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-panel-muted"
+          />
+          <input
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@brokerage.com"
+            maxLength={200}
+            aria-label="Your email address"
+            className="w-full rounded-lg border border-panel-foreground/15 bg-panel-foreground/5 py-3 pl-9 pr-3 text-sm text-panel-foreground placeholder:text-panel-muted/70 outline-none transition focus:border-accent focus:ring-1 focus:ring-accent"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={sending}
+          className="inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground transition hover:bg-accent/90 disabled:opacity-60"
+        >
+          {sending ? <Loader2 size={15} className="animate-spin" /> : <ArrowRight size={15} />}
+          {sending ? "Sending" : "Send it"}
+        </button>
+      </form>
+      <p className="mt-3 text-[0.7rem] leading-5 text-panel-muted">
+        No spam, and we never sell or share your information.{" "}
+        <a href="/#beta" className="text-accent underline-offset-2 hover:underline">
+          Or start free during the private beta
+        </a>
+        .
+      </p>
+    </div>
+  );
+};
+
 const RoiCalculator = ({
   heading = "h2",
   showIntro = true,
@@ -183,32 +314,37 @@ const RoiCalculator = ({
   const animHours = useAnimatedNumber(results.hoursSavedWeekly);
   const animTimeValue = useAnimatedNumber(results.timeValueAnnual);
   const animRoi = useAnimatedNumber(results.roiMultiple);
+  const animLossLow = useAnimatedNumber(results.upsideLow);
+  const animLossHigh = useAnimatedNumber(results.upsideHigh);
 
-  const closingsLabel =
-    results.closingsLow === results.closingsHigh
-      ? `${results.closingsHigh}`
-      : `${results.closingsLow}–${results.closingsHigh}`;
+  const singleOutcome = results.closingsLow === results.closingsHigh;
 
   const commissionLabel = useMemo(() => {
     const lo = currency(roundToNearest(animCommissionLow, 500));
     const hi = currency(roundToNearest(animCommissionHigh, 500));
-    if (results.closingsLow === results.closingsHigh) return hi;
+    if (singleOutcome) return hi;
     return `${lo}–${hi}`;
-  }, [animCommissionLow, animCommissionHigh, results.closingsLow, results.closingsHigh]);
+  }, [animCommissionLow, animCommissionHigh, singleOutcome]);
 
   const summary = useMemo(() => {
-    const dealCopy =
-      results.closingsLow === results.closingsHigh
-        ? `${results.closingsHigh} additional ${results.closingsHigh === 1 ? "closing" : "closings"}`
-        : `${results.closingsLow}–${results.closingsHigh} additional closings`;
+    const dealCopy = singleOutcome
+      ? `${results.closingsHigh} additional ${results.closingsHigh === 1 ? "closing" : "closings"}`
+      : `${results.closingsLow}–${results.closingsHigh} additional closings`;
     return `At ${leads} new leads a month with a ${formatResponseTime(
       responseMin,
-    )} average response, consistent follow-up and faster first contact realistically recover ${dealCopy} a year — roughly ${commissionLabel} in commission, plus about ${animHours.toFixed(
+    )} average response, consistent follow-up and faster first contact realistically recover ${dealCopy} a year — plus about ${animHours.toFixed(
       1,
-    )} hours back every week (${Math.round(results.hoursSavedAnnual)} hours a year) worth another ${currency(
-      roundToNearest(animTimeValue, 500),
-    )} of your own selling time.`;
-  }, [results, leads, responseMin, commissionLabel, animHours, animTimeValue]);
+    )} hours back every week.`;
+  }, [results, leads, responseMin, animHours, singleOutcome]);
+
+  const snapshot: RoiSnapshot = {
+    roi_leads: leads,
+    roi_commission: commission,
+    roi_response_min: responseMin,
+    roi_cold_pct: coldPct,
+    roi_recovered_low: results.commissionLow,
+    roi_recovered_high: results.commissionHigh,
+  };
 
   const Heading = heading;
 
@@ -229,241 +365,194 @@ const RoiCalculator = ({
           </div>
         )}
 
-        <div className={`grid gap-6 lg:grid-cols-2 ${showIntro ? "mt-12" : ""}`}>
+        {/* One bonded unit: white inputs, navy verdict. No gap between them, so
+            mismatched column heights can never leave dead space. */}
+        <div
+          className={`grid overflow-hidden rounded-2xl border border-border shadow-[var(--shadow-card)] lg:grid-cols-12 ${
+            showIntro ? "mt-12" : ""
+          }`}
+        >
           {/* Inputs */}
-          <div className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-[var(--shadow-card)] space-y-6">
-            <Field
-              label="New leads per month"
-              value={leads}
-              min={1}
-              max={40}
-              step={1}
-              format={(n) => `${n}`}
-              onChange={setLeads}
-            />
-            <Field
-              label="Average commission per closing"
-              value={commission}
-              min={4000}
-              max={20000}
-              step={500}
-              format={currency}
-              onChange={setCommission}
-            />
-            <Field
-              label="Average first response time"
-              value={responseMin}
-              min={5}
-              max={180}
-              step={1}
-              format={formatResponseTime}
-              onChange={setResponseMin}
-            />
-            <Field
-              label="Leads that go cold before meaningful follow-up"
-              value={coldPct}
-              min={10}
-              max={70}
-              step={1}
-              format={(n) => `${n}%`}
-              onChange={setColdPct}
-              hint="Leads who needed a faster response, another touch, or easier scheduling."
-            />
-          </div>
-
-          {/* Outputs */}
-          <div className="rounded-2xl border border-accent/40 bg-card p-6 md:p-8 shadow-[var(--shadow-card)] ring-1 ring-accent/20">
-            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">
-              Estimated annual impact with Showing Ops
-            </p>
-
-            {/* Primary metric — money first */}
-            <div className="mt-5 rounded-xl border border-accent/50 bg-accent/5 p-5">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <DollarSign size={14} className="text-accent" />
-                <span className="text-[0.7rem] uppercase tracking-[0.12em]">
-                  Commission you could recover per year
-                </span>
-              </div>
-              <p className="mt-2 font-serif text-4xl md:text-5xl tracking-tight text-accent tabular-nums">
-                {commissionLabel}
-              </p>
-              <div className="mt-3 flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent/10 px-3 py-1 text-[0.7rem] font-semibold text-accent">
-                  <CalendarCheck size={12} /> {closingsLabel} more{" "}
-                  {results.closingsHigh === 1 ? "closing" : "closings"} a year
-                </span>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-background px-3 py-1 text-[0.7rem] font-semibold text-foreground">
-                  <Clock size={12} className="text-accent" /> {animHours.toFixed(1)} hrs/wk back
-                </span>
-              </div>
-              <p className="mt-3 text-[0.78rem] leading-5 text-foreground/80">
-                Recovering even a single transaction typically pays for Showing Ops many times over.
+          <div className="flex flex-col bg-card p-7 md:p-9 lg:col-span-5">
+            <div>
+              <h3 className="font-serif text-2xl tracking-tight text-foreground">Your numbers</h3>
+              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
+                Four honest inputs. Nothing is stored unless you ask us to send it.
               </p>
             </div>
 
-            {/* ROI multiple — the headline comparison */}
-            <div className="mt-4 rounded-xl border border-accent/50 bg-accent/5 p-5">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Gauge size={14} className="text-accent" />
-                <span className="text-[0.7rem] uppercase tracking-[0.12em]">Return on your subscription</span>
-              </div>
-              <p className="mt-2 font-serif text-3xl md:text-4xl tracking-tight text-accent tabular-nums">
-                {animRoi >= 1 ? `${Math.max(1, Math.round(animRoi))}x` : "—"}
-              </p>
-              <p className="mt-1 text-[0.78rem] leading-5 text-foreground/80">
-                Against {currency(PRICE_ANNUAL)} a year ({currency(PRICE_MONTHLY)}/month), the conservative
-                low end of your recovered commission plus reclaimed selling time is worth about{" "}
-                <span className="font-semibold text-foreground">
-                  {currency(roundToNearest(results.upsideLow, 500))}
-                </span>
-                .
-              </p>
-            </div>
-
-            {/* Supporting metrics */}
-            <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              <Metric
-                icon={Clock}
-                label="Time back"
-                value={`${animHours.toFixed(1)} hrs`}
-                suffix="every week"
-                sub={`About ${Math.round(results.hoursSavedAnnual)} hours a year of follow-up, scheduling, and coordination handled for you.`}
+            <div className="mt-8 flex-grow space-y-8">
+              <Field
+                label="New leads per month"
+                value={leads}
+                min={1}
+                max={40}
+                step={1}
+                format={(n) => `${n}`}
+                onChange={setLeads}
               />
-              <Metric
-                icon={TrendingUp}
-                label="Value of that time"
-                value={currency(roundToNearest(animTimeValue, 500))}
-                suffix="per year"
-                sub={`At roughly ${currency(results.hourlyValue)}/hour — your own implied rate based on commission per closing.`}
-                highlight
+              <Field
+                label="Average commission per closing"
+                value={commission}
+                min={4000}
+                max={20000}
+                step={500}
+                format={currency}
+                onChange={setCommission}
+              />
+              <Field
+                label="Average first response time"
+                value={responseMin}
+                min={5}
+                max={180}
+                step={1}
+                format={formatResponseTime}
+                onChange={setResponseMin}
+              />
+              <Field
+                label="Leads that go cold before meaningful follow-up"
+                value={coldPct}
+                min={10}
+                max={70}
+                step={1}
+                format={(n) => `${n}%`}
+                onChange={setColdPct}
+                hint="Leads who needed a faster response, another touch, or easier scheduling."
               />
             </div>
 
-            {/* Cost of doing nothing */}
-            <div className="mt-4 rounded-xl border border-destructive/40 bg-destructive/5 p-4">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Flame size={14} className="text-destructive" />
-                <span className="text-[0.7rem] font-semibold uppercase tracking-[0.12em]">
-                  The cost of doing nothing
-                </span>
+            <div className="mt-10 space-y-4 border-t border-border pt-6">
+              <div className="flex items-start gap-2.5">
+                <Zap size={14} className="mt-0.5 shrink-0 text-accent" />
+                <p className="text-[0.78rem] leading-5 text-muted-foreground">
+                  Most buyers and sellers contact several agents at once. Whoever replies
+                  first usually books the appointment — everyone else inherits a cold lead.
+                </p>
               </div>
-              <p className="mt-2 text-sm leading-6 text-foreground/90">
-                Right now, leads going cold and follow-up that never happens are costing you an
-                estimated{" "}
-                <span className="font-semibold text-foreground">
-                  {currency(roundToNearest(results.upsideLow, 500))}–
-                  {currency(roundToNearest(results.upsideHigh, 500))}
-                </span>{" "}
-                a year in commission and lost selling time. That number repeats every year you
-                don't fix it.
-              </p>
-            </div>
 
-            {/* Speed-to-lead visual */}
-            <div className="mt-4 rounded-xl border border-border bg-background p-4">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Zap size={14} className="text-accent" />
-                <span className="text-[0.7rem] uppercase tracking-[0.12em]">Speed-to-lead</span>
-              </div>
-              <div className="mt-3 flex items-center gap-3">
-                <div className="flex-1 rounded-lg border border-border bg-background/60 px-3 py-2">
-                  <p className="text-[0.62rem] uppercase tracking-[0.12em] text-muted-foreground">Today</p>
-                  <p className="mt-1 font-serif text-xl text-foreground tabular-nums">
-                    {formatResponseTime(responseMin)}
+              <details className="group rounded-lg bg-muted/60 px-3 py-2">
+                <summary className="cursor-pointer list-none text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                  How we calculate this
+                </summary>
+                <div className="mt-2 space-y-2 text-[0.75rem] leading-5 text-muted-foreground">
+                  <p>
+                    This is a conservative business-impact estimator, not a mathematical model.
+                    It reflects what consistent operational execution recovers over a full
+                    year — never to over-promise.
+                  </p>
+                  <ul className="list-disc space-y-1 pl-4">
+                    <li>Only a small share of cold leads (roughly 6–27%) are treated as realistically recoverable, based on how fast today&rsquo;s response is.</li>
+                    <li>Recovered leads convert to closings at a conservative blended rate.</li>
+                    <li>Outcomes are rounded to whole deals — you either close the house or you don&rsquo;t.</li>
+                    <li>Time saved reflects follow-up, scheduling, and coordination that gets automated (~60 min per lead plus baseline weekly ops).</li>
+                    <li>
+                      Your time is valued at your own implied hourly rate — commission per
+                      closing divided by roughly {HOURS_PER_TRANSACTION} hours of real work
+                      per transaction.
+                    </li>
+                    <li>ROI compares that total upside against ${PRICE_ANNUAL} a year (${PRICE_MONTHLY}/month).</li>
+                  </ul>
+                  <p>
+                    These are estimates, not guarantees. Actual results vary by market, lead
+                    source, and business.
                   </p>
                 </div>
-                <ArrowRight size={18} className="shrink-0 text-accent" />
-                <div className="flex-1 rounded-lg border border-accent/40 bg-accent/5 px-3 py-2">
-                  <p className="text-[0.62rem] uppercase tracking-[0.12em] text-accent">With Showing Ops</p>
-                  <p className="mt-1 font-serif text-xl text-accent tabular-nums">Under 1 min</p>
+              </details>
+            </div>
+          </div>
+
+          {/* Verdict */}
+          <div className="flex flex-col bg-panel p-7 text-panel-foreground md:p-10 lg:col-span-7">
+            <div className="flex-grow">
+              <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+                <span className="text-[0.62rem] font-bold uppercase tracking-[0.2em] text-accent">
+                  Your estimate
+                </span>
+              </div>
+
+              {/* Tier 1 — the hero */}
+              <p className="mt-8 text-[0.7rem] font-bold uppercase tracking-[0.16em] text-panel-muted">
+                Commission you could recover per year
+              </p>
+              <p className="mt-2 font-serif text-[2.75rem] leading-[1.02] tracking-tight text-accent tabular-nums sm:text-6xl lg:text-7xl">
+                {commissionLabel}
+              </p>
+
+              {/* Tier 2 — the plain-English case */}
+              <p className="mt-5 max-w-xl font-serif text-lg italic leading-8 text-panel-foreground/90">
+                {summary}
+              </p>
+
+              {/* Tier 3 — two supporting stats, no boxes */}
+              <div className="mt-8 grid gap-6 sm:grid-cols-2">
+                <div>
+                  <div className="flex items-center gap-2 text-panel-muted">
+                    <Gauge size={13} className="text-accent" />
+                    <span className="text-[0.62rem] font-bold uppercase tracking-[0.16em]">
+                      Return on subscription
+                    </span>
+                  </div>
+                  <p className="mt-1.5 font-serif text-3xl text-panel-foreground tabular-nums">
+                    {Math.max(1, Math.round(animRoi))}x
+                  </p>
+                  <p className="mt-1 text-xs leading-5 text-panel-muted">
+                    Against ${PRICE_ANNUAL} a year, on the conservative low end.
+                  </p>
+                </div>
+                <div className="sm:border-l sm:border-panel-foreground/15 sm:pl-6">
+                  <div className="flex items-center gap-2 text-panel-muted">
+                    <Clock size={13} className="text-accent" />
+                    <span className="text-[0.62rem] font-bold uppercase tracking-[0.16em]">
+                      Time back
+                    </span>
+                  </div>
+                  <p className="mt-1.5 font-serif text-3xl text-panel-foreground tabular-nums">
+                    {animHours.toFixed(1)} hrs<span className="text-lg text-panel-muted">/wk</span>
+                  </p>
+                  <p className="mt-1 text-xs leading-5 text-panel-muted">
+                    About {Math.round(results.hoursSavedAnnual)} hours a year — worth{" "}
+                    {currency(roundToNearest(animTimeValue, 500))} of your own selling time.
+                  </p>
+                </div>
+              </div>
+
+              {/* Tier 4 — speed and the cost of standing still, together */}
+              <div className="mt-8 rounded-xl border border-panel-foreground/10 bg-panel-foreground/5 p-5">
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="text-[0.62rem] font-bold uppercase tracking-[0.16em] text-panel-muted">
+                    Speed-to-lead
+                  </span>
+                  <span className="font-serif text-xl text-panel-loss tabular-nums">
+                    {formatResponseTime(responseMin)}
+                  </span>
+                  <ArrowRight size={15} className="text-accent" />
+                  <span className="font-serif text-xl text-accent">Under 1 min</span>
+                </div>
+                <div className="mt-4 flex items-start gap-2.5 border-t border-panel-foreground/10 pt-4">
+                  <Flame size={14} className="mt-0.5 shrink-0 text-panel-loss" />
+                  <p className="text-sm leading-6 text-panel-muted">
+                    Standing still costs an estimated{" "}
+                    <span className="font-semibold text-panel-loss tabular-nums">
+                      {currency(roundToNearest(animLossLow, 500))}–
+                      {currency(roundToNearest(animLossHigh, 500))}
+                    </span>{" "}
+                    a year in commission and lost selling time — and it repeats every year
+                    you don&rsquo;t fix it.
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Personalized summary */}
-            <div className="mt-5 rounded-xl border border-border bg-background/60 p-4">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <TrendingUp size={14} className="text-accent" />
-                <span className="text-[0.7rem] font-semibold uppercase tracking-[0.12em]">
-                  Your personalized assessment
-                </span>
-              </div>
-              <p className="mt-2 text-sm leading-6 text-foreground/90">{summary}</p>
+            {/* The ask */}
+            <div className="mt-8">
+              <RoiCaptureForm snapshot={snapshot} />
             </div>
-
-            <details className="mt-4 rounded-lg border border-border bg-background/60 px-3 py-2">
-              <summary className="cursor-pointer text-[0.72rem] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                How we calculate this
-              </summary>
-              <div className="mt-2 space-y-2 text-[0.75rem] leading-5 text-muted-foreground">
-                <p>
-                  This is a conservative business-impact estimator, not a mathematical model.
-                  It's built to reflect what consistent operational execution recovers over
-                  a full year — never to over-promise.
-                </p>
-                <ul className="list-disc space-y-1 pl-4">
-                  <li>Only a small share of cold leads (roughly 6–27%) are treated as realistically recoverable, based on how fast today's response is.</li>
-                  <li>Recovered leads convert to closings at a conservative blended rate.</li>
-                  <li>Outcomes are rounded to whole deals — you either close the house or you don't.</li>
-                  <li>Time saved reflects follow-up, scheduling, and coordination that gets automated (~60 min per lead plus about 3 hrs/week of baseline operations).</li>
-                  <li>Your time is valued at commission per closing ÷ {HOURS_PER_TRANSACTION} hours of work per transaction.</li>
-                  <li>Return is measured against {currency(PRICE_ANNUAL)}/year ({currency(PRICE_MONTHLY)}/month) using the conservative low end of the range.</li>
-                  <li>Commission and time value are rounded to the nearest $500.</li>
-                </ul>
-                <p className="text-foreground/70">
-                  These are estimates, not guarantees. Actual results vary by market, lead source, and business.
-                </p>
-              </div>
-            </details>
-
-            <a
-              href="/#beta"
-              className="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:bg-primary/90"
-            >
-              Get early access <ArrowRight size={16} />
-            </a>
           </div>
         </div>
       </div>
     </section>
   );
 };
-
-const Metric = ({
-  icon: Icon,
-  label,
-  value,
-  suffix,
-  sub,
-  highlight,
-}: {
-  icon: LucideIcon;
-  label: string;
-  value: string;
-  suffix?: string;
-  sub?: string;
-  highlight?: boolean;
-}) => (
-  <div
-    className={`rounded-xl border p-4 ${
-      highlight ? "border-accent/50 bg-accent/5" : "border-border bg-background"
-    }`}
-  >
-    <div className="flex items-center gap-2 text-muted-foreground">
-      <Icon size={14} className="text-accent" />
-      <span className="text-[0.7rem] uppercase tracking-[0.12em]">{label}</span>
-    </div>
-    <p
-      className={`mt-2 font-serif text-2xl md:text-3xl tracking-tight tabular-nums ${
-        highlight ? "text-accent" : "text-foreground"
-      }`}
-    >
-      {value}
-    </p>
-    {suffix && <p className="mt-1 text-[0.68rem] uppercase tracking-[0.12em] text-muted-foreground">{suffix}</p>}
-    {sub && <p className="mt-1.5 text-[0.7rem] leading-4 text-muted-foreground">{sub}</p>}
-  </div>
-);
 
 export default RoiCalculator;
