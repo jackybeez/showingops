@@ -118,15 +118,8 @@ const Terms = () => (
         <Section title="11. Contact">
           <p>
             Questions about these Terms? Reach us at{" "}
-            <a href="mailto:showingops@gmail.com" className="legal-link">showingops@gmail.com</a> or write to us at:
+            <a href="mailto:showingops@gmail.com" className="legal-link">showingops@gmail.com</a>.
           </p>
-          <address style={{ fontStyle: "normal", marginTop: "0.5rem" }}>
-            Showing Ops<br />
-            4150 Jason St Apt 620<br />
-            Denver, CO 80211<br />
-            United States<br />
-            Phone: +1 (970) 309-5645
-          </address>
         </Section>
       </div>
     </main>
