@@ -381,7 +381,7 @@ const RoiCalculator = ({
               </p>
             </div>
 
-            <div className="mt-8 flex-grow space-y-8">
+            <div className="mt-8 flex flex-grow flex-col justify-between gap-8">
               <Field
                 label="New leads per month"
                 value={leads}
