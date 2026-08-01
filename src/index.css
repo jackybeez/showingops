@@ -33,6 +33,14 @@
     --destructive: 0 74% 50%;           /* #DC2626 */
     --destructive-foreground: 0 0% 100%;
 
+    /* Inverted "verdict" panel — dark navy surface used for high-contrast
+       results/reveal moments (e.g. the ROI calculator output). */
+    --panel: 222 47% 11%;               /* deep navy */
+    --panel-foreground: 0 0% 100%;
+    --panel-muted: 215 20% 68%;         /* readable secondary text on navy */
+    --panel-loss: 0 84% 71%;            /* loss/urgency figures on navy */
+
+
     --border: 220 13% 91%;              /* #E5E7EB */
     --input: 220 13% 91%;
     --ring: 160 84% 39%;                /* emerald focus ring */
