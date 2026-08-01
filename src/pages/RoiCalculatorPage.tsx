@@ -139,7 +139,7 @@ const RoiCalculatorPage = () => {
         </section>
 
         {/* Calculator */}
-        <RoiCalculator />
+        <RoiCalculator showIntro={false} />
 
         {/* What drives the numbers */}
         <section className="border-b border-border bg-muted/40">
