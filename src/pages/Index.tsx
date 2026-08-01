@@ -19,10 +19,10 @@ import {
   Repeat,
   ListChecks,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
 import LeadLifecycleDemo from "@/components/LeadLifecycleDemo";
 import OperationsFeed from "@/components/OperationsFeed";
-import RoiCalculator from "@/components/RoiCalculator";
 import FoundingMember from "@/components/FoundingMember";
 
 const problems = [
@@ -90,6 +90,7 @@ const Index = () => {
             <a href="#workflow" className="hover:text-foreground transition">How it works</a>
             <a href="#capabilities" className="hover:text-foreground transition">Capabilities</a>
             <a href="#operations-manager" className="hover:text-foreground transition">The Manager</a>
+            <Link to="/roi-calculator" className="hover:text-foreground transition">ROI Calculator</Link>
           </nav>
           <a
             href="#beta"
@@ -367,8 +368,31 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ROI calculator */}
-        <RoiCalculator />
+        {/* ROI calculator teaser — full tool lives on /roi-calculator */}
+        <section id="roi" className="border-b border-border">
+          <div className="mx-auto max-w-6xl px-6 py-20">
+            <div className="rounded-2xl border border-accent/40 bg-card p-8 md:p-10 shadow-[var(--shadow-card)] ring-1 ring-accent/20 md:flex md:items-center md:justify-between md:gap-10">
+              <div className="max-w-2xl">
+                <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">ROI</span>
+                <h2 className="mt-3 font-serif text-3xl md:text-4xl leading-[1.08] tracking-tight text-foreground">
+                  What is inconsistent follow-up costing you?
+                </h2>
+                <p className="mt-4 text-base leading-7 text-muted-foreground">
+                  A typical agent taking 12 leads a month with a 45-minute average
+                  response is leaving <span className="font-semibold text-foreground">1–3 closings</span> and{" "}
+                  <span className="font-semibold text-foreground">4+ hours a week</span> on the table.
+                  Run your own numbers in about 20 seconds.
+                </p>
+              </div>
+              <Link
+                to="/roi-calculator"
+                className="mt-6 inline-flex shrink-0 items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:bg-primary/90 md:mt-0"
+              >
+                Open the ROI calculator <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
+        </section>
 
         {/* Founding Member perks + beta waitlist (SMS opt-in / A2P compliance untouched) */}
         <FoundingMember />

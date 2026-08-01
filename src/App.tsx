@@ -9,6 +9,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import SmsOptInTerms from "./pages/SmsOptInTerms";
 import LeadOptIn from "./pages/LeadOptIn";
+import RoiCalculatorPage from "./pages/RoiCalculatorPage";
 
 import NotFound from "./pages/NotFound";
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/terms" element={<Terms />} />
           <Route path="/sms-opt-in" element={<SmsOptInTerms />} />
           <Route path="/lead-optin" element={<LeadOptIn />} />
+          <Route path="/roi-calculator" element={<RoiCalculatorPage />} />
           
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
