@@ -24,7 +24,7 @@ const faqs = [
   },
   {
     q: "How does Showing Ops actually recover those leads?",
-    a: "Showing Ops is an AI operations manager. When a lead is assigned in your CRM it responds within a minute, drafts personalized follow-up for your approval, keeps warm leads warm with intelligent sequences, coordinates showings against your real calendar, and writes every call, text, note, and task back to your CRM automatically.",
+    a: "Showing Ops is the always-on AI operations platform for real estate. When a lead is assigned in your CRM it responds within a minute, prepares personalized follow-up for your approval, keeps warm leads engaged, coordinates showings against your real calendar, and writes every call, text, note, and task back to your CRM automatically.",
   },
 ];
 
@@ -130,11 +130,12 @@ const RoiCalculatorPage = () => {
               Real estate lead follow-up ROI calculator
             </h1>
             <p className="mt-6 text-lg leading-8 text-muted-foreground">
-              Slow first response and follow-up that never happens are the two
-              most expensive habits in real estate — and they never show up on a
-              P&amp;L. Move the sliders below to see what your own pipeline is
-              leaking every year, in closings, commission, and hours.
+              Late first response and operational work that never gets done are
+              the two most expensive habits in real estate — and they never show
+              up on a P&amp;L. Move the sliders below to see what your own
+              pipeline is leaking every year, in closings, commission, and hours.
             </p>
+
           </div>
         </section>
 
