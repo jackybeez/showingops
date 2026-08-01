@@ -356,13 +356,14 @@ const RoiCalculator = ({
           <div className="max-w-2xl">
             <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">ROI</span>
             <Heading className="mt-3 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
-              What is inconsistent follow-up costing you?
+              What is operational work costing you?
             </Heading>
             <p className="mt-5 text-lg leading-8 text-muted-foreground">
-              A conservative estimate of what faster response and consistent follow-up
-              can recover over a full year — in whole deals, real commission, and
+              A conservative estimate of what you recover over a full year once the
+              operational work runs on its own — in whole deals, real commission, and
               hours off your plate.
             </p>
+
           </div>
         )}
 
