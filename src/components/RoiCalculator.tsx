@@ -445,7 +445,7 @@ const RoiCalculator = ({
                     <li>Only a small share of cold leads (roughly 6–27%) are treated as realistically recoverable, based on how fast today&rsquo;s response is.</li>
                     <li>Recovered leads convert to closings at a conservative blended rate.</li>
                     <li>Outcomes are rounded to whole deals — you either close the house or you don&rsquo;t.</li>
-                    <li>Time saved reflects follow-up, scheduling, and coordination that gets automated (~60 min per lead plus baseline weekly ops).</li>
+                    <li>Time saved reflects follow-up, scheduling, and coordination that gets automated (~60 min per lead plus roughly 5 hours a week of baseline pipeline admin).</li>
                     <li>
                       Your time is valued at your own implied hourly rate — commission per
                       closing divided by roughly {HOURS_PER_TRANSACTION} hours of real work
