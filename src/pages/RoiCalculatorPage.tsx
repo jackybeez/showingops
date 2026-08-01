@@ -130,11 +130,12 @@ const RoiCalculatorPage = () => {
               Real estate lead follow-up ROI calculator
             </h1>
             <p className="mt-6 text-lg leading-8 text-muted-foreground">
-              Slow first response and follow-up that never happens are the two
-              most expensive habits in real estate — and they never show up on a
-              P&amp;L. Move the sliders below to see what your own pipeline is
-              leaking every year, in closings, commission, and hours.
+              Late first response and operational work that never gets done are
+              the two most expensive habits in real estate — and they never show
+              up on a P&amp;L. Move the sliders below to see what your own
+              pipeline is leaking every year, in closings, commission, and hours.
             </p>
+
           </div>
         </section>
 
