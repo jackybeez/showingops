@@ -242,12 +242,13 @@ const LeadLifecycleDemo = () => {
         <div className="max-w-2xl">
           <span className="text-xs font-semibold uppercase tracking-[0.16em] text-accent">See it in action</span>
           <h2 className="mt-3 font-serif text-3xl md:text-5xl leading-[1.05] tracking-tight text-foreground">
-            Watch a real lead lifecycle, step by step.
+            One lead, one operational workflow, start to finish.
           </h2>
           <p className="mt-5 text-lg leading-8 text-muted-foreground">
-            This is what happens the moment a new lead is assigned to you in
-            Follow Up Boss. Click through, or let it play.
+            This is the operational work that runs the moment a new lead is
+            assigned to you in Follow Up Boss. Click through, or let it play.
           </p>
+
         </div>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-[1.1fr_1fr] items-start">
