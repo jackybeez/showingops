@@ -1,55 +1,38 @@
-## A) New `/sms-opt-in` "Messaging Terms" page
+## A) Give the calculator its own page
 
-**Create** a new React route `/sms-opt-in` and a matching static `public/sms-opt-in/index.html` (so bots crawl it without JS, matching the pattern used for `/privacy` and `/terms`).
+- New route `/roi-calculator` (`src/pages/RoiCalculatorPage.tsx`), wired in `src/App.tsx` above the catch-all.
+- Page structure: same nav + footer as the landing page, an SEO-focused intro (H1 + short paragraph), the calculator, a short "what drives the numbers" explainer, an FAQ block (3-4 Q&As targeting search intent like "how much do realtors lose on slow lead follow-up"), and a CTA to the beta signup on `/`.
+- Remove `<RoiCalculator />` from `src/pages/Index.tsx` (line 371). In its place, a compact teaser band: headline, one-line stat, and a button linking to `/roi-calculator`. Landing page gets meaningfully shorter.
+- Add a nav link "ROI Calculator" pointing to `/roi-calculator` on both pages.
 
-Content (verbatim from the request):
+### SEO for the new page
+- Per-route head tags (title < 60 chars, meta description < 160, canonical `https://showingops.com/roi-calculator`, og/twitter tags) set on mount.
+- Single H1, semantic sections, JSON-LD: `WebApplication` + `FAQPage`.
+- Static crawlable mirror at `public/roi-calculator/index.html` (same pattern as `/privacy`, `/terms`, `/lead-optin`) so bots read the copy and FAQ without JS.
+- Add the URL to `public/robots.txt` sitemap reference only if a sitemap exists; otherwise leave robots alone.
 
-- H1: **Showing Ops Messaging Terms**
-- Intro paragraph explaining the two SMS types.
-- Section 1: **Account & workflow notifications (to agents/team members).**
-- Section 2: **Client follow-up (to consumers, sent on behalf of agents).**
-- **Consent** paragraph clarifying consumers consent at inquiry submission and that agents are responsible for that consent.
-- Closing compliance line: message/data rates, STOP/HELP, immediate opt-out honoring, "never sold or shared" line, and a link to the Privacy Policy.
+## B) Make the output actually compelling
 
-Styling reuses the existing legal page pattern (`legal-container`, `legal-h2`, etc. — same as `PrivacyPolicy.tsx` and `Terms.tsx`) so it matches the site.
+The problem is the framing, not the math: hours-saved is the weakest number and it's competing with the price. Fixes:
 
-**Add route** in `src/App.tsx`: `<Route path="/sms-opt-in" element={<SmsOptInTerms />} />`.
+1. **Lead with money, not minutes.** Promote "Commission potential" to the hero metric alongside recovered closings; demote hours saved to a supporting chip. A realtor reads "$9,000–$18,000" and stops scrolling.
+2. **Add an ROI multiple.** New line: "That's roughly Nx your annual Showing Ops cost" computed against $35/mo ($420/yr). Even one recovered $9k closing = ~21x. This is the "wow shit" number and it directly kills the "1.8 hrs for $35" comparison.
+3. **Reframe hours as dollars.** Show hours saved *and* their value at the agent's own implied hourly rate (commission-based), e.g. "1.8 hrs/wk ≈ 94 hrs/yr ≈ $X of your time back." Hours alone feel small; hours priced feel large.
+4. **Raise the input floor so defaults look real.** Default leads 8 → 12, and widen the time model: follow-up, scheduling, and coordination realistically run closer to 60 min/lead plus 3 hrs/wk baseline ops, so a typical agent sees 4-7 hrs/wk instead of 1.8. Still conservative, still disclosed in the "How we calculate this" details.
+5. **Add a "cost of doing nothing" line.** Mirror the upside as loss: "Leads going cold are costing you about $X a year right now." Loss aversion converts better than gain framing.
+6. **Cap the promise honestly.** Keep the existing rounding-to-whole-deals, the 6-27% recoverable band, and the "estimates, not guarantees" disclaimer. Update the details copy to match new assumptions.
 
-**Footer** (`src/components/Footer.tsx`): add a new link labeled **"Messaging Terms"** pointing to `/sms-opt-in`, alongside the existing Privacy Policy and Terms & Conditions links.
-
-## B) Update Lane 1 (agent sign-up) SMS consent checkbox copy
-
-In `src/components/BetaWaitlist.tsx` and the crawlable `<noscript>` block in `index.html`, replace the current checkbox label text with:
-
-> By checking this box, you agree to receive SMS messages from Showing Ops at the number provided — including workflow approval requests, task reminders, and lead-assignment and account notifications. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. See our [Privacy Policy] and [Messaging Terms].
-
-- Keep the checkbox **optional** (no `required`, keep the "(Optional)" short-label above it as-is).
-- Render `[Privacy Policy]` as a link to `/privacy` and `[Messaging Terms]` as a link to `/sms-opt-in` in both the React component and static HTML.
-
-## C) Privacy Policy — add mobile clause
-
-Add this exact paragraph to **both** `src/pages/PrivacyPolicy.tsx` and `public/privacy/index.html` (and `public/privacy-policy/index.html` if it still exists), inside Section 3 "SMS Communications" as a new standalone paragraph near the top of that section:
-
-> Mobile phone numbers and SMS opt-in information collected for text messaging are not sold or shared with third parties or affiliates for marketing purposes. Message and data rates may apply. Reply STOP to opt out or HELP for help.
-
-No other privacy sections change. `/privacy` and `/terms` already resolve (confirmed — `public/privacy/index.html` and `public/terms/index.html` exist and React routes are wired in `App.tsx`).
-
-## Out of scope (item 3 in the request)
-
-The suggested lead-form language for brokerage/team partner sites is guidance for onboarding brokerages to use on **their** lead forms — it does not belong on showingops.com and won't be added to the site. I'll note this back to you in chat after implementation; if you'd like it surfaced anywhere on showingops.com (e.g., a partner/onboarding doc), say the word.
+## Technical notes
+- `RoiCalculator.tsx` stays a component; only its assumption constants, layout hierarchy, and the new ROI-multiple / time-value / cost-of-inaction blocks change.
+- Monthly price ($35) becomes a named constant in the component so it's a one-line change later.
+- Nav/footer get extracted only if reuse is trivial; otherwise the new page duplicates the small markup rather than risking a refactor of `Index.tsx`.
 
 ## Files touched
-
-- `src/pages/SmsOptInTerms.tsx` — new
-- `public/sms-opt-in/index.html` — new (static, crawlable)
+- `src/pages/RoiCalculatorPage.tsx` — new
+- `public/roi-calculator/index.html` — new (static mirror)
 - `src/App.tsx` — add route
-- `src/components/Footer.tsx` — add "Messaging Terms" link
-- `src/components/BetaWaitlist.tsx` — update checkbox copy + links
-- `index.html` — update `<noscript>` checkbox copy + links
-- `src/pages/PrivacyPolicy.tsx` — add mobile clause
-- `public/privacy/index.html` — add mobile clause
-- `public/privacy-policy/index.html` — add mobile clause (if present)
+- `src/pages/Index.tsx` — remove section, add teaser + nav link
+- `src/components/RoiCalculator.tsx` — reframed outputs and assumptions
 
 ## Verification
-
-After edits: typecheck, then `curl` `/sms-opt-in`, `/privacy`, `/terms`, and `/` locally to confirm each returns 200 with the new copy visible in raw HTML (no JS required).
+Typecheck, then curl `/roi-calculator` (React route + static mirror) and `/` to confirm 200s and that the new copy appears in raw HTML.
